@@ -1,7 +1,9 @@
+import LoginPage from "./pages/LoginPage";
+
 const App = ()=> {
   return (
     <div>
-      <h1>Test</h1>
+      <LoginPage />
     </div>
   );
 }

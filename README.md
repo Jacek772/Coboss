@@ -1,6 +1,7 @@
-# project-title
+# Coboss
 
-Coboss
+Coboss app
+
 A brief description of your project.
 
 ## Table of Contents
