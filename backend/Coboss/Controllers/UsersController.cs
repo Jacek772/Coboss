@@ -1,13 +1,12 @@
-﻿using Coboss.Types.DTO;
+﻿using Coboss.Controllers.Abstracts;
+using Coboss.Types.DTO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coboss.Controllers
 {
-    [EnableCors("AllowSpecificOrigin")]
-    [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
         [HttpGet]
         public ActionResult Get()
