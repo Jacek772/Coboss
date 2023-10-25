@@ -5,9 +5,9 @@ namespace Coboss.Persistance.Entities
 {
     public class BusinnessTaskRealisation : BaseEntitiy
     {
-        public DateOnly Date {  get; set; }
+        public DateTime Date {  get; set; }
         public TimeSpan TimeSpan { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }
 

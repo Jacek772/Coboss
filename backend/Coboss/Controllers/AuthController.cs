@@ -1,22 +1,23 @@
-﻿using Coboss.Controllers.Abstracts;
+﻿using Coboss.Application.Functions.Commands;
+using Coboss.Controllers.Abstracts;
 using Coboss.Types.DTO;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coboss.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : BaseApiController
     {
-        [HttpPost("login")]
-        public async Task<ActionResult<LoginResultDTO>> Login([FromBody] LoginDTO loginData)
+        public AuthController(IMediator mediator) : base(mediator)
         {
-            //LoginCommand loginCommand = _mapper.Map<LoginRequest, LoginCommand>(loginRequest);
-            //return await _mediator.Send(loginCommand);
-            return new LoginResultDTO
-            {
-                Token = ""
-            };
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResultDTO>> Login([FromBody] LoginCommand loginCommand)
+        {
+            return await _mediator.Send(loginCommand);
         }
     }
 }

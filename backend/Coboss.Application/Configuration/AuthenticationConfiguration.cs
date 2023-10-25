@@ -12,5 +12,8 @@ namespace Coboss.Application.Configuration
         public int JwtExpireDays { get; set; }
         public string JwtIssuer { get; set; }
         public int SaltSize { get; set; }
+        public string AdminLogin { get; set; }
+        public string AdminPassword { get; set; }
+        public string AdminEmail { get; set; }
     }
 }

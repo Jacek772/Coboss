@@ -10,14 +10,14 @@ namespace Coboss.Application.Services
     public class UsersService : IUsersService
     {
         private ApplicationDbContext _applicationDbContext;
-        private PasswordHasherService _passwordHasherService;
         private AuthenticationConfiguration _authenticationConfiguration;
+        private IPasswordHasherService _passwordHasherService;
 
-        public UsersService(ApplicationDbContext applicationDbContext, PasswordHasherService passwordHasherService, AuthenticationConfiguration authenticationConfiguration)
+        public UsersService(ApplicationDbContext applicationDbContext, AuthenticationConfiguration authenticationConfiguration, IPasswordHasherService passwordHasherService)
         {
             _applicationDbContext = applicationDbContext;
-            _passwordHasherService = passwordHasherService;
             _authenticationConfiguration = authenticationConfiguration;
+            _passwordHasherService = passwordHasherService;
         }
 
         public async Task<User> GetUserByLoginAsync(string login)
@@ -27,32 +27,30 @@ namespace Coboss.Application.Services
 
         public async Task CreateUserAsync(User user)
         {
-            //using(IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
-            //{
-            //    try
-            //    {
-            //        byte[] salt = _passwordHasherService.RandomSalt(_authenticationConfiguration.SaltSize);
-            //        string hash = _passwordHasherService.Hash(user.Password, salt);
+            using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    user.Salt = _passwordHasherService.GenerateRandomSalt(_authenticationConfiguration.SaltSize);
+                    user.Password = _passwordHasherService.HashPassword(user.Password, user.Salt);
 
-            //        //User user = new User
-            //        //{
-            //        //    Email = createUserCommand.Email,
-            //        //    Login = createUserCommand.Login,
-            //        //    Password = hash,
-            //        //    Salt = salt,
-            //        //    Name = createUserCommand.Name,
-            //        //    Surname = createUserCommand.Surname,
-            //        //};
-            //        _applicationDbContext.Users.Add(user);
-            //        await _applicationDbContext.SaveChangesAsync();
-            //        await transaction.CommitAsync();
-            //    }
-            //    catch(Exception ex)
-            //    {
-            //        await transaction.RollbackAsync();
-            //        throw new Exception("User create error");
-            //    }
-            //}
+                    _applicationDbContext.Users.Add(user);
+                    await _applicationDbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    throw new Exception("User create error");
+                }
+            }
+        }
+
+        public async Task<bool> ExistsUserAsync(string login)
+        {
+            return await _applicationDbContext.Users
+                .Where(x => x.Login == login)
+                .AnyAsync();
         }
     }
 }

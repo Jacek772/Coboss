@@ -1,15 +1,21 @@
 ﻿using Coboss.Controllers.Abstracts;
 using Coboss.Types.DTO;
-using Microsoft.AspNetCore.Cors;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coboss.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
+    [Authorize]
     public class UsersController : BaseApiController
     {
+        public UsersController(IMediator mediator) : base(mediator)
+        {
+        }
+
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult GetAllUsers()
         {
             UserDTO[] userDTOs = new UserDTO[]
             {

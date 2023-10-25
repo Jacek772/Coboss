@@ -1,4 +1,8 @@
+using Coboss.Application;
 using Coboss.Application.Configuration;
+using Coboss.Application.Seeds;
+using Coboss.Application.Seeds.abstracts;
+using Coboss.Middlewares;
 using Coboss.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +28,10 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddPersistence();
+builder.Services.AddApplication();
 
 // Configuration
 DatabaseConfiguration databaseConfiguration = new();
@@ -52,18 +60,16 @@ builder.Services.AddAuthentication(option =>
     };
 });
 
-builder.Services.AddPersistence();
+
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
-
 app.UseCors();
-
 app.UseAuthorization();
-
+app.UseAuthentication();
 app.MapControllers();
 
 if(builder.Environment.IsDevelopment())
@@ -71,17 +77,24 @@ if(builder.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Coboss v1");
     });
 }
 
-using(IServiceScope scope = app.Services.CreateScope())
+// Middlewares
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
+using (IServiceScope scope = app.Services.CreateScope())
 {
     ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
     if(!dbContext.Database.CanConnect())
     {
         throw new Exception("Connection string is incorrect or database not exists!");
     }
+
+    // Seeds
+    ISeed usersSeed = scope.ServiceProvider.GetService<UsersSeed>();
+    await usersSeed.Seed();
 }
 
 app.Run();

@@ -12,6 +12,6 @@ namespace Coboss.Persistance.Entities
         public string Name { get; set; }
         public string Surname { get; set; }
 
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Coboss.Types.DTO;
+﻿using Coboss.Persistance.Entities;
+using Coboss.Types.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Coboss.Application.Services.Abstracts
 {
     public interface IAuthService
     {
-        LoginResultDTO Login(LoginDTO loginDTO);
+        string GenerateToken(User user);
     }
 }

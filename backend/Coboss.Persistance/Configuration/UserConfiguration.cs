@@ -1,20 +1,18 @@
 ﻿using Coboss.Persistance.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Coboss.Persistance.Configuration.Abstracts;
 
 namespace Coboss.Persistance.Configuration
 {
-    internal class UserConfiguration : BaseEntityTypeConfiguration<User>
+    internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public UserConfiguration(DatabaseConfiguration databaseConfiguration) : base(databaseConfiguration)
-        {
-        }
-
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder
-                .HasKey(x => x.Id);
+                .ToTable("Users", "coboss");
+
+            builder
+                .HasKey(x => x.ID);
 
             builder
                 .Property(x => x.Login)
@@ -27,6 +25,11 @@ namespace Coboss.Persistance.Configuration
                 .HasMaxLength(255);
 
             builder
+                .Property(x => x.Email)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder
                .Property(x => x.Salt)
                .IsRequired()
                .HasMaxLength(255);
@@ -35,11 +38,6 @@ namespace Coboss.Persistance.Configuration
             builder
                 .HasIndex(x => x.Login)
                 .IsUnique();
-
-            // Realtionships
-            builder
-                .HasOne(x => x.Employee)
-                .WithOne(x => x.User);
         }
     }
 }

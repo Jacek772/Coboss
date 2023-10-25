@@ -1,25 +1,18 @@
-﻿using Coboss.Persistance.Configuration.Abstracts;
-using Coboss.Persistance.Entities;
+﻿using Coboss.Persistance.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coboss.Persistance.Configuration
 {
-    public class EmployeeConfiguration : BaseEntityTypeConfiguration<Employee>
+    public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {
-        public EmployeeConfiguration(DatabaseConfiguration databaseConfiguration) : base(databaseConfiguration)
-        {
-        }
-
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder
-                .HasKey(x => x.Id);
+                .ToTable("Employers", "coboss");
+
+            builder
+                .HasKey(x => x.ID);
 
             builder
                 .Property(x => x.Name)
@@ -30,6 +23,12 @@ namespace Coboss.Persistance.Configuration
                 .Property(x => x.Surname)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            // Realtionships
+            builder
+                .HasOne(x => x.User)
+                .WithOne(x => x.Employee)
+                .HasForeignKey<User>(x => x.EmployeeID);
         }
     }
 }

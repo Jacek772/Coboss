@@ -1,0 +1,137 @@
+.loginpage-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.img-logo {
+  width: 60%;
+}
+
+.form-login-img-logo-mobile {
+  width: 40%;
+  display: none;
+}
+
+.form-login-img-logo-mobile-container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  box-sizing: border-box;
+  background-color: #1E56A0;
+}
+
+.main-conatiner {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-login {
+  width: 60%;
+}
+
+.form-login-container {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-left: 1px solid;
+  background-color: #1E56A0;
+  box-shadow: -8px 0px 34px -13px rgba(66, 68, 90, 1);
+  height: 100%;
+}
+
+.form-login-hr-h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-login-hr {
+  width: 75%;
+  border: none;
+  border-top: 2px solid #1F2733;
+}
+
+.form-login-item-label {
+  color: white;
+}
+
+
+/* media queries */
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .main-conatiner, .form-login-container {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 577px) and (max-width: 767px) {
+    .loginpage-container{
+        flex-direction: column;
+    }
+ 
+    .main-conatiner{
+        display: none;
+    }
+
+    .form-login-container{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .img-mobile-logo-container
+    {
+        display: flex;
+    }
+
+    .form-login {
+      height: 50%;
+      width: 70%;
+    }
+
+    .form-login-img-logo-mobile {
+      display: block;
+    }
+}
+
+@media screen and (max-width: 576px) {
+  .loginpage-container{
+      flex-direction: column;
+  }
+
+  .main-conatiner{
+      display: none;
+  }
+
+  .form-login-container{
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .img-mobile-logo-container
+  {
+      display: flex;
+  }
+
+  .form-login {
+    height: 50%;
+    width: 70%;
+  }
+
+  .form-login-img-logo-mobile {
+    display: block;
+  }
+}

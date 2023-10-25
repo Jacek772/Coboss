@@ -10,6 +10,7 @@ namespace Coboss.Application.Services.Abstracts
     public interface IUsersService
     {
         Task<User> GetUserByLoginAsync(string login);
+        Task<bool> ExistsUserAsync(string login);
         Task CreateUserAsync(User user);
     }
 }

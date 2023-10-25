@@ -1,13 +1,89 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  font-family:Arial, Helvetica, sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* forms */
+
+.form-item {
+  padding: 1em 0.2em;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
+.form-item-row {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.form-item-label {
+}
+
+.form-item-label-row {
+ margin-right: 1rem;
+}
+
+.form-item-alert {
+  padding: 1em;
+  border: 1px solid;
+  border-radius: 0.4em;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.form-item-alert-danger {
+  background: #ff5555;
+  color: #880000;
+  border-color: #880000;
+}
+
+.form-alert {
+  padding: 1em;
+  border: 1px solid;
+  border-radius: 0.4em;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.form-alert-danger {
+  background: #ff5555;
+  color: #880000;
+  border-color: #880000;
+}
+
+/* inputs */
+
+.input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-checkbox {
+  width: 24px;
+  height: 24px;
+}
+
+/* buttons */
+.button {
+  padding: 1rem 2rem;
+  cursor: pointer;
+  border: none;
+}
+
+.button-primary {
+  background-color: #1F2733;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+

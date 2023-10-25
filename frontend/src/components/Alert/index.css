@@ -1,0 +1,22 @@
+.alert{
+  padding: 0.5em;
+  border: 0.3em solid;
+  border-radius: 0.4em;
+}
+
+.alert-caption {
+  font-weight: bold;
+  margin: 0.2em 0;
+}
+
+.alert-text {
+  text-align: justify;
+  margin: 0;
+}
+
+
+.alert-danger {
+  background: #ff5555;
+  color: #880000;
+  border-color: #880000;
+}

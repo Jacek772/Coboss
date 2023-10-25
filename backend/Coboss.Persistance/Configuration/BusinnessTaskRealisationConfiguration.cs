@@ -1,29 +1,22 @@
-﻿using Coboss.Persistance.Configuration.Abstracts;
-using Coboss.Persistance.Entities;
+﻿using Coboss.Persistance.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coboss.Persistance.Configuration
 {
-    public class BusinnessTaskRealisationConfiguration : BaseEntityTypeConfiguration<BusinnessTaskRealisation>
+    public class BusinnessTaskRealisationConfiguration : IEntityTypeConfiguration<BusinnessTaskRealisation>
     {
-        public BusinnessTaskRealisationConfiguration(DatabaseConfiguration databaseConfiguration) : base(databaseConfiguration)
-        {
-        }
-
         public void Configure(EntityTypeBuilder<BusinnessTaskRealisation> builder)
         {
             builder
-                .HasKey(x => x.Id);
+                .ToTable("BusinnessTaskRealisations", "coboss");
+
+            builder
+                .HasKey(x => x.ID);
 
             builder
                 .Property(x => x.Date)
-                .HasDefaultValue(DateTime.Now)
+                .HasDefaultValue(DateTime.UtcNow)
                 .IsRequired();
 
             builder

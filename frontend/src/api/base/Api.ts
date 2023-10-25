@@ -1,12 +1,9 @@
 // Libraries
 import qs from 'qs'
+import IResponse from '../types/IResponse'
 
-class Api {
-  static getBaseUrl() {
-    return "https://localhost:7252/api"
-}
-
-    static async get(url, query = {}, headers = {}, token = "") {
+abstract class Api {
+    protected async get(url: string, query: any = {}, headers: any = {}, token:string = ""): Promise<IResponse>  {
         if (query && JSON.stringify(query) !== "{}") {
             url += `?${qs.stringify(query)}`
         }
@@ -30,19 +27,21 @@ class Api {
             throw new Error(`Błąd fetch GET\n${url}\nSkontaktuj się z administratorem`)
         }
 
-
-        if (!res.ok)
-            return {
-                ok: res.ok,
-                status: res.status,
-                message: `Error: ${res.status}`
-            }
-
         let data
         try {
             data = await res.json()
         } catch {
             data = {}
+        }
+
+        if (!res.ok)
+        {
+            return {
+                ok: res.ok,
+                status: res.status,
+                message: `Error: ${res.status}`,
+                data
+            }
         }
 
         return {
@@ -53,7 +52,7 @@ class Api {
         }
     }
 
-    static async post(url, body = {}, json = true, headers = {}, token = "") {
+    protected async post(url:string, body:any = {}, json: boolean = true, headers: any = {}, token:string = ""): Promise<IResponse>  {
         if (!headers) {
             headers = {}
         }
@@ -74,7 +73,6 @@ class Api {
             throw new Error(`Błąd fetch POST\n${url}\nSkontaktuj się z administratorem`)
         }
 
-
         let data
         try {
             data = await res.json()
@@ -84,12 +82,14 @@ class Api {
         }
 
         if (!res.ok)
+        {
             return {
                 ok: res.ok,
                 status: res.status,
                 message: `Error: ${res.status}`,
                 data
             }
+        }
 
         return {
             ok: res.ok,
@@ -99,7 +99,7 @@ class Api {
         }
     }
 
-    static async put(url, body = {}, json = true, headers = {}, token = "") {
+    protected async put(url:string, body:any = {}, json:boolean = true, headers:any = {}, token:string = ""): Promise<IResponse>  {
         if (!headers) {
             headers = {}
         }
@@ -129,12 +129,14 @@ class Api {
         }
 
         if (!res.ok)
+        {
             return {
                 ok: res.ok,
                 status: res.status,
                 message: `Error: ${res.status}`,
                 data
             }
+        }
 
         return {
             ok: res.ok,
@@ -144,7 +146,7 @@ class Api {
         }
     }
 
-    static async delete(url, body = {}, json = true, headers = {}, token = "") {
+    protected async delete(url: string, body: any = {}, json: boolean = true, headers: any = {}, token: string = ""): Promise<IResponse> {
         if (!headers) {
             headers = {}
         }
@@ -174,12 +176,14 @@ class Api {
         }
 
         if (!res.ok)
+        {
             return {
                 ok: res.ok,
                 status: res.status,
                 message: `Error: ${res.status}`,
                 data
             }
+        }
 
         return {
             ok: res.ok,

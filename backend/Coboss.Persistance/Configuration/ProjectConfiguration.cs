@@ -1,25 +1,18 @@
-﻿using Coboss.Persistance.Configuration.Abstracts;
-using Coboss.Persistance.Entities;
+﻿using Coboss.Persistance.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coboss.Persistance.Configuration
 {
-    public class ProjectConfiguration : BaseEntityTypeConfiguration<Project>
+    public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     {
-        public ProjectConfiguration(DatabaseConfiguration databaseConfiguration) : base(databaseConfiguration)
-        {
-        }
-
         public void Configure(EntityTypeBuilder<Project> builder)
         {
             builder
-                .HasKey(x => x.Id);
+                .ToTable("Projects", "coboss");
+
+            builder
+                .HasKey(x => x.ID);
 
             builder
                 .Property(x => x.Name)
