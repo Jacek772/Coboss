@@ -7,8 +7,8 @@ import config from "../config"
 class UsersApi extends Api {
     static baseRoute = "users"
 
-    async getAll(token: string) {
-        return await this.get(`${config.API_URL}/`, null, null, token)
+    async getCurrent(token: string) {
+        return await this.get(`${config.API_URL}/${UsersApi.baseRoute}/current`, null, null, token)
     }
 
 }

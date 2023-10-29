@@ -18,7 +18,6 @@ class AuthService {
   public async login(loginCommand: ILoginCommand): Promise<ILoginResultDTO>
   {
     const response: IResponse = await this._authApi.login(loginCommand)
-    console.log(response)
     return {
       ok: response.ok,
       message: response.data?.message,

@@ -20,6 +20,12 @@ namespace Coboss.Application.Services
             _passwordHasherService = passwordHasherService;
         }
 
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            return await _applicationDbContext.Users
+                .FirstOrDefaultAsync(x => x.ID == id);
+        }
+
         public async Task<User> GetUserByLoginAsync(string login)
         {
             return await _applicationDbContext.Users.FirstOrDefaultAsync(x => x.Login == login);

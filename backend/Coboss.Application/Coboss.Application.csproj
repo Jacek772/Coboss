@@ -8,9 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Functions\Commands\" />
-    <Folder Include="Functions\QueryHandlers\" />
-    <Folder Include="Functions\Query\" />
-    <Folder Include="MappingProfiles\" />
   </ItemGroup>
 
   <ItemGroup>

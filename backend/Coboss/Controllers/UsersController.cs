@@ -1,4 +1,5 @@
-﻿using Coboss.Controllers.Abstracts;
+﻿using Coboss.Application.Functions.Query;
+using Coboss.Controllers.Abstracts;
 using Coboss.Types.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -14,16 +15,9 @@ namespace Coboss.Controllers
         {
         }
 
-        [HttpGet]
-        public ActionResult GetAllUsers()
+        [HttpGet("current")]
+        public async Task<UserDTO> GetCurrentLoggedUser()
         {
-            UserDTO[] userDTOs = new UserDTO[]
-            {
-                new UserDTO { Email = "user1@email.com", Login = "user1", Name = "Joe", Surname = "Doe" },
-                new UserDTO { Email = "user2@email.com", Login = "user2", Name = "Ela", Surname = "Kowalska" },
-                new UserDTO { Email = "user3@email.com", Login = "user3", Name = "Johny", Surname = "Rambo" },
-            };
-
-            return Ok(userDTOs);
+            return await _mediator.Send(new GetUserQuery() { UserId = GetCurrentUserId() });
         }
     }}

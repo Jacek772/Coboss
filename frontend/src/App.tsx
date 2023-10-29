@@ -5,6 +5,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import MainPage from "./pages/MainPage";
 
 const App: React.FC = () => {
   const router: any = createBrowserRouter([
@@ -18,7 +19,8 @@ const App: React.FC = () => {
       // }
     },
     {
-
+      path: "/main",
+      Component: MainPage,
     }
   ]);
 

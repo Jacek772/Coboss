@@ -1,29 +1,38 @@
 // Libraries
-import React, { useEffect, useState } from "react"
+import React, { Dispatch } from "react"
 import { Field, Form, Formik, FormikHelpers } from "formik"
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 // Services
 import UsersService from "../../services/UsersService"
+import TokenService from "../../services/TokenService";
 import AuthService from "../../services/AuthService";
-
-// Css
-import "./index.css"
 
 // Validation
 import LoginFormValidationSchema from "./validation/LoginFormValidationSchema";
+
+// Actions
+import { setUser } from "../../redux/slices/authSlice";
 
 // Types
 import ILoginFormValues from "./types/ILoginFormValues";
 import ILoginCommand from "../../types/Commands/ILoginCommand";
 import ILoginResultDTO from "../../types/DTO/ILoginResultDTO";
-import TokenService from "../../services/TokenService";
+import IUserDTO from "../../types/DTO/IUserDTO";
+
+// Css
+import "./index.css"
+import { useDispatch } from "react-redux";
+import { AnyAction } from "@reduxjs/toolkit";
 
 const LoginPage: React.FC = () => {
-
+  const navigate: NavigateFunction = useNavigate()
+  const dispatch: Dispatch<AnyAction> = useDispatch()
 
   const handleSubmit = async (values: ILoginFormValues, formikHelpers: FormikHelpers<ILoginFormValues>): Promise<void> => {
     const authService: AuthService = AuthService.getInstance()
     const tokenService: TokenService = TokenService.getInstance()
+    const usersService: UsersService = UsersService.getInstance()
 
     const loginCommand: ILoginCommand = {
       login: values.login,
@@ -37,6 +46,9 @@ const LoginPage: React.FC = () => {
       if(loginResult.ok)
       {
         tokenService.setToken(loginResult.token)
+        const user: IUserDTO = await usersService.getCurrent()
+        dispatch(setUser(user))
+        navigate("/main")
       }
       else
       {

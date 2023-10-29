@@ -4,15 +4,12 @@ using Coboss.Application.Seeds;
 using Coboss.Application.Seeds.abstracts;
 using Coboss.Middlewares;
 using Coboss.Persistance;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,15 +20,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin", builder =>
     {
         builder
-            .WithOrigins("http://localhost:3000", "http://127.0.0.1:3000")
+            .WithOrigins("*")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
 });
-
-builder.Services.AddScoped<ErrorHandlingMiddleware>();
-builder.Services.AddPersistence();
-builder.Services.AddApplication();
 
 // Configuration
 DatabaseConfiguration databaseConfiguration = new();
@@ -60,16 +53,16 @@ builder.Services.AddAuthentication(option =>
     };
 });
 
-
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddPersistence();
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
 app.UseCors();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+app.UseHttpsRedirection();
 app.MapControllers();
 
 if(builder.Environment.IsDevelopment())

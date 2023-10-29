@@ -17,6 +17,12 @@ namespace Coboss.Controllers.Abstracts
         }
 
         protected int GetCurrentUserId()
-           => int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        {
+            if(int.TryParse(User?.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int id))
+            {
+                return id;
+            }
+            return 0;
+        }
     }
 }
