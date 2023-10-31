@@ -1,0 +1,24 @@
+.navlink-li {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.navlink-li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.navlink-li a:hover {
+  color: rgb(200, 200, 200);
+}
+
+.navlink-li-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  height: 48px;
+}

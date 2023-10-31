@@ -4,6 +4,7 @@ import ILoginCommand from "../types/Commands/ILoginCommand";
 // Types
 import IResponse from "../api/types/IResponse";
 import ILoginResultDTO from "../types/DTO/ILoginResultDTO";
+import TokenService from "./TokenService";
 
 
 class AuthService {
@@ -23,6 +24,13 @@ class AuthService {
       message: response.data?.message,
       token: response.ok ? response.data.token : "" 
     }
+  }
+
+  public async checkIsLogged(): Promise<boolean>
+  {
+    const tokenService: TokenService = await TokenService.getInstance()
+    const response: IResponse = await this._authApi.checkIsLogged(tokenService.getToken())
+    return response.ok
   }
 
   public static getInstance(): AuthService {

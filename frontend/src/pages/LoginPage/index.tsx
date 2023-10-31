@@ -1,5 +1,5 @@
 // Libraries
-import React, { Dispatch } from "react"
+import React, { Dispatch, useEffect } from "react"
 import { Field, Form, Formik, FormikHelpers } from "formik"
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
@@ -12,7 +12,7 @@ import AuthService from "../../services/AuthService";
 import LoginFormValidationSchema from "./validation/LoginFormValidationSchema";
 
 // Actions
-import { setUser } from "../../redux/slices/authSlice";
+import { setLogged, setUser } from "../../redux/slices/authSlice";
 
 // Types
 import ILoginFormValues from "./types/ILoginFormValues";
@@ -22,12 +22,22 @@ import IUserDTO from "../../types/DTO/IUserDTO";
 
 // Css
 import "./index.css"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "../../redux/store";
 
 const LoginPage: React.FC = () => {
   const navigate: NavigateFunction = useNavigate()
   const dispatch: Dispatch<AnyAction> = useDispatch()
+  const reduxState: RootState = useSelector<RootState, RootState>(x => x)
+
+  useEffect(() => {
+    if(reduxState.auth.logged)
+    {
+      navigate("/main")
+    }
+
+  }, [navigate])
 
   const handleSubmit = async (values: ILoginFormValues, formikHelpers: FormikHelpers<ILoginFormValues>): Promise<void> => {
     const authService: AuthService = AuthService.getInstance()
@@ -39,16 +49,15 @@ const LoginPage: React.FC = () => {
       password: values.password
     }
 
-    let loginResult: ILoginResultDTO;
     try
     {
-      loginResult = await authService.login(loginCommand)
+      const loginResult: ILoginResultDTO = await authService.login(loginCommand)
       if(loginResult.ok)
       {
         tokenService.setToken(loginResult.token)
         const user: IUserDTO = await usersService.getCurrent()
+        dispatch(setLogged())
         dispatch(setUser(user))
-        navigate("/main")
       }
       else
       {
@@ -57,7 +66,7 @@ const LoginPage: React.FC = () => {
     }
     catch(error: any)
     {
-      console.log(error.message)
+      console.error(error.message)
     }
   }
 

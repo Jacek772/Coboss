@@ -2,6 +2,7 @@
 using Coboss.Controllers.Abstracts;
 using Coboss.Types.DTO;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coboss.Controllers
@@ -16,7 +17,15 @@ namespace Coboss.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginResultDTO>> Login([FromBody] LoginCommand loginCommand)
         {
+            var test = await _mediator.Send(loginCommand);
             return await _mediator.Send(loginCommand);
+        }
+
+        [Authorize]
+        [HttpGet("logged")]
+        public ActionResult CheckIsLogged()
+        {
+            return Ok(new { Logged = true });
         }
     }
 }

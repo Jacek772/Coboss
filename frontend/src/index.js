@@ -7,10 +7,13 @@ import { Provider } from 'react-redux'
 // Css
 import "./normalize.css"
 import "./index.css"
+import MainInitializer from './initializers/MainInitializer';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App />
+    <MainInitializer>
+      <App />
+    </MainInitializer>
   </Provider>
 );

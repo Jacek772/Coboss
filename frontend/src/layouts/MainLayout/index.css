@@ -1,0 +1,32 @@
+.mainlayout-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* main */
+.mainlayout-main {
+  display: flex;
+  flex-direction: row;
+  height: 92vh;
+  box-sizing: border-box;
+  z-index: 1;
+  position: relative;
+}
+
+/* nav */
+.mainlayout-nav {
+  height: 100%;
+  background-color: #3D444C;
+  color: white;
+  font-weight: bolder;
+  padding: 20px 40px 0px 20px;
+  width: 20%;
+  box-sizing: border-box;
+  box-shadow: -5px 0px 56px -1px rgba(66, 68, 90, 1);
+}
+
+.mainlayout-nav-ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
