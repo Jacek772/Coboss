@@ -1,0 +1,74 @@
+.grid-container {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.grid-head-container {
+  box-sizing: border-box;
+  overflow: auto;
+  border-bottom: 2px solid;
+}
+
+.grid-head-th-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.grid-head {
+  font-weight: bold;
+}
+
+.grid-head th {
+  text-align: start;
+  vertical-align: middle;
+}
+
+.grid-head-th-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grid-head-th-imgarrow {
+  cursor: pointer;
+}
+
+.grid-head-th-checkbox {
+  text-align: center !important;
+}
+
+.grid-head-th-checkbox-container {
+  width: 75px;
+}
+
+.grid-body-container {
+  height: 500px;
+  overflow: auto;
+  border-bottom: 2px solid;
+}
+
+.grid-body-tr {
+  height: 50px;
+}
+
+.grid-body-tr:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.grid-body-tr td {
+  text-align: start;
+  vertical-align: middle;
+}
+
+.grid-body-td-checkbox {
+  text-align: center !important;
+}
+
+.grid-body-td-checkbox-container {
+  width: 75px;
+}

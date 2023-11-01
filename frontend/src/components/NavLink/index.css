@@ -22,3 +22,7 @@
   align-content: center;
   height: 48px;
 }
+
+.navlink-sublinks-ul {
+  margin-left: 20px;
+}

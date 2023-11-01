@@ -1,0 +1,39 @@
+.navcard-container {
+  width: 350px;
+  height: 180px;
+  background-color: #1E56A0;
+  border-radius: 5px;
+  cursor: pointer;
+  color:white;
+  box-shadow: 0px 0px 20px 0px rgba(66, 68, 90, 1);
+  margin: 20px 20px;
+}
+
+.navcard-container:hover {
+  background-color: #1d4c89;
+}
+
+.navcard-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-left: 10px;
+  box-sizing: border-box;
+}
+
+.navcard-title-img {
+  height: 36px;
+  height: 36px;
+}
+
+.navcard-title-container {
+  padding: 20px 0 0 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+}
+
+.navcard-description {
+  padding: 20px 0 0 20px;
+  box-sizing: border-box;
+}

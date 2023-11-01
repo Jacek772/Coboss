@@ -13,7 +13,7 @@ const Header: React.FC = () => {
   }
 
   return <header className="header-container">
-    <img className="header-logo" src="./gfx/cobos_logo_1.png" alt="cobos_logo_1"/>
+    <img className="header-logo" src="./gfx/png/cobos_logo_1.png" alt="cobos_logo_1"/>
     <div className="header-items">
       <button 
         className="button button-secondary"

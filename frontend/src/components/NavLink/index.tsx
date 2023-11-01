@@ -27,9 +27,9 @@ const NavLink: React.FC<INavLinkPorps> = ({ to, text, children  }: INavLinkPorps
         <>
         {
            state.open ?
-           <img src="./gfx/arrow-up.svg" alt="arrow-up" onClick={handleClickOpen}/>
+           <img src="./gfx/svg/arrow-up.svg" alt="arrow-up" onClick={handleClickOpen}/>
            :
-           <img src="./gfx/arrow-down.svg" alt="arrow-down" onClick={handleClickOpen}/>
+           <img src="./gfx/svg/arrow-down.svg" alt="arrow-down" onClick={handleClickOpen}/>
         }
         </>
         :
@@ -38,7 +38,7 @@ const NavLink: React.FC<INavLinkPorps> = ({ to, text, children  }: INavLinkPorps
     </div>
     {
       state.open && children ?
-      <ul>
+      <ul className="navlink-sublinks-ul">
         {children}
       </ul>
       :

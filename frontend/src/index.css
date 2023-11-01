@@ -69,8 +69,9 @@
 }
 
 .input-checkbox {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
 }
 
 /* buttons */
@@ -99,4 +100,11 @@
 .button-secondary:hover {
   background-color: #3b4a5f;
   color: white;
+}
+
+/* pages */
+.page-container {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }

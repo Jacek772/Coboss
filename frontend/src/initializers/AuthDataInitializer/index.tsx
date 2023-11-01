@@ -20,7 +20,7 @@ const AuthDataInitializer: React.FC<IAuthDataInitializerProps> = ({ children }: 
   const reduxState = useSelector<RootState, RootState>(x => x)
 
   useEffect(() => {
-    initialize()
+    // initialize()
   }, [])
 
   const initialize = useCallback(async () => {

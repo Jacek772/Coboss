@@ -26,10 +26,10 @@ const App: React.FC = () => {
   const reduxState = useSelector<RootState, RootState>(x => x)
 
   const authLoader = useCallback(() => {
-    if(!reduxState.auth.logged)
-    {
-      return redirect("/")
-    }
+    // if(!reduxState.auth.logged)
+    // {
+    //   return redirect("/")
+    // }
     return null 
   }, [reduxState.auth])
 

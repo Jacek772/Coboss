@@ -72,10 +72,10 @@ const LoginPage: React.FC = () => {
 
   return <div className="loginpage-container">
     <main className="main-conatiner">
-      <img src="gfx/cobos_logo_1.png" alt="cobos_logo_1" className="img-logo"/>
+      <img src="gfx/png/cobos_logo_1.png" alt="cobos_logo_1" className="img-logo"/>
     </main>
     <section className="form-login-container">
-      <img src="gfx/cobos_logo_2.png" alt="cobos_logo_1" className="form-login-img-logo-mobile"/>
+      <img src="gfx/png/cobos_logo_2.png" alt="cobos_logo_1" className="form-login-img-logo-mobile"/>
       <h2 className="form-login-hr-h1">Login</h2>
       <hr className="form-login-hr" />
 

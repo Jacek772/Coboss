@@ -1,0 +1,16 @@
+.verticalnavbar-nav {
+  height: 100%;
+  background-color: #3D444C;
+  color: white;
+  font-weight: bolder;
+  padding: 20px 40px 0px 20px;
+  width: 20%;
+  box-sizing: border-box;
+  box-shadow: -5px 0px 56px -1px rgba(66, 68, 90, 1);
+}
+
+.verticalnavbar-nav-ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
