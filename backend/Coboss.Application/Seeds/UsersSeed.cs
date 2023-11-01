@@ -1,7 +1,7 @@
 ﻿using Coboss.Application.Configuration;
 using Coboss.Application.Seeds.abstracts;
 using Coboss.Application.Services.Abstracts;
-using Coboss.Persistance.Entities;
+using Coboss.Core.Entities;
 
 namespace Coboss.Application.Seeds
 {

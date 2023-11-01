@@ -1,7 +1,7 @@
 ﻿using Coboss.Application.Configuration;
 using Coboss.Application.Services.Abstracts;
 using Coboss.Persistance;
-using Coboss.Persistance.Entities;
+using Coboss.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

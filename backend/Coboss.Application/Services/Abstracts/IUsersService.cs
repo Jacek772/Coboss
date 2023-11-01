@@ -1,4 +1,4 @@
-﻿using Coboss.Persistance.Entities;
+﻿using Coboss.Core.Entities;
 
 namespace Coboss.Application.Services.Abstracts
 {

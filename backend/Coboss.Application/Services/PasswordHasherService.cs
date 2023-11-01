@@ -1,5 +1,5 @@
 ﻿using Coboss.Application.Services.Abstracts;
-using Coboss.Persistance.Entities;
+using Coboss.Core.Entities;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 

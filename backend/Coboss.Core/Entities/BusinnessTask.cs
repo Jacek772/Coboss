@@ -1,11 +1,11 @@
-﻿using Coboss.Persistance.Entities.Abstracts;
+﻿using Coboss.Core.Entities.Abstracts;
 
-namespace Coboss.Persistance.Entities
+namespace Coboss.Core.Entities
 {
     public class BusinnessTask : BaseEntitiy
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = default!;
+        public string Description { get; set; } = default!;
         public DateTime Date { get; set; }
         public DateTime Term { get; set; }
 

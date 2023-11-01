@@ -1,9 +1,4 @@
-﻿using Coboss.Persistance.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Coboss.Core.Entities;
 
 namespace Coboss.Application.Services.Abstracts
 {

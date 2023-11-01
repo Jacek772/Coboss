@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Coboss.Application.Functions.Query;
 using Coboss.Application.Services.Abstracts;
-using Coboss.Persistance.Entities;
+using Coboss.Core.Entities;
 using Coboss.Types.DTO;
 using MediatR;
 using System;

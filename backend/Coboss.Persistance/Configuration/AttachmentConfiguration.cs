@@ -1,4 +1,4 @@
-﻿using Coboss.Persistance.Entities;
+﻿using Coboss.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

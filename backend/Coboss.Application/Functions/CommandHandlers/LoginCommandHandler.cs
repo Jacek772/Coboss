@@ -1,6 +1,6 @@
 ﻿using Coboss.Application.Functions.Commands;
 using Coboss.Application.Services.Abstracts;
-using Coboss.Persistance.Entities;
+using Coboss.Core.Entities;
 using Coboss.Types.DTO;
 using Coboss.Types.Exceptions;
 using MediatR;

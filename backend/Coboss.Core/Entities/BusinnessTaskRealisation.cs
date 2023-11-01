@@ -1,7 +1,6 @@
-﻿using Coboss.Persistance.Entities;
-using Coboss.Persistance.Entities.Abstracts;
+﻿using Coboss.Core.Entities.Abstracts;
 
-namespace Coboss.Persistance.Entities
+namespace Coboss.Core.Entities
 {
     public class BusinnessTaskRealisation : BaseEntitiy
     {

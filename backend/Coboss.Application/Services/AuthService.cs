@@ -1,11 +1,9 @@
 ﻿using Coboss.Application.Configuration;
 using Coboss.Application.Services.Abstracts;
-using Coboss.Persistance.Entities;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Coboss.Core.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Coboss.Application.Services

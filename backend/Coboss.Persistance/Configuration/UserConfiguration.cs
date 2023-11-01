@@ -1,6 +1,6 @@
-﻿using Coboss.Persistance.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Coboss.Core.Entities;
 
 namespace Coboss.Persistance.Configuration
 {
