@@ -7,6 +7,10 @@ import {
 } from "react-router-dom";
 import { RootState } from "./redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import { AnyAction } from "@reduxjs/toolkit";
+
+// Actions
+import { setUnlogged } from "./redux/slices/authSlice";
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -17,8 +21,6 @@ import TasksPage from "./pages/TasksPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
 import TokenService from "./services/TokenService";
-import { AnyAction } from "@reduxjs/toolkit";
-import { setUnlogged } from "./redux/slices/authSlice";
 import MainLayout from "./layouts/MainLayout";
 
 const App: React.FC = () => {

@@ -4,6 +4,7 @@ interface IGridProps {
   colDefs: IColDef[],
   rowsData: any[],
   onRowClick?: (index: number, rowData: any) => void
+  onScrollEnd?: (lastRow: any) => void
 }
 
 export default IGridProps

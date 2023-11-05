@@ -11,7 +11,7 @@ import IRowData from "./types/IRowData"
 // Css
 import "./index.css"
 
-const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick }) => {
+const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onScrollEnd }) => {
   const [state, setState] = useState<IGridState>({
     colDefs: [],
     rowsData: []
@@ -79,9 +79,15 @@ const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick }) => {
     divBodyRef.current.scrollLeft = e.target.scrollLeft
   }, [divBodyRef])
 
-  const handleScrollBody = useCallback((e) => {
+  const handleScrollBody = (e) => {
     divHeadRef.current.scrollLeft = e.target.scrollLeft
-  }, [divHeadRef])
+    if(divBodyRef.current.scrollTop >= divBodyRef.current.clientHeight && onScrollEnd)
+    {
+      const lastRowData = state.rowsData[state.rowsData.length - 1]
+      onScrollEnd(lastRowData)
+    }
+
+  }
 
   return  <div className="grid-container">
     <div id="gridHeadContainer" ref={divHeadRef} className="grid-head-container" onScroll={handleScrollHead}>

@@ -8,6 +8,7 @@
   box-sizing: border-box;
   overflow: auto;
   border-bottom: 2px solid;
+  border-top: 2px solid;
 }
 
 .grid-head-th-container {
@@ -23,6 +24,15 @@
 .grid-head th {
   text-align: start;
   vertical-align: middle;
+  padding-left: 10px;
+}
+
+.grid-head th:last-child {
+  width: 100%;
+}
+
+.grid-head th:first-child {
+  padding-left: 0;
 }
 
 .grid-head-th-container {
@@ -63,6 +73,16 @@
 .grid-body-tr td {
   text-align: start;
   vertical-align: middle;
+  border-bottom: 1px solid silver;
+  padding-left: 10px;
+}
+
+.grid-body-tr td:first-child {
+  padding-left: 0;
+}
+
+.grid-body-tr td:last-child {
+  width: 100%;
 }
 
 .grid-body-td-checkbox {

@@ -1,0 +1,69 @@
+.actionbuttonsbar-container {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.actionbuttonsbar-button {
+  margin-top: 20px;
+  margin-right: 20px;
+  padding: 10px 15px;
+  border: 5px solid;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.actionbuttonsbar-button-secondary {
+  color: white;
+  background-color: #1F2733;
+  border-color: #1F2733;
+}
+
+.actionbuttonsbar-button-secondary:hover {
+  background-color: #2e394b;
+  border-color: #2e394b;
+}
+
+.actionbuttonsbar-button-danger {
+  color: white;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.actionbuttonsbar-button-danger:hover {
+  background-color: #f93b4e;
+  border-color: #f93b4e;
+}
+
+.actionbuttonsbar-button-warning {
+  color: white;
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
+.actionbuttonsbar-button-warning:hover {
+  background-color: #ffce3a;
+  border-color: #ffce3a;
+}
+
+.actionbuttonsbar-button-success {
+  color: white;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.actionbuttonsbar-button-success:hover {
+  background-color: #33c054;
+  border-color: #33c054;
+}
+
+.actionbuttonsbar-button-primary {
+  color: white;
+  background-color: #1F2733;
+  border-color: #1F2733;
+}
+
+.actionbuttonsbar-button-primary:hover {
+  color: white;
+  background-color: #2e394b;
+  border-color: #2e394b;
+}

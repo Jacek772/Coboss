@@ -1,5 +1,5 @@
 * {
-  font-family:Arial, Helvetica, sans-serif;
+  font-family:Arial, Helvetica, sans-serif !important;
 }
 
 /* forms */
@@ -66,6 +66,7 @@
   border: 1px solid;
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .input-checkbox {
@@ -107,4 +108,30 @@
   height: 100%;
   width: 100%;
   box-sizing: border-box;
+}
+
+/* page caption */
+.page-caption-container {
+  width: 100%;
+  padding: 20px 50px;
+  box-sizing: border-box;
+}
+
+.page-caption-row {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-caption {
+  font-size: 36pt;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.page-caption-input {
+  width: 200px;
 }

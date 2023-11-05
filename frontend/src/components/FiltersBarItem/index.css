@@ -1,0 +1,14 @@
+.filtersbaritem-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+
+.filtersbaritem-label, .filtersbaritem-input {
+  margin-right: 10px;
+}
+
+.filtersbaritem-label {
+  font-weight: bold;
+}

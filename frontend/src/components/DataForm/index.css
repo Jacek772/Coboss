@@ -1,0 +1,12 @@
+.dataform-container {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  background-color: white;
+  border: 1px solid;
+  border-radius: 5px;
+  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}

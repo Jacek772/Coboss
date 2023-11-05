@@ -1,35 +1,26 @@
 // React
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 // Components
 import Grid from "../../components/Grid"
+import FiltersBar from "../../components/FiltersBar"
+import ActionButtonsBar from "../../components/ActionButtonsBar"
 
 // Types
-import IColDefProps from "../../components/Grid/types/IColDefProps"
+import FiltersBarItemType from "../../components/FiltersBarItem/types/enums/FiltersBarItemType"
+import IFiltersBarItemData from "../../components/FiltersBar/types/IFiltersBarItemData"
+
+// Configuration
+import gridColDefs from "./configuration/gridColDefs"
+import actionButtonDefs from "./configuration/actionButtonDefs"
 
 // Css
 import "./index.css"
-
-const colDefs: IColDefProps[] = [
-  {
-    caption:"Name",
-    field:"name",
-    width: 200
-  },
-  {
-    caption:"Surname",
-    field:"surname",
-    width: 200
-  },
-  {
-    caption:"Age",
-    field:"age",
-    width: 200
-  }
-]
+import DataForm from "../../components/DataForm"
 
 const EmployeesPage: React.FC = () => {
   const [rowsData, setRowsData] = useState([
+
     {
       name:"Joe",
       surname: "Doe",
@@ -132,14 +123,43 @@ const EmployeesPage: React.FC = () => {
     }
   ])
 
-  return <div className="page-container">
 
+  const filterBarItems: IFiltersBarItemData[] = [
+    { name:"period", type: FiltersBarItemType.DatePeriod, label: "Period"  }
+  ]
+
+  const handleRowClick = useCallback((index: number, rowsData: any) => {
+    
+  }, [])
+
+  const handleScrollEnd = useCallback((lastRow: any) => {
+    console.log(lastRow)
+  }, [])
+
+  return <div className="page-container">
+    <div className="page-caption-container">
+      <div className="page-caption-row">
+        <h1 className="page-caption">Employees</h1>
+        <input className="input page-caption-input" placeholder="Wyszukaj..."/>
+      </div>
+      <hr/>
+    </div>
+    <div className="employeespage-filtersbar-container">
+      <FiltersBar items={filterBarItems} />
+    </div>
+    <div className="employeespage-actionbuttonsbar-container">
+      <ActionButtonsBar buttonsData={actionButtonDefs} />
+    </div>
     <div className="employeespage-gird-container">
       <Grid
-        colDefs={colDefs}
+        colDefs={gridColDefs}
         rowsData={rowsData}
+        onScrollEnd={handleScrollEnd}
+        onRowClick={handleRowClick}
       />
     </div>
+
+    <DataForm/>
   </div>
 }
 

@@ -1,20 +1,4 @@
-.mainlayout-container {
-  width: 100vw;
-  height: 100vh;
-}
-
-/* main */
-.mainlayout-main {
-  display: flex;
-  flex-direction: row;
-  height: 92vh;
-  box-sizing: border-box;
-  z-index: 1;
-  position: relative;
-}
-
-/* nav */
-.mainlayout-nav {
+.navbar-nav {
   height: 100%;
   background-color: #3D444C;
   color: white;
@@ -25,37 +9,39 @@
   box-shadow: -5px 0px 56px -1px rgba(66, 68, 90, 1);
 }
 
-.mainlayout-nav-ul {
+.navbar-nav-ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-/* section */
-.section {
-  width: 80%;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-
 /* media queries */
 @media screen and (min-width: 992px) and (max-width: 1199px) {
-
+  .navbar-nav {
+      width: 30%;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
-
+  .navbar-nav {
+      width: 40%;
+  }
 }
 
 @media screen and (min-width: 577px) and (max-width: 767px) {
-  .section {
-    width: 100%;
+  .navbar-nav {
+      position: absolute;
+      width: 100%;
+      height: auto;
+      padding-bottom: 20px;
   }
 }
 
 @media screen and (max-width: 576px) {
-  .section {
-    width: 100%;
+  .navbar-nav {
+      position: absolute;
+      width: 100%;
+      height: auto;
+      padding-bottom: 20px;
   }
 }
