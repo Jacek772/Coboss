@@ -1,0 +1,14 @@
+.dataformfield-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+
+.dataformfield-label, .dataformfield-input {
+  margin-right: 10px;
+}
+
+.dataformfield-label {
+  font-weight: bold;
+}

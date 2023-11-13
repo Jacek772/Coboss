@@ -14,7 +14,7 @@ class AuthApi extends Api {
     const headers: any = {
       "Content-Type":"application/json"
     }
-   return this.post(`${config.API_URL}/${AuthApi.baseRoute}/login`, loginCommand, true, headers)
+   return this.post(`${config.API_URL}/${AuthApi.baseRoute}/signin`, loginCommand, true, headers)
   }
 
   public async checkIsLogged(token: string): Promise<IResponse> {

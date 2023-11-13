@@ -27,7 +27,6 @@ const FiltersBarItem: React.FC<IFiltersBarItemProps> = ({ name, label, type, onC
     {
       onChange(name, [state.value])
     }
-
   }, [state])
 
   const handleChange = (e) => {

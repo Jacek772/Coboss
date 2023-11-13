@@ -14,7 +14,7 @@ namespace Coboss.Controllers
         {
         }
 
-        [HttpPost("login")]
+        [HttpPost("signin")]
         public async Task<ActionResult<LoginResultDTO>> Login([FromBody] LoginCommand loginCommand)
         {
             var test = await _mediator.Send(loginCommand);

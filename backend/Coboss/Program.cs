@@ -47,6 +47,10 @@ builder.Services.AddAuthentication(option =>
     cfg.SaveToken = true;
     cfg.TokenValidationParameters = new TokenValidationParameters
     {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
         ValidIssuer = authenticationConfiguration.JwtIssuer,
         ValidAudience = authenticationConfiguration.JwtIssuer,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationConfiguration.JwtKey))
@@ -72,6 +76,7 @@ if(builder.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Coboss v1");
     });
+    app.UseDeveloperExceptionPage();
 }
 
 // Middlewares
