@@ -2,10 +2,12 @@ import { configureStore } from '@reduxjs/toolkit'
 
 // Reducers
 import authReducer from './slices/authSlice'
+import globalModalReducer from './slices/globalModalSlice'
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
+    globalModal: globalModalReducer
   },
 })
 

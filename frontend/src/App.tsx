@@ -22,6 +22,7 @@ import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
 import TokenService from "./services/TokenService";
 import MainLayout from "./layouts/MainLayout";
+import GlobalModal from "./components/GlobalModal";
 
 const App: React.FC = () => {
   const dispatch: Dispatch<AnyAction> = useDispatch()
@@ -90,9 +91,12 @@ const App: React.FC = () => {
   ]);
 
   return (
+    <>
     <RouterProvider 
       router={router}
       fallbackElement={<p>Initial Load...</p>} />
+      <GlobalModal/>
+    </>
   );
 }
 

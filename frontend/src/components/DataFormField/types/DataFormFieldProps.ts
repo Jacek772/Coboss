@@ -5,6 +5,7 @@ import DataFormFieldType from "./enums/DataFormFieldType"
 type DataFormFieldProps = {
   name: string
   type: DataFormFieldType
+  isReadonly?: boolean
   value?: string
   label?: string
   labelWidth?: number

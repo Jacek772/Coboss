@@ -19,6 +19,7 @@ import "./index.css"
 import DataForm from "../../components/DataForm"
 import DataFormRow from "../../components/DataForm/types/DataFormRow"
 import DataFormFieldType from "../../components/DataFormField/types/enums/DataFormFieldType"
+import EmployeesPageState from "./types/EmployeesPageState"
 
 const data = [
   {
@@ -125,6 +126,10 @@ const data = [
 ]
 
 const EmployeesPage: React.FC = () => {
+  const [state, setState] = useState<EmployeesPageState>({
+    dataFormVisible: false
+  })
+
   const [rowsData, setRowsData] = useState([...data])
   const [employeData, setEmployeData] = useState(
     {
@@ -193,11 +198,16 @@ const EmployeesPage: React.FC = () => {
       />
     </div>
 
-    <DataForm
-      caption={`${employeData.name} ${employeData.surname} (${employeData.code})`}
-      data={employeData}
-      onSave={handleSaveForm}
-      rows={rows}/>
+    {
+      state.dataFormVisible ?
+        <DataForm
+          caption={`${employeData.name} ${employeData.surname} (${employeData.code})`}
+          data={employeData}
+          onSave={handleSaveForm}
+          rows={rows}/>
+          :
+          null
+    }
   </div>
 }
 

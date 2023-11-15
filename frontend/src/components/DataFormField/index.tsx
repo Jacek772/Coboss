@@ -9,7 +9,8 @@ import DataFormFieldState from "./types/DataFormFieldState"
 // Css
 import "./index.css"
 
-const DataFormField: React.FC<DataFormFieldProps> = ({ name, type, value, label, options, onChange, height, labelWidth = 100, width = 200 }) => {
+const DataFormField: React.FC<DataFormFieldProps> = ({ 
+  name, type,  value, label, options, onChange, height, isReadonly = false, labelWidth = 100, width = 200 }) => {
   const [state, setState] = useState<DataFormFieldState>({ value })
 
   useEffect(() => {
@@ -40,6 +41,7 @@ const DataFormField: React.FC<DataFormFieldProps> = ({ name, type, value, label,
           className="input dataformfield-input"
           type="date"
           style={style}
+          readOnly={isReadonly}
           value={state.value}
           onChange={(e) => handleChange(e.target.value)}/>
       case DataFormFieldType.Number:
@@ -47,12 +49,14 @@ const DataFormField: React.FC<DataFormFieldProps> = ({ name, type, value, label,
           className="input dataformfield-input"
           type="number"
           style={style}
+          readOnly={isReadonly}
           value={state.value}
           onChange={(e) => handleChange(e.target.value)} />
       case DataFormFieldType.Select:
         return <select className="input dataformfield-input"
           onChange={(e) => handleChange(e.target.value)}
           style={style}
+          disabled={isReadonly}
           value={state.value}>
           {
             options?.map((x, index) => {
@@ -64,6 +68,7 @@ const DataFormField: React.FC<DataFormFieldProps> = ({ name, type, value, label,
         return <textarea 
           className="input dataformfield-input"
           style={style}
+          readOnly={isReadonly}
           value={state.value}
           onChange={(e) => handleChange(e.target.value)}
         ></textarea>
@@ -73,6 +78,7 @@ const DataFormField: React.FC<DataFormFieldProps> = ({ name, type, value, label,
           className="input dataformfield-input"
           style={style}
           type="text"
+          readOnly={isReadonly}
           value={state.value}
           onChange={(e) => handleChange(e.target.value)} />
     }
