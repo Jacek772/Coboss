@@ -4,9 +4,9 @@ namespace Coboss.Application.Services.Abstracts
 {
     public interface IUsersService
     {
-        Task<User> GetUserByIdAsync(int id);
-        Task<User> GetUserByLoginAsync(string login);
-        Task<bool> ExistsUserAsync(string login);
+        Task<User> GetUserByIdAsync(Guid id);
+        Task<User> GetUserByEmailAsync(string email);
+        Task<bool> ExistsUserAsync(string email);
         Task CreateUserAsync(User user);
     }
 }

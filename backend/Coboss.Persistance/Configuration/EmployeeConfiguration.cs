@@ -12,7 +12,11 @@ namespace Coboss.Persistance.Configuration
                 .ToTable("Employers", "coboss");
 
             builder
-                .HasKey(x => x.ID);
+                .HasKey(x => x.Id);
+
+            builder
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
 
             builder
                 .Property(x => x.Name)
@@ -24,11 +28,26 @@ namespace Coboss.Persistance.Configuration
                 .IsRequired()
                 .HasMaxLength(100);
 
+            // Indexes
+            builder
+                .HasIndex(x => x.NIP)
+                .IsUnique();
+
+            builder
+                .HasIndex(x => x.PESEL)
+                .IsUnique();
+
             // Realtionships
             builder
                 .HasOne(x => x.User)
                 .WithOne(x => x.Employee)
-                .HasForeignKey<User>(x => x.EmployeeID);
+                .HasForeignKey<User>(x => x.EmployeeId);
+
+            builder
+                .HasMany(x => x.EmployeeHistories)
+                .WithOne(x => x.Employee)
+                .HasForeignKey(x => x.EmployeeId)
+                .HasPrincipalKey(x => x.Id);
         }
     }
 }

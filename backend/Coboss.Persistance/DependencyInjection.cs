@@ -7,7 +7,6 @@ namespace Coboss.Persistance
         public static IServiceCollection AddPersistence(this IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>();
-
             return services;
         }
     }

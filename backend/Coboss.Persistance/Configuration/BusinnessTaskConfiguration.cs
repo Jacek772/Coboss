@@ -12,7 +12,11 @@ namespace Coboss.Persistance.Configuration
                 .ToTable("BusinnessTasks", "coboss");
 
             builder
-                .HasKey(x => x.ID);
+                .HasKey(x => x.Id);
+
+            builder
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
 
             builder
                 .Property(x => x.Name)
@@ -33,13 +37,16 @@ namespace Coboss.Persistance.Configuration
                 .HasDefaultValue(DateTime.UtcNow)
                 .IsRequired();
 
+            builder
+                .Ignore(x => x.Attachments);
+
             // Realtionships
             builder
-                .HasMany(x => x.BusinnessTaskRealisations)
+                .HasMany(x => x.TaskRealisations)
                 .WithOne();
 
             builder
-                .HasMany(x => x.Attachments)
+                .HasMany(x => x.Comments)
                 .WithOne();
         }
     }

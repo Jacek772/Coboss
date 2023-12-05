@@ -15,10 +15,15 @@ namespace Coboss.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<ActionResult<LoginResultDTO>> Login([FromBody] LoginCommand loginCommand)
+        public async Task<ActionResult<AuthenticationResultDTO>> Signin([FromBody] LoginCommand loginCommand)
         {
-            var test = await _mediator.Send(loginCommand);
             return await _mediator.Send(loginCommand);
+        }
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult<AuthenticationResultDTO>> Refresh([FromBody] RefreshTokenCommand refreshTokenCommand)
+        {
+            return await _mediator.Send(refreshTokenCommand);
         }
 
         [Authorize]

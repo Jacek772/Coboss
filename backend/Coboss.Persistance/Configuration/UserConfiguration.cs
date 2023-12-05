@@ -12,22 +12,21 @@ namespace Coboss.Persistance.Configuration
                 .ToTable("Users", "coboss");
 
             builder
-                .HasKey(x => x.ID);
+                .HasKey(x => x.Id);
 
             builder
-                .Property(x => x.Login)
-                .IsRequired()
-                .HasMaxLength(25);
-
-            builder
-                .Property(x => x.Password)
-                .IsRequired()
-                .HasMaxLength(255);
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
 
             builder
                 .Property(x => x.Email)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            builder
+                .Property(x => x.Password)
+                .IsRequired()
+                .HasMaxLength(255);
 
             builder
                .Property(x => x.Salt)
@@ -36,8 +35,14 @@ namespace Coboss.Persistance.Configuration
 
             // Indexes
             builder
-                .HasIndex(x => x.Login)
+                .HasIndex(x => x.Email)
                 .IsUnique();
+
+            // Realtionships
+            builder
+                .HasOne(x => x.Role)
+                .WithMany()
+                .HasForeignKey(x => x.RoleId);
         }
     }
 }

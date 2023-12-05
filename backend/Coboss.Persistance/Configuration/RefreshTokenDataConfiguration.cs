@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Coboss.Persistance.Configuration
 {
-    public class ProjectConfiguration : IEntityTypeConfiguration<Project>
+    public class RefreshTokenDataConfiguration : IEntityTypeConfiguration<RefreshTokenData>
     {
-        public void Configure(EntityTypeBuilder<Project> builder)
+        public void Configure(EntityTypeBuilder<RefreshTokenData> builder)
         {
             builder
-                .ToTable("Projects", "coboss");
+                .ToTable("RefreshTokensData", "coboss");
 
             builder
                 .HasKey(x => x.Id);
@@ -19,31 +19,26 @@ namespace Coboss.Persistance.Configuration
                 .ValueGeneratedOnAdd();
 
             builder
-                .Property(x => x.Number)
-                .IsRequired();
-
-            builder
-                .Property(x => x.Name)
+                .Property(x => x.Token)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(88);
 
             builder
-                .Property(x => x.Description)
+                .Property(x => x.CreationDate)
+                .HasDefaultValue(DateTime.UtcNow)
                 .IsRequired();
 
             builder
-                .Property(x => x.Term)
-                .HasDefaultValue(DateTime.UtcNow)
+                .Property(x => x.ExpiryDate)
                 .IsRequired();
 
             // Indexes
             builder
-                .HasIndex(x => x.Number)
-                .IsUnique();
+                .HasIndex(x => x.Token);
 
             // Realtionships
             builder
-                .HasOne(x => x.Manager)
+                .HasOne(x => x.User)
                 .WithMany();
         }
     }

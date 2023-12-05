@@ -12,7 +12,20 @@ namespace Coboss.Persistance.Configuration
                 .ToTable("Attachments", "coboss");
 
             builder
-                .HasKey(x => x.ID);
+                .HasKey(x => x.Id);
+
+            builder
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+
+            builder
+                .Property(x => x.TableName)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder
+                .Property(x => x.ParentID)
+                .IsRequired();
 
             builder
                 .Property(x => x.FileName)
@@ -22,6 +35,16 @@ namespace Coboss.Persistance.Configuration
             builder
                 .Property(x => x.FilePath)
                 .IsRequired();
+
+            builder
+                .Property(x => x.FileType)
+                .HasDefaultValue(Attachment.AttachmentFileType.TXT)
+                .IsRequired();
+
+            // Indexes
+            builder
+                .HasIndex(x => new { x.TableName, x.ParentID })
+                .IsUnique();
         }
     }
 }

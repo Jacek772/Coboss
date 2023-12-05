@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Coboss.Controllers.Abstracts
 {
@@ -16,13 +15,13 @@ namespace Coboss.Controllers.Abstracts
             _mediator = mediator;
         }
 
-        protected int GetCurrentUserId()
+        protected Guid GetCurrentUserId()
         {
-            if(int.TryParse(User?.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int id))
+            if(Guid.TryParse(User?.FindFirst("Id")?.Value, out Guid id))
             {
                 return id;
             }
-            return 0;
+            return Guid.Empty;
         }
     }
 }

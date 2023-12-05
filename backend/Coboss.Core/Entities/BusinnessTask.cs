@@ -9,7 +9,10 @@ namespace Coboss.Core.Entities
         public DateTime Date { get; set; }
         public DateTime Term { get; set; }
 
-        public ICollection<BusinnessTaskRealisation> BusinnessTaskRealisations { get; set; }
-        public ICollection<Attachment> Attachments { get; set; }
+        public ICollection<BusinnessTaskRealisation> TaskRealisations { get; set; } = default!;
+        public ICollection<BusinnessTaskComment> Comments { get; set; } = default!;
+
+        // TODO: Zaimplementować pobieranie załączników dla zadania
+        public ICollection<Attachment> Attachments { get; }
     }
 }

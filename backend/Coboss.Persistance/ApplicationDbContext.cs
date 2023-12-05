@@ -1,11 +1,7 @@
 ﻿using Coboss.Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coboss.Persistance
 {
@@ -19,11 +15,15 @@ namespace Coboss.Persistance
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Employee> Employers { get; set; }
+        public DbSet<EmployeeHistory> EmployeeHistories { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<BusinnessTask> BusinnessTasks { get; set; }
         public DbSet<BusinnessTaskRealisation> BusinnessTaskRealisations { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<GlobalSetting> GlobalSettings { get; set; }
+        public DbSet<RefreshTokenData> RefreshTokensData { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

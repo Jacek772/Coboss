@@ -1,5 +1,5 @@
 interface ILoginCommand {
-  login: string
+  email: string
   password: string
 }
 

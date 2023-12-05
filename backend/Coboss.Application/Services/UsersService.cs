@@ -20,15 +20,20 @@ namespace Coboss.Application.Services
             _passwordHasherService = passwordHasherService;
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(Guid id)
         {
             return await _applicationDbContext.Users
-                .FirstOrDefaultAsync(x => x.ID == id);
+                .Include(x => x.Role)
+                .Include(x => x.Employee)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<User> GetUserByLoginAsync(string login)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            return await _applicationDbContext.Users.FirstOrDefaultAsync(x => x.Login == login);
+            return await _applicationDbContext.Users
+                .Include(x => x.Role)
+                .Include(x => x.Employee)
+                .FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task CreateUserAsync(User user)
@@ -52,10 +57,10 @@ namespace Coboss.Application.Services
             }
         }
 
-        public async Task<bool> ExistsUserAsync(string login)
+        public async Task<bool> ExistsUserAsync(string email)
         {
             return await _applicationDbContext.Users
-                .Where(x => x.Login == login)
+                .Where(x => x.Email == email)
                 .AnyAsync();
         }
     }

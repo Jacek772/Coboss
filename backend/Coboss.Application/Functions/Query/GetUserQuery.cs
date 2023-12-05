@@ -5,6 +5,6 @@ namespace Coboss.Application.Functions.Query
 {
     public class GetUserQuery : IRequest<UserDTO>
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

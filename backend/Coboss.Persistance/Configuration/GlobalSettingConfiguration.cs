@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Coboss.Persistance.Configuration
 {
-    public class ProjectConfiguration : IEntityTypeConfiguration<Project>
+    public class GlobalSettingConfiguration : IEntityTypeConfiguration<GlobalSetting>
     {
-        public void Configure(EntityTypeBuilder<Project> builder)
+        public void Configure(EntityTypeBuilder<GlobalSetting> builder)
         {
             builder
-                .ToTable("Projects", "coboss");
+                .ToTable("GlobalSettings", "coboss");
 
             builder
                 .HasKey(x => x.Id);
@@ -19,32 +19,22 @@ namespace Coboss.Persistance.Configuration
                 .ValueGeneratedOnAdd();
 
             builder
-                .Property(x => x.Number)
-                .IsRequired();
-
-            builder
-                .Property(x => x.Name)
+                .Property(x => x.Key)
                 .IsRequired()
                 .HasMaxLength(100);
 
             builder
-                .Property(x => x.Description)
+                .Property(x => x.Value)
                 .IsRequired();
 
             builder
-                .Property(x => x.Term)
-                .HasDefaultValue(DateTime.UtcNow)
+                .Property(x => x.Type)
                 .IsRequired();
 
             // Indexes
             builder
-                .HasIndex(x => x.Number)
+                .HasIndex(x => x.Key)
                 .IsUnique();
-
-            // Realtionships
-            builder
-                .HasOne(x => x.Manager)
-                .WithMany();
         }
     }
 }

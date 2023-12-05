@@ -1,5 +1,6 @@
 ﻿using Coboss.Application.Configuration;
 using Coboss.Application.Seeds.abstracts;
+using Coboss.Application.Services;
 using Coboss.Application.Services.Abstracts;
 using Coboss.Core.Entities;
 
@@ -7,12 +8,14 @@ namespace Coboss.Application.Seeds
 {
     public class UsersSeed : ISeed
     {
-        public readonly AuthenticationConfiguration _authenticationConfiguration;
-        public readonly IUsersService _usersService;
+        private readonly AuthenticationConfiguration _authenticationConfiguration;
+        private readonly IUsersService _usersService;
+        private readonly IRolesService _rolesService;
 
-        public UsersSeed(IUsersService usersService, AuthenticationConfiguration authenticationConfiguration)
+        public UsersSeed(IUsersService usersService, IRolesService rolesService, AuthenticationConfiguration authenticationConfiguration)
         {
             _usersService = usersService;
+            _rolesService = rolesService;
             _authenticationConfiguration = authenticationConfiguration;
         }
 
@@ -23,14 +26,14 @@ namespace Coboss.Application.Seeds
 
         private async Task CreateDefaultAdministrator()
         {
-            bool userExists = await _usersService.ExistsUserAsync(_authenticationConfiguration.AdminLogin);
+            bool userExists = await _usersService.ExistsUserAsync(_authenticationConfiguration.AdminEmail);
             if (!userExists)
             {
                 User user = new User
                 {
-                    Login = _authenticationConfiguration.AdminLogin,
+                    Email = _authenticationConfiguration.AdminEmail,
                     Password = _authenticationConfiguration.AdminPassword,
-                    Email = _authenticationConfiguration.AdminEmail
+                    Role = await _rolesService.GetByNameAsync(_authenticationConfiguration.AdminRoleName)
                 };
                 await _usersService.CreateUserAsync(user);
             }

@@ -45,7 +45,7 @@ const LoginPage: React.FC = () => {
     const usersService: UsersService = UsersService.getInstance()
 
     const loginCommand: ILoginCommand = {
-      login: values.login,
+      email: values.email,
       password: values.password
     }
 
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
 
       <Formik
         initialValues={{
-          login: "",
+          email: "",
           password: "",
           formErrors: "",
           remember: false,
@@ -92,10 +92,10 @@ const LoginPage: React.FC = () => {
         {({ errors, touched }) => (
           <Form className="form-login">
             <div className="form-item">
-              <Field className="input" id="login" name="login" placeholder="login" />
-              {errors.login && touched.login ? (
+              <Field className="input" id="email" name="email" placeholder="email" />
+              {errors.email && touched.email ? (
                 <div className="form-item-alert form-item-alert-danger">
-                {errors.password}
+                {errors.email}
               </div>
               ) : null}
             </div>

@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Coboss.Persistance.Configuration
 {
-    public class BusinnessTaskRealisationConfiguration : IEntityTypeConfiguration<BusinnessTaskRealisation>
+    internal class BusinnessTaskCommentConfiguration : IEntityTypeConfiguration<BusinnessTaskComment>
     {
-        public void Configure(EntityTypeBuilder<BusinnessTaskRealisation> builder)
+        public void Configure(EntityTypeBuilder<BusinnessTaskComment> builder)
         {
             builder
-                .ToTable("BusinnessTaskRealisations", "coboss");
+                .ToTable("BusinnessTaskComments", "coboss");
 
             builder
                 .HasKey(x => x.Id);
@@ -19,14 +19,18 @@ namespace Coboss.Persistance.Configuration
                 .ValueGeneratedOnAdd();
 
             builder
+                .Property(x => x.Text)
+                .IsRequired();
+
+            builder
                 .Property(x => x.Date)
                 .HasDefaultValue(DateTime.UtcNow)
                 .IsRequired();
 
+            // Realtionships
             builder
-                .Property(x => x.TimeSpan)
-                .HasDefaultValue(TimeSpan.Zero)
-                .IsRequired();
+                .HasOne(x => x.User)
+                .WithMany();
         }
     }
 }

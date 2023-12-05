@@ -1,5 +1,5 @@
 interface ILoginFormValues {
-  login: string
+  email: string
   password: string
   remember: boolean
   formErrors: string

@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Coboss.Application.Functions.CommandHandlers
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResultDTO>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthenticationResultDTO>
     {
         private readonly IUsersService _usersService;
         private readonly IAuthService _authService;
@@ -22,23 +22,20 @@ namespace Coboss.Application.Functions.CommandHandlers
             _passwordHasherService = passwordHasherService;
         }
 
-        public async Task<LoginResultDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResultDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            User user = await _usersService.GetUserByLoginAsync(request.Login);
+            User user = await _usersService.GetUserByEmailAsync(request.Email);
             if (user is null)
             {
-                throw new BadRequestException("Bad user login or password");
+                throw new BadRequestException("Bad user email or password");
             }
 
             if(!_passwordHasherService.ComparePasswordHash(request.Password, user))
             {
-                throw new BadRequestException("Bad user login or password");
+                throw new BadRequestException("Bad user email or password");
             }
 
-            return new LoginResultDTO
-            {
-                Token = _authService.GenerateToken(user)
-            };
+            return await _authService.GenerateTokenAsync(user);
         }
     }
 }
