@@ -15,6 +15,7 @@ namespace Coboss.Application
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IPasswordHasherService, PasswordHasherService>();
             services.AddScoped<IRolesService, RolesService>();
+            services.AddScoped<IEmployeesService, EmployeesService>();
 
             // Seeds
             services.AddScoped<UsersSeed>();

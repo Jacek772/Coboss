@@ -49,6 +49,9 @@ const LoginPage: React.FC = () => {
       password: values.password
     }
 
+
+    console.log(loginCommand)
+
     try
     {
       const loginResult: ILoginResultDTO = await authService.login(loginCommand)

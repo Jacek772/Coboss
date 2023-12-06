@@ -41,7 +41,7 @@ namespace Coboss.Application.Services
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(ClaimTypes.Role, user.Role.Name)
                 }),
-                Expires = DateTime.Now.AddDays(_authenticationConfiguration.JwtExpireDays),
+                Expires = DateTime.Now.Add(_authenticationConfiguration.JwtLifeTime),
                 Issuer = _authenticationConfiguration.JwtIssuer,
                 Audience = _authenticationConfiguration.JwtAudience,
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
@@ -94,7 +94,7 @@ namespace Coboss.Application.Services
                     refreshTokenData = new RefreshTokenData
                     {
                         Token = GenerateRefreshToken(),
-                        ExpiryDate = DateTime.UtcNow,
+                        ExpiryDate = DateTime.UtcNow.Add(_authenticationConfiguration.RefreshTokenLifeTime),
                         JwtId = tokenId,
                         User = user,
                     };

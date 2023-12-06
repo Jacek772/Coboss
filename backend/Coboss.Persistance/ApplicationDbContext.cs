@@ -16,7 +16,7 @@ namespace Coboss.Persistance
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Employee> Employers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeHistory> EmployeeHistories { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<BusinnessTask> BusinnessTasks { get; set; }
