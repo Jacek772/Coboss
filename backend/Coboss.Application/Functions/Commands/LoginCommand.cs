@@ -1,5 +1,4 @@
-﻿using Coboss.Application.Functions.Commands;
-using Coboss.Types.DTO;
+﻿using Coboss.Types.DTO;
 using MediatR;
 
 namespace Coboss.Application.Functions.Commands

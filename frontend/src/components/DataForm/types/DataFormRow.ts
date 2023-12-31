@@ -1,9 +1,9 @@
 import DataFormFieldData from "./DataFormFieldData"
 
 type DataFormRow = {
+  items: DataFormFieldData[]
   caption?: string
   height?: number
-  items: DataFormFieldData[]
 }
 
 export default DataFormRow

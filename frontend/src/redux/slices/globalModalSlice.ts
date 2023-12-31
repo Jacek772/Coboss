@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { v4 as uuidv4 } from 'uuid';
+
 import GlobalModalButtonsTypeEnum from '../../components/GlobalModal/types/GlobalModalButtonsTypeEnum'
 import GlobalModalClickResultEnum from '../../components/GlobalModal/types/GlobalModalClickResultEnum'
 import GlobalModalTypeEnum from '../../components/GlobalModal/types/GlobalModalTypeEnum'
@@ -9,11 +11,12 @@ const initialState = {
   data: {
     key: "",
     title: "Czy chcesz zapisać zmiany?",
-    text: "", //"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque faucibus eleifend odio, sed ultrices augue tincidunt laoreet. Nam id orci id mauris fermentum pharetra sed nec sem. Pellentesque quis pharetra magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque faucibus eleifend odio, sed ultrices augue tincidunt laoreet. Nam id orci id mauris fermentum pharetra sed nec sem. Pellentesque quis pharetra magna.",
+    text: "",
     modalType: GlobalModalTypeEnum.Info,
     buttonsType: GlobalModalButtonsTypeEnum.YesNo
   },
   result: {
+    key: "",
     clickResult: GlobalModalClickResultEnum.None
   }
 }
@@ -29,6 +32,7 @@ export const globalModalSlice = createSlice({
       state.data = { ...state.data, ...action.payload }
     },
     setGlobalModalClickResult: (state, action: ReduxActionType<GlobalModalClickResultEnum>) => {
+      state.result.key = uuidv4()
       state.result.clickResult = action.payload
     }
   },

@@ -1,7 +1,8 @@
 interface ILoginResultDTO {
   ok: boolean
   message: string
-  token: string 
+  token: string
+  refreshToken: string
 }
 
 export default ILoginResultDTO

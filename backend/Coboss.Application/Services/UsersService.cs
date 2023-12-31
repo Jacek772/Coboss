@@ -4,6 +4,7 @@ using Coboss.Persistance;
 using Coboss.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Coboss.Application.Extensions;
 
 namespace Coboss.Application.Services
 {
@@ -20,7 +21,7 @@ namespace Coboss.Application.Services
             _passwordHasherService = passwordHasherService;
         }
 
-        public async Task<User> GetUserByIdAsync(Guid id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
             return await _applicationDbContext.Users
                 .Include(x => x.Role)
@@ -52,7 +53,7 @@ namespace Coboss.Application.Services
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
-                    throw new Exception("User create error");
+                    throw new Exception($"User create error\n{ex.ToMessage()}");
                 }
             }
         }

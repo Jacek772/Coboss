@@ -7,7 +7,7 @@ namespace Coboss.Core.Entities
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public decimal CostHourOfWork { get; set; }
-        public Guid EmployeeId { get; set; }
+        public int EmployeeId { get; set; }
         public Employee Employee { get; set; } = default!;
     }
 }

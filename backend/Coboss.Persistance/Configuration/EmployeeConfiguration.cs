@@ -9,14 +9,15 @@ namespace Coboss.Persistance.Configuration
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder
-                .ToTable("Employers", "coboss");
+                .ToTable("Employees", "coboss");
 
             builder
                 .HasKey(x => x.Id);
 
             builder
-                .Property(x => x.Id)
-                .ValueGeneratedOnAdd();
+                .Property(x => x.Code)
+                .IsRequired()
+                .HasMaxLength(50);
 
             builder
                 .Property(x => x.Name)
@@ -29,13 +30,13 @@ namespace Coboss.Persistance.Configuration
                 .HasMaxLength(100);
 
             // Indexes
-            builder
-                .HasIndex(x => x.NIP)
-                .IsUnique();
+            //builder
+            //    .HasIndex(x => x.NIP)
+            //    .IsUnique();
 
-            builder
-                .HasIndex(x => x.PESEL)
-                .IsUnique();
+            //builder
+            //    .HasIndex(x => x.PESEL)
+            //    .IsUnique();
 
             // Realtionships
             builder

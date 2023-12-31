@@ -13,8 +13,13 @@ const gridColDefs: IColDefProps[] = [
     width: 200
   },
   {
-    caption:"Age",
-    field:"age",
+    caption:"PESEL",
+    field:"pesel",
+    width: 200
+  },
+  {
+    caption:"NIP",
+    field:"nip",
     width: 200
   }
 ]

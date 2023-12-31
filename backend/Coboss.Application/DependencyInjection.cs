@@ -16,10 +16,13 @@ namespace Coboss.Application
             services.AddScoped<IPasswordHasherService, PasswordHasherService>();
             services.AddScoped<IRolesService, RolesService>();
             services.AddScoped<IEmployeesService, EmployeesService>();
+            services.AddScoped<IGlobalSettingsService, GlobalSettingsService>();
 
             // Seeds
             services.AddScoped<UsersSeed>();
             services.AddScoped<RolesSeed>();
+            services.AddScoped<EmployeesSeed>();
+            services.AddScoped<GlobalSettingsSeed>();
 
             // MediatR
             services.AddMediatR(x => x.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));

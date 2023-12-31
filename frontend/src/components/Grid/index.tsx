@@ -11,7 +11,7 @@ import IRowData from "./types/IRowData"
 // Css
 import "./index.css"
 
-const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onScrollEnd }) => {
+const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onRowDoubleClick, onScrollEnd, onSelectionChanged, onSortChanged }) => {
   const [state, setState] = useState<IGridState>({
     colDefs: [],
     rowsData: []
@@ -21,73 +21,144 @@ const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onScrollEnd
   const divBodyRef = useRef<HTMLDivElement>()
 
   useEffect(() => {
+    const initializeState = () => {
+      const rowDataState: IRowData[] = rowsData?.map((x, index) => {
+        return { data: x, checked: false }
+      }) ?? []
+  
+      setState(s => ({
+        ...s,
+        rowsData: [...rowDataState]
+      }))
+    }
+
     initializeState()
-  }, [colDefs, rowsData])
+  }, [rowsData])
 
-  const initializeState = useCallback((): void => {
-    const colDefsState: IColDefState[] = colDefs.map(x => {
-      return { ...x, checked: false, sortDirection: SortDirection.Asc }
-    })
+  useEffect(() => {
+    const initializeState = () => {
+      const colDefsState: IColDefState[] = colDefs?.map(x => {
+        return { ...x, checked: false, sortDirection: SortDirection.Asc }
+      }) ?? []
+  
+      setState(s => ({
+        ...s,
+        colDefs: [...colDefsState],
+      }))
+    }
 
-    const rowDataState: IRowData[] = rowsData.map((x, index) => {
-      return { data: x, checked: false }
-    })
+    initializeState()
+  }, [colDefs])
 
-    setState({
-      ...state,
-      colDefs: [...colDefsState],
-      rowsData: [...rowDataState]
-    })
-  }, [colDefs, rowsData])
 
   const handleClickSort = useCallback((index: number, colDef: IColDefState) => {
-    const colDefsState = [...state.colDefs]
-    if(colDef.sortDirection === SortDirection.Asc) {
-      colDefsState[index].sortDirection = SortDirection.Desc
-    }
-    else
-    {
-      colDefsState[index].sortDirection = SortDirection.Asc
-    }
+    setState(s =>{
+      const colDefsState = [...s.colDefs]
+      if(colDef.sortDirection === SortDirection.Asc) {
+        colDefsState[index].sortDirection = SortDirection.Desc
+        onSortChanged?.(colDef.field, SortDirection.Desc)
+      }
+      else
+      {
+        colDefsState[index].sortDirection = SortDirection.Asc
+        onSortChanged?.(colDef.field, SortDirection.Asc)
+      }
 
-    setState({
-      ...state,
-      colDefs: [...colDefsState]
+      return {
+        ...s,
+        colDefs: [...colDefsState]
+      }
     })
-  }, [state.rowsData])
+  }, [onSortChanged])
 
   const handleChangeCheck = useCallback((index: number, rowData: IRowData) => {
-    const rowsDataState = [...state.rowsData]
+    const rowsDataState: IRowData[] = [...state.rowsData]
     rowsDataState[index].checked = !rowsDataState[index].checked
+
+    const selectedRows: IRowData[] = rowsDataState.filter(x => x.checked)
+    onSelectionChanged?.(selectedRows)
+
     setState({
-      ...state,
-      rowsData: [...rowsDataState]
+        ...state,
+        rowsData: [...rowsDataState]
     })
-  }, [state])
+  }, [onSelectionChanged, state])
 
   const handleClickCheckAll = useCallback((e) => {
     const rowsDataState = [...state.rowsData].map(x => {
       return { ...x, checked: e.target.checked }
     })
+
+    if(e.target.checked)
+    {
+      onSelectionChanged?.(rowsDataState)
+    }
+    else
+    {
+      onSelectionChanged?.([])
+    }
+
     setState({
       ...state,
       rowsData: [...rowsDataState]
     })
-  }, [state])
+  }, [onSelectionChanged, state])
 
-  const handleScrollHead = useCallback((e) => {
-    divBodyRef.current.scrollLeft = e.target.scrollLeft
+  const handleScrollHead = useCallback((e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    const div: HTMLDivElement = e.target as HTMLDivElement
+    divBodyRef.current.scrollLeft = div.scrollLeft
   }, [divBodyRef])
 
-  const handleScrollBody = (e) => {
-    divHeadRef.current.scrollLeft = e.target.scrollLeft
-    if(divBodyRef.current.scrollTop >= divBodyRef.current.clientHeight && onScrollEnd)
+  const handleScrollBody = useCallback((e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    const div: HTMLDivElement = e.target as HTMLDivElement
+    divHeadRef.current.scrollLeft = div.scrollLeft
+    const maxScrollTopHeight: number = divBodyRef.current.scrollHeight - divBodyRef.current.clientHeight
+    if(divBodyRef.current.scrollTop >= maxScrollTopHeight)
     {
       const lastRowData = state.rowsData[state.rowsData.length - 1]
-      onScrollEnd(lastRowData)
+      onScrollEnd?.(lastRowData)
+    }
+  }, [onScrollEnd, state.rowsData])
+
+  const touchTimeRef: React.MutableRefObject<{ time: number, key: string }> = useRef<{ time: number, key: string }>({ time: 0, key: "" })
+
+  const handleRowClick = useCallback((event: React.MouseEvent<HTMLTableRowElement, MouseEvent>, index: number, rowData:IRowData) => {
+    const input: HTMLInputElement = event.target as HTMLInputElement
+    if(input?.type === "checkbox")
+    {
+      return
     }
 
-  }
+    const key: string = index.toString()
+
+    if(touchTimeRef.current.time === 0)
+    {
+      touchTimeRef.current.key = key
+      touchTimeRef.current.time = new Date().getTime()
+    }
+    else {
+      if (((new Date().getTime()) - touchTimeRef.current.time) < 800 && touchTimeRef.current.key === key) {
+          onRowDoubleClick?.(index, rowData)
+          touchTimeRef.current.key = key
+          touchTimeRef.current.time = 0;
+      } else {
+        touchTimeRef.current.key = key
+        touchTimeRef.current.time = new Date().getTime();
+      }
+    }
+
+    onRowClick?.(index, rowData)
+  }, [onRowClick])
+
+  const handleRowDoubleClick = useCallback((event: React.MouseEvent<HTMLTableRowElement, MouseEvent>, index: number, rowData:IRowData) => {
+    const input: HTMLInputElement = event.target as HTMLInputElement
+    if(input?.type === "checkbox")
+    {
+      return
+    }
+
+    onRowDoubleClick?.(index, rowData)
+  }, [onRowDoubleClick])
 
   return  <div className="grid-container">
     <div id="gridHeadContainer" ref={divHeadRef} className="grid-head-container" onScroll={handleScrollHead}>
@@ -132,7 +203,11 @@ const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onScrollEnd
         <tbody>
           {
             state.rowsData.map((rowData, a) => {
-              return <tr className="grid-body-tr" key={a} onClick={() => onRowClick ? onRowClick(a, rowData) : () => {}}>
+              return <tr className="grid-body-tr" 
+                key={a}
+                onClick={(e) => handleRowClick(e, a, rowData)}
+                // onDoubleClick={(e) => handleRowDoubleClick(e, a, rowData)}
+                >
                 <td className="grid-body-td-checkbox">
                   <div className="grid-body-td-checkbox-container">
                     <input 

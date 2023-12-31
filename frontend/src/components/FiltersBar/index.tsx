@@ -12,7 +12,7 @@ import IFiltersBarValue from "./types/IFiltersBarValue"
 //Css
 import "./index.css"
 
-const FiltersBar: React.FC<IFiltersBarProps> = ({ items, onChange }:IFiltersBarProps) => {
+const FiltersBar: React.FC<IFiltersBarProps> = ({ items, onChange }) => {
   const [state, setState] = useState<IFiltersBarState>({ values: [] })
 
   const handleChange = (name: string, values: string[]) => {
@@ -35,11 +35,8 @@ const FiltersBar: React.FC<IFiltersBarProps> = ({ items, onChange }:IFiltersBarP
   }
 
   useEffect(() => {
-    if(onChange)
-    {
-      onChange(state.values)
-    }
-  }, [state.values])
+    onChange?.([...state.values])
+  }, [onChange, state.values])
 
   return <div className="filtersbar-container">
     {

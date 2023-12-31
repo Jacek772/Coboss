@@ -1,5 +1,5 @@
 // React
-import React, { Dispatch, useCallback } from "react";
+import React, { Dispatch, ReactNode, useCallback } from "react";
 import {
   createBrowserRouter,
   redirect,
@@ -23,6 +23,7 @@ import SettingsPage from "./pages/SettingsPage";
 import TokenService from "./services/TokenService";
 import MainLayout from "./layouts/MainLayout";
 import GlobalModal from "./components/GlobalModal";
+import WaitingOverlay from "./components/WaitingOverlay";
 
 const App: React.FC = () => {
   const dispatch: Dispatch<AnyAction> = useDispatch()
@@ -47,6 +48,7 @@ const App: React.FC = () => {
   const router: any = createBrowserRouter([
     {
       path: "/",
+
       Component: LoginPage
     },
     {
@@ -92,10 +94,11 @@ const App: React.FC = () => {
 
   return (
     <>
-    <RouterProvider 
+    {/* <WaitingOverlay/> */}
+    <RouterProvider
       router={router}
-      fallbackElement={<p>Initial Load...</p>} />
-      <GlobalModal/>
+      fallbackElement={<WaitingOverlay/>} />
+    <GlobalModal/>
     </>
   );
 }

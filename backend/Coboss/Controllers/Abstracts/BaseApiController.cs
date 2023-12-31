@@ -15,13 +15,13 @@ namespace Coboss.Controllers.Abstracts
             _mediator = mediator;
         }
 
-        protected Guid GetCurrentUserId()
+        protected int GetCurrentUserId()
         {
-            if(Guid.TryParse(User?.FindFirst("Id")?.Value, out Guid id))
+            if(int.TryParse(User?.FindFirst("Id")?.Value, out int id))
             {
                 return id;
             }
-            return Guid.Empty;
+            return 0;
         }
     }
 }

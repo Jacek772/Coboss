@@ -22,7 +22,8 @@ class AuthService {
     return {
       ok: response.ok,
       message: response.data?.message,
-      token: response.ok ? response.data.token : "" 
+      token: response.ok ? response.data.token : "",
+      refreshToken: response.ok ? response.data.refreshToken : ""
     }
   }
 

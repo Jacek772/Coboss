@@ -1,6 +1,7 @@
 ﻿using Coboss.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Reflection;
 
 namespace Coboss.Persistance
@@ -11,6 +12,8 @@ namespace Coboss.Persistance
 
         public ApplicationDbContext(DbContextOptions options, DatabaseConfiguration databaseConfiguration) : base(options)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
             _databaseConfiguration = databaseConfiguration;
         }
 
@@ -24,10 +27,12 @@ namespace Coboss.Persistance
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
         public DbSet<RefreshTokenData> RefreshTokensData { get; set; }
+        public DbSet<EmployeeCode> EmployeeCodes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+         
             optionsBuilder.UseNpgsql(_databaseConfiguration.ConnectionString,
                 options => options.MigrationsHistoryTable("__EFMigrationsHistory", "coboss"));
         }

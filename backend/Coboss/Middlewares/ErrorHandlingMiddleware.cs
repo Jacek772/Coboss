@@ -1,4 +1,5 @@
-﻿using Coboss.Types.DTO;
+﻿using Coboss.Application.Extensions;
+using Coboss.Types.DTO;
 using Coboss.Types.Exceptions;
 
 namespace Coboss.Middlewares
@@ -29,13 +30,14 @@ namespace Coboss.Middlewares
                     Message = ex.Message
                 });
             }
-            catch
+            catch(Exception ex)
             {
                 context.Response.StatusCode = 500;
                 await context.Response.WriteAsJsonAsync(new ErrorDTO
                 {
                     Key = "SERWER_ERROR",
-                    Message = "Serwer error"
+                    Message = ex.ToMessage()
+                    //Message = "Serwer error"
                 });
             }
         }

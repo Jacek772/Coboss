@@ -13,7 +13,6 @@ namespace Coboss.Application.Seeds
             new Role() { Name = "Employee" }
         };
 
-
         private readonly IRolesService _rolesService;
 
         public RolesSeed(IRolesService rolesService)

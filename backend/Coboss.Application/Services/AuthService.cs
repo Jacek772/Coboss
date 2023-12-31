@@ -55,6 +55,7 @@ namespace Coboss.Application.Services
 
             return new AuthenticationResultDTO
             {
+                Success = true,
                 Token = tokenString,
                 RefreshToken = refreshTokenData.Token
             };
@@ -124,10 +125,20 @@ namespace Coboss.Application.Services
 
         public ClaimsPrincipal? GetPrincipalFromToken(string token)
         {
+            TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationConfiguration.JwtKey)),
+                ClockSkew = TimeSpan.Zero
+            };
+
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             try
             {
-                ClaimsPrincipal principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out SecurityToken validatedToken);
+                ClaimsPrincipal principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
                 if(!IsJwtWithValidSecurityAlgorithm(validatedToken))
                 {
                     return null;

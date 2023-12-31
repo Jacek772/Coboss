@@ -1,6 +1,5 @@
 interface IUserDTO {
-  email: boolean
-  login: string
+  email: string
   name: string 
   surname: string 
 }

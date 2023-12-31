@@ -5,9 +5,9 @@ namespace Coboss.Types.DTO
     public class LoginDTO
     {
         [Required]
-        public string Login { get; set; }
+        public string Login { get; set; } = default!;
 
         [Required]
-        public string Password { get; set; }
+        public string Password { get; set; } = default!;
     }
 }

@@ -14,7 +14,7 @@ namespace Coboss.Core.Entities
         }
 
         public string TableName { get; set; } = default!;
-        public Guid ParentID { get; set; }
+        public int ParentID { get; set; }
         public string FileName { get; set; } = default!;
         public string FilePath { get; set; } = default!;
         public AttachmentFileType FileType { get; set; } = default!;

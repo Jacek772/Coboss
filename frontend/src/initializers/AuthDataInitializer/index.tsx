@@ -30,7 +30,7 @@ const AuthDataInitializer: React.FC<IAuthDataInitializerProps> = ({ children }: 
     const logged: boolean = await authService.checkIsLogged()
     if(logged)
     {
-      const user: IUserDTO = await usersService.getCurrent()
+      const user: IUserDTO = await usersService.getCurrentAsync()
       dispatch(setLogged())
       dispatch(setUser(user))
     }

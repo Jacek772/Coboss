@@ -9,9 +9,9 @@ namespace Coboss.Core.Entities
         public string Password { get; set; } = default!;
         public byte[] Salt { get; set; } = default!;
 
-        public Guid? EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         public Employee? Employee { get; set; }
-        public Guid RoleId { get; set; }
+        public int RoleId { get; set; }
         public Role Role { get; set; } = default!;
     }
 }

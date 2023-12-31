@@ -1,6 +1,7 @@
 interface IResponse {
   ok: boolean,
-  status: string,
+  tokenExpired: boolean,
+  status: number,
   message: string,
   data: any
 }

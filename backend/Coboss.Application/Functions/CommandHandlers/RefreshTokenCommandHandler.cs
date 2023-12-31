@@ -3,7 +3,6 @@ using Coboss.Application.Services.Abstracts;
 using Coboss.Core.Entities;
 using Coboss.Types.DTO;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -57,7 +56,7 @@ namespace Coboss.Application.Functions.CommandHandlers
                 };
             }
 
-            if (DateTime.UtcNow < refreshTokenData.ExpiryDate)
+            if (DateTime.UtcNow > refreshTokenData.ExpiryDate)
             {
                 return new AuthenticationResultDTO
                 {
@@ -87,7 +86,7 @@ namespace Coboss.Application.Functions.CommandHandlers
 
             await _authService.SetRefreshTokenDataUsedAsync(refreshTokenData);
 
-            Guid userId = Guid.Parse(claimsPrincipal.Claims.SingleOrDefault(x => x.Type == "Id").Value);
+            int userId = int.Parse(claimsPrincipal.Claims.SingleOrDefault(x => x.Type == "Id").Value);
             User user = await _usersService.GetUserByIdAsync(userId);
             if (user is null)
             {

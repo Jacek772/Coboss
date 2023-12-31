@@ -5,7 +5,7 @@ import { AnyAction } from "@reduxjs/toolkit"
 
 // Redux
 import { RootState } from "../../redux/store"
-import { GlobalModalState, setGlobalModalClickResult } from "../../redux/slices/globalModalSlice"
+import { GlobalModalState, setGlobalModalClickResult, setGlobalModalVisibility } from "../../redux/slices/globalModalSlice"
 
 // Types
 import GlobalModalButtonsTypeEnum from "./types/GlobalModalButtonsTypeEnum"
@@ -21,12 +21,17 @@ const GlobalModal: React.FC = () => {
   const globalModalState = useSelector<RootState, GlobalModalState>(x => x.globalModal)
 
   const handleClick = useCallback((clickResult: GlobalModalClickResultEnum) => {
+    if(clickResult === GlobalModalClickResultEnum.Ok)
+    {
+      dispatch(setGlobalModalVisibility(false))
+    }
     dispatch(setGlobalModalClickResult(clickResult))
-  }, [])
+  }, [dispatch])
 
   const handleClickClose = useCallback(() => {
+    dispatch(setGlobalModalVisibility(false))
     dispatch(setGlobalModalClickResult(GlobalModalClickResultEnum.Close))
-  }, [])
+  }, [dispatch])
 
   const getTypeClassName = useCallback(() => {
     switch(globalModalState.data.modalType)

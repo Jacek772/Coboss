@@ -1,12 +1,27 @@
 .dataformfield-container {
   display: flex;
+  flex-direction: column;
+  padding: 10px 10px 0px 10px;
+}
+
+.dataformfield-input-container {
+  display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 10px;
+}
+
+.dataformfield-error {
+  font-size: 0.8rem;
+  color: red;
+  margin-top: 10px;
 }
 
 .dataformfield-label, .dataformfield-input {
   margin-right: 10px;
+}
+
+.dataformfield-input-readonly {
+  background-color: rgba(192, 192, 192, 0.506);
 }
 
 .dataformfield-label {

@@ -1,124 +1,140 @@
 // React
-import { Dispatch, useCallback, useEffect, useState } from "react"
-import { v4 as uuidv4 } from 'uuid';
+import { useCallback, useEffect, useState } from "react"
+
+// Hooks
+import useGlobalModal from "../../hooks/useGlobalModal/index.hook";
+
+// Utils
+import ObjectUtils from "../../utils/ObjectUtils"
+import ValidationUtils from "../../utils/ValidationUtils"
 
 //Types
 import DataFormProps from "./types/DataFormProps"
 import DataFormRow from "./types/DataFormRow"
+import DataFormFieldData from "./types/DataFormFieldData"
+import GlobalModalClickResultEnum from "../GlobalModal/types/GlobalModalClickResultEnum"
+import GlobalModalButtonsTypeEnum from "../GlobalModal/types/GlobalModalButtonsTypeEnum"
+import GlobalModalTypeEnum from "../GlobalModal/types/GlobalModalTypeEnum"
+import ValidationResult from "../../utils/types/ValidationResult"
+import DataFormFieldDataState from "./types/DataFormFieldDataState"
+
+// Components
+import DataFormField from "../DataFormField"
 
 // Css
 import "./index.css"
-import DataFormFieldData from "./types/DataFormFieldData"
-import DataFormField from "../DataFormField"
-import { useDispatch, useSelector } from "react-redux"
-import { AnyAction } from "@reduxjs/toolkit"
 
-// Actions
-import { GlobalModalState, setGlobalModalClickResult, setGlobalModalData, setGlobalModalVisibility } from "../../redux/slices/globalModalSlice"
-import GlobalModalClickResultEnum from "../GlobalModal/types/GlobalModalClickResultEnum"
-import { RootState } from "../../redux/store"
-import GlobalModalButtonsTypeEnum from "../GlobalModal/types/GlobalModalButtonsTypeEnum"
-import GlobalModalTypeEnum from "../GlobalModal/types/GlobalModalTypeEnum"
-import DataFormState from "./types/DataFormState"
+const DataForm = <T,>({ caption, data, rows, onSave, onClose }: DataFormProps<T>) => {
+  const [dataFormFieldsDataState, setDataFormFieldsDataState] = useState<DataFormFieldDataState[]>([])
+  const [stateData, setStateData] = useState<T>(() => JSON.parse(JSON.stringify(data)))
 
-const DataForm = <T,>({ caption, data, rows, onSave = null, onClose = null }:DataFormProps<T>) => {
-  const dispatch: Dispatch<AnyAction> = useDispatch()
-
-  const globalModalState = useSelector<RootState, GlobalModalState>(x => x.globalModal)
-
-  const [stateData, setStateData] = useState<T>({ ...data })
-  const [state, setState] = useState<DataFormState>({
-    key:""
-  })
+  const [showGlobalModal, hideGlobalModal] = useGlobalModal()
 
   useEffect(() => {
-    if(state.key === globalModalState.data.key)
-    {
-      const action: string = state.key.split(";")[0]
+    const dataFormFieldsData: DataFormFieldDataState[] = rows.reduce((acc, rowData) => {
+      const fieldsData = rowData.items?.map(fieldData => {
+        return { 
+          name: fieldData.name, 
+          type: fieldData.type, 
+          value: ObjectUtils.getValueByPath(stateData, fieldData.name), 
+          validationSchema: fieldData.validationSchema 
+        }
+      })
+      return [...acc, ...fieldsData]
+    }, [])
 
-      if(action === "SAVE")
-      {
-        if(globalModalState.result.clickResult === GlobalModalClickResultEnum.Yes)
-        {
-          dispatch(setGlobalModalVisibility(false))
-          onSave?.({...stateData})
-          console.log("SAVE")
-        }
-        else
-        {
-          dispatch(setGlobalModalVisibility(false))
-        }
-      }
-
-      if(action === "DISCARD")
-      {
-        if(globalModalState.result.clickResult === GlobalModalClickResultEnum.Yes)
-        {
-          dispatch(setGlobalModalVisibility(false))
-          onClose?.()
-          console.log("DISCARD")
-        }
-        else
-        {
-          dispatch(setGlobalModalVisibility(false))
-        }
-      }
-    }
-  }, [globalModalState.result])
+    setDataFormFieldsDataState([...dataFormFieldsData])
+  },[rows, stateData])
 
   const handleChange = (name: string, value: string) => {
-    setStateData({
-      ...stateData,
-      [name]: value
-    })
+    const stateDataCopy: T = ObjectUtils.setValueByPath<T, string>(stateData, name, value)
+    setStateData({ ...stateDataCopy })
   }
 
-  const dataChanged = useCallback<() => boolean>(() => {
-    return JSON.stringify(stateData) !== JSON.stringify(data)
+  const isDataChanged = useCallback((): boolean => {
+    return ObjectUtils.objectsDifferent(stateData, data)
   }, [stateData, data])
 
-  const showGlobalModal = useCallback((title: string, text: string, action: string = "action") => {
-    const key: string = `${action};${uuidv4()}`
-    setState({
-      ...state,
-      key
+  const validate = useCallback(() => {
+    const dataFormFieldsData: DataFormFieldDataState[] = dataFormFieldsDataState.map(x => {
+      if(!x.validationSchema)
+      {
+        return { ...x }
+      }
+
+      const validationResult: ValidationResult = ValidationUtils.validateValue(x.validationSchema, x.value)
+      return { ...x, errorMessage: validationResult.success ? "" : validationResult.message }
     })
 
-    dispatch(setGlobalModalData({
-      key,
-      title,
-      text,
-      buttonsType: GlobalModalButtonsTypeEnum.YesNo,
-      modalType: GlobalModalTypeEnum.Info
-    }))
-    dispatch(setGlobalModalVisibility(true))
-  }, [dispatch, state])
+    setDataFormFieldsDataState([...dataFormFieldsData])
+    return dataFormFieldsData.every(x => !x.errorMessage)
+  },[dataFormFieldsDataState])
 
   const handleClickSave = useCallback<React.MouseEventHandler<HTMLButtonElement>>(() => {
-    if(dataChanged())
-    {
-      const title: string = "Save changes"
-      const text: string = "Do you want save inserted changes?"
-      showGlobalModal(title, text, "SAVE")
-    }
-    else
+    if(!isDataChanged() && !ObjectUtils.objectFieldsEmpty(stateData))
     {
       onClose?.()
+      return
     }
-  }, [onClose, showGlobalModal, dataChanged])
+
+    if(validate())
+    {
+      showGlobalModal({
+        title: "Save changes",
+        text: "Do you want save inserted changes?",
+        modalType: GlobalModalTypeEnum.Warning,
+        buttonsType: GlobalModalButtonsTypeEnum.YesNo,
+        callback: (clickResult: GlobalModalClickResultEnum) => {
+          if(clickResult === GlobalModalClickResultEnum.Yes)
+          {
+            onSave?.({...stateData})
+          }
+          hideGlobalModal()
+        }
+      })
+    }
+  }, [onClose, onSave, showGlobalModal, isDataChanged, hideGlobalModal, validate, stateData])
 
   const handleClickClose = useCallback(() => {
-    if(dataChanged())
-    {
-      const title: string = "Discard changes"
-      const text: string = "Do you want discard inserted changes?"
-      showGlobalModal(title, text, "DISCARD")
-    }
-    else
+    if(!isDataChanged())
     {
       onClose?.()
+      return
     }
-  }, [dataChanged, onClose, showGlobalModal])
+
+    showGlobalModal({
+      title: "Discard changes",
+      text: "Do you want discard inserted changes?",
+      modalType: GlobalModalTypeEnum.Warning,
+      buttonsType: GlobalModalButtonsTypeEnum.YesNo,
+      callback: (clickResult: GlobalModalClickResultEnum) => {
+        if(clickResult === GlobalModalClickResultEnum.Yes)
+        {
+          onClose?.()
+        }
+        hideGlobalModal()
+      }
+    })
+  }, [isDataChanged, onClose, showGlobalModal, hideGlobalModal])
+
+  const handleError = useCallback((name: string, message: string) => {
+    const dataFormFieldsData: DataFormFieldDataState[] = [...dataFormFieldsDataState]
+    const index: number = dataFormFieldsData.findIndex(x => x.name === name)
+    if(index >= 0)
+    {
+      dataFormFieldsData[index].errorMessage = message
+      setDataFormFieldsDataState([...dataFormFieldsData])
+    }
+  },[dataFormFieldsDataState])
+
+  const getErrorMessage = useCallback((name: string): string => {
+    return dataFormFieldsDataState?.find(x => x.name === name)?.errorMessage ?? ""
+  },[dataFormFieldsDataState])
+
+  if(!stateData)
+  {
+    return null
+  }
 
   return <div className="dataform-container">
     <div className="dataform-x-container">
@@ -130,7 +146,7 @@ const DataForm = <T,>({ caption, data, rows, onSave = null, onClose = null }:Dat
       />
     </div>
     <div className="dataform-header">
-      <button onClick={handleClickSave} className="button button-secondary">Save</button>
+      <button onClick={handleClickSave} className="button button-secondary dataform-button-save">Save</button>
       <h2 className="dataform-header-caption">{caption}</h2>
     </div>
     <div className="dataform-body">
@@ -145,17 +161,14 @@ const DataForm = <T,>({ caption, data, rows, onSave = null, onClose = null }:Dat
             }
             <div key={indexRow} className="dataform-row-fields">
               {
-                dataFormRow.items.map((item: DataFormFieldData, indexItem: number) => {
+                dataFormRow.items.map((fieldData: DataFormFieldData, indexItem: number) => {
                   return <DataFormField
                     key={indexItem}
-                    label={item.label}
-                    name={item.name}
-                    type={item.type}
-                    value={stateData[item.name]}
-                    height={item.height}
-                    width={item.width}
-                    options={item.options}
+                    {...fieldData}
+                    value={ObjectUtils.getValueByPath(stateData, fieldData.name)}
+                    errorMessage={getErrorMessage(fieldData.name)}
                     onChange={handleChange}
+                    onError={handleError}
                   />
                 })
               }

@@ -51,6 +51,7 @@ builder.Services.AddCors(options =>
     {
         builder
             .WithOrigins("*")
+            .WithExposedHeaders("Token-Expired")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -96,7 +97,7 @@ builder.Services.AddAuthentication(option =>
         {
             if(context.Exception is SecurityTokenExpiredException)
             {
-                context.Response.Headers.Add("TOKEN-EXPIRED", "true");
+                context.Response.Headers.Add("Token-Expired", "true");
             }
             return Task.CompletedTask;
         }
@@ -137,11 +138,17 @@ using (IServiceScope scope = app.Services.CreateScope())
     }
 
     // Seeds
+    ISeed globalSettingsSeed = scope.ServiceProvider.GetService<GlobalSettingsSeed>();
+    await globalSettingsSeed.Seed();
+
     ISeed rolesSeed = scope.ServiceProvider.GetService<RolesSeed>();
     await rolesSeed.Seed();
 
     ISeed usersSeed = scope.ServiceProvider.GetService<UsersSeed>();
     await usersSeed.Seed();
+
+    ISeed employeesSeed = scope.ServiceProvider.GetService<EmployeesSeed>();
+    await employeesSeed.Seed();
 }
 
 app.Run();

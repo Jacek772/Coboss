@@ -1,10 +1,11 @@
-import * as Yup from 'yup';
+import * as z from 'zod';
+import ILoginFormValues from '../types/ILoginFormValues';
 
-const LoginFormValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .required("Required"),
-  password: Yup.string()
-    .required("Required")
+const LoginFormValidationSchema = z.object({
+  email: z.string()
+    .min(1, { message: 'Required' }),
+  password: z.string()
+    .min(1, { message: 'Required' }),
 })
 
 export default LoginFormValidationSchema

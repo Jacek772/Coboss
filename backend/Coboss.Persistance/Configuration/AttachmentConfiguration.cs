@@ -15,10 +15,6 @@ namespace Coboss.Persistance.Configuration
                 .HasKey(x => x.Id);
 
             builder
-                .Property(x => x.Id)
-                .ValueGeneratedOnAdd();
-
-            builder
                 .Property(x => x.TableName)
                 .IsRequired()
                 .HasMaxLength(100);

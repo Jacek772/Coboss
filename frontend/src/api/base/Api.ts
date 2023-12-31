@@ -38,6 +38,7 @@ abstract class Api {
         {
             return {
                 ok: res.ok,
+                tokenExpired: this.isTokenExpired(res),
                 status: res.status,
                 message: `Error: ${res.status}`,
                 data
@@ -46,6 +47,7 @@ abstract class Api {
 
         return {
             ok: res.ok,
+            tokenExpired: false,
             status: res.status,
             message: res.status,
             data
@@ -85,6 +87,7 @@ abstract class Api {
         {
             return {
                 ok: res.ok,
+                tokenExpired: this.isTokenExpired(res),
                 status: res.status,
                 message: `Error: ${res.status}`,
                 data
@@ -93,6 +96,7 @@ abstract class Api {
 
         return {
             ok: res.ok,
+            tokenExpired: false,
             status: res.status,
             message: res.status,
             data
@@ -108,7 +112,7 @@ abstract class Api {
             headers.Authorization = `Bearer ${token}`
         }
 
-        let res
+        let res: Response
         try {
             res = await fetch(url, {
                 headers: { ...headers, "App-Request": "App-Request" },
@@ -132,6 +136,7 @@ abstract class Api {
         {
             return {
                 ok: res.ok,
+                tokenExpired: this.isTokenExpired(res),
                 status: res.status,
                 message: `Error: ${res.status}`,
                 data
@@ -140,8 +145,9 @@ abstract class Api {
 
         return {
             ok: res.ok,
+            tokenExpired: false,
             status: res.status,
-            message: res.status,
+            message: res.status.toString(),
             data
         }
     }
@@ -179,6 +185,7 @@ abstract class Api {
         {
             return {
                 ok: res.ok,
+                tokenExpired: this.isTokenExpired(res),
                 status: res.status,
                 message: `Error: ${res.status}`,
                 data
@@ -187,10 +194,17 @@ abstract class Api {
 
         return {
             ok: res.ok,
+            tokenExpired: false,
             status: res.status,
             message: res.status,
             data
         }
+    }
+
+    private isTokenExpired(res: Response): boolean
+    {
+        const tokenExpiredHeader: string = res.headers.get("Token-Expired")
+        return tokenExpiredHeader?.toLowerCase() === "true" ? true : false
     }
 }
 
