@@ -1,4 +1,5 @@
 ﻿using Coboss.Application.Functions.Query;
+using Coboss.Application.Functions.Query.Users;
 using Coboss.Controllers.Abstracts;
 using Coboss.Types.DTO;
 using MediatR;

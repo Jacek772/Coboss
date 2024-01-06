@@ -17,19 +17,19 @@ namespace Coboss.Application.Services
             _applicationDbContext = applicationDbContext;
         }
 
-        public async Task<int> GetGlobalSettingValueIntAsync(GlobalSettingKey key)
+        public async Task<int> GetValueIntAsync(GlobalSettingKey key)
         {
             GlobalSetting globalSetting = await _applicationDbContext.GlobalSettings.FirstOrDefaultAsync(x => x.Key == key);
             return globalSetting?.GetValueInt() ?? 0;
         }
 
-        public async Task<string> GetGlobalSettingValueStringAsync(GlobalSettingKey key)
+        public async Task<string> GetValueStringAsync(GlobalSettingKey key)
         {
             GlobalSetting globalSetting = await _applicationDbContext.GlobalSettings.FirstOrDefaultAsync(x => x.Key == key);
             return globalSetting?.GetValueString();
         }
 
-        public async Task SetGlobalSettingValueAsync<T>(GlobalSettingKey key, T value)
+        public async Task SetValueAsync<T>(GlobalSettingKey key, T value)
         {
             using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
             {

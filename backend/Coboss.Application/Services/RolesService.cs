@@ -21,7 +21,7 @@ namespace Coboss.Application.Services
                 .FirstOrDefaultAsync(x => x.Name == name);
         }
 
-        public async Task CreateRoleAsync(Role role)
+        public async Task CreateAsync(Role role)
         {
             using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
             {
@@ -39,7 +39,7 @@ namespace Coboss.Application.Services
             }
         }
 
-        public async Task<bool> ExistsRoleAsync(string name)
+        public async Task<bool> ExistsAsync(string name)
         {
             return await _applicationDbContext.Roles
                 .Where(x => x.Name == name)

@@ -2,6 +2,8 @@ import Api from "./base/Api"
 
 // Config
 import config from "../config"
+
+// Types
 import IGetEmployeesQuery from "../types/Query/IGetEmployeesQuery"
 import CreateEmployeeCommand from "../types/Commands/CreateEmployeeCommand"
 import UpdateEmployeeCommand from "../types/Commands/UpdateEmployeeCommand"

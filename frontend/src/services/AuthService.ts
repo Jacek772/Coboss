@@ -3,20 +3,20 @@ import ILoginCommand from "../types/Commands/ILoginCommand";
 
 // Types
 import IResponse from "../api/types/IResponse";
-import ILoginResultDTO from "../types/DTO/ILoginResultDTO";
+import LoginResultDTO from "../types/DTO/LoginResultDTO";
 import TokenService from "./TokenService";
 
 
 class AuthService {
-  private readonly _authApi: AuthApi
   private static instance: AuthService
+  private readonly _authApi: AuthApi
 
   private constructor() 
   { 
     this._authApi = new AuthApi();
   }
 
-  public async login(loginCommand: ILoginCommand): Promise<ILoginResultDTO>
+  public async login(loginCommand: ILoginCommand): Promise<LoginResultDTO>
   {
     const response: IResponse = await this._authApi.login(loginCommand)
     return {

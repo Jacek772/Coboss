@@ -21,7 +21,7 @@ import UpdateEmployeeCommand from "../../types/Commands/UpdateEmployeeCommand"
 import EmployeesPageGridQueryState from "./types/EmployeesPageGridQueryState"
 import EmployeesPageGridState from "./types/EmployeesPageGridState"
 import ActionButtonType from "../../components/ActionButtonsBar/types/enums/ActionButtonType"
-import IActionButtonDef from "../../components/ActionButtonsBar/types/IActionButtonDef"
+import ActionButtonDef from "../../components/ActionButtonsBar/types/ActionButtonDef"
 import IRowData from "../../components/Grid/types/IRowData"
 import SortDirection from "../../components/Grid/types/enums/SortDirection"
 import EmployeeDataFormState from "./types/EmployeeDataFormState"
@@ -252,7 +252,7 @@ const EmployeesPage: React.FC = () => {
 
   }, [setGridQueryState, gridQueryState])
 
-  const actionButtonDefs: IActionButtonDef[] = useMemo<IActionButtonDef[]>(() => [
+  const actionButtonDefs: ActionButtonDef[] = useMemo<ActionButtonDef[]>(() => [
     { 
       text: "Add", 
       type: ActionButtonType.Primary, 

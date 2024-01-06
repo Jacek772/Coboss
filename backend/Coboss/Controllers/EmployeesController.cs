@@ -1,5 +1,5 @@
-﻿using Coboss.Application.Functions.Commands;
-using Coboss.Application.Functions.Query;
+﻿using Coboss.Application.Functions.Commands.Employees;
+using Coboss.Application.Functions.Query.Employees;
 using Coboss.Controllers.Abstracts;
 using Coboss.Types.DTO;
 using MediatR;

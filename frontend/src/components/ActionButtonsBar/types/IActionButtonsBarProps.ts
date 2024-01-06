@@ -1,8 +1,8 @@
 // Types
-import IActionButtonDef from "./IActionButtonDef"
+import ActionButtonDef from "./ActionButtonDef"
 
 interface IActionButtonsBarProps {
-  buttonsData: IActionButtonDef[]
+  buttonsData: ActionButtonDef[]
 }
 
 export default IActionButtonsBarProps

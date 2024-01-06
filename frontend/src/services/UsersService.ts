@@ -2,7 +2,7 @@
 import UsersApi from "../api/UsersApi"
 
 // Config
-import IUserDTO from "../types/DTO/IUserDTO";
+import UserDTO from "../types/DTO/UserDTO";
 import BaseService from "./base/BaseService";
 
 class UsersService extends BaseService {
@@ -15,8 +15,8 @@ class UsersService extends BaseService {
     this._usersApi = new UsersApi();
   }
 
-  async getCurrentAsync(): Promise<IUserDTO> {
-    return await super.executeRequestAsync<IUserDTO>(
+  async getCurrentAsync(): Promise<UserDTO> {
+    return await super.executeRequestAsync<UserDTO>(
       () => this._usersApi.getCurrent(this._tokenService.getToken())
     )
   }

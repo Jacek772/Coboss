@@ -1,6 +1,6 @@
 ﻿using Coboss.Application.Extensions;
-using Coboss.Application.Functions.Commands;
-using Coboss.Application.Functions.Query;
+using Coboss.Application.Functions.Commands.Employees;
+using Coboss.Application.Functions.Query.Employees;
 using Coboss.Application.Services.Abstracts;
 using Coboss.Core.Entities;
 using Coboss.Persistance;
@@ -14,15 +14,25 @@ namespace Coboss.Application.Services
     {
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly IGlobalSettingsService _globalSettingsService;
+        private readonly IObjectCodesService _objectCodesService;
 
         public EmployeesService(ApplicationDbContext applicationDbContext,
-            IGlobalSettingsService globalSettingsService)
+            IGlobalSettingsService globalSettingsService, IObjectCodesService objectCodesService)
         {
             _applicationDbContext = applicationDbContext;
             _globalSettingsService = globalSettingsService;
+            _objectCodesService = objectCodesService;
         }
 
-        public async Task<List<Employee>> GetEmployeesAsync(GetEmployeesQuery getEmployeesQuery)
+        public async Task<Employee> GetAsync(int id)
+        {
+            return await _applicationDbContext.Employees
+                .Include(x => x.User)
+                .Include(x => x.EmployeeHistories)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<List<Employee>> GetAsync(GetEmployeesQuery getEmployeesQuery)
         {
             IQueryable<Employee> employees = _applicationDbContext.Employees
                  .Include(x => x.User)
@@ -49,15 +59,14 @@ namespace Coboss.Application.Services
                     .Take(size);
             }
 
-            if(!string.IsNullOrEmpty(getEmployeesQuery?.OrderBy) && !string.IsNullOrEmpty(getEmployeesQuery?.OrderBy))
+            if (!string.IsNullOrEmpty(getEmployeesQuery?.OrderBy) && !string.IsNullOrEmpty(getEmployeesQuery?.OrderBy))
             {
                 employees = employees.ApplaySort(getEmployeesQuery.OrderBy);
             }
-
             return await employees.ToListAsync();
         }
 
-        public async Task<List<Employee>> GetEmployeesAsync()
+        public async Task<List<Employee>> GetAsync()
         {
             return await _applicationDbContext.Employees
                 .Include(x => x.User)
@@ -65,10 +74,9 @@ namespace Coboss.Application.Services
                 .ToListAsync();
         }
 
-        public async Task CreateEmployeeAsync(Employee employee)
+        public async Task CreateAsync(Employee employee)
         {
-            EmployeeCode employeeCode = await GetNewEmployeeCode();
-            employee.Code = employeeCode.Code;
+            employee.Code = await GetNewEmployeeCode();
 
             using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
             {
@@ -86,12 +94,11 @@ namespace Coboss.Application.Services
             }
         }
 
-        public async Task CreateEmployeesAsync(IEnumerable<Employee> employees)
+        public async Task CreateAsync(IEnumerable<Employee> employees)
         {
             foreach (Employee employee in employees)
             {
-                EmployeeCode employeeCode = await GetNewEmployeeCode();
-                employee.Code = employeeCode.Code;
+                employee.Code = await GetNewEmployeeCode();
             }
 
             using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
@@ -110,7 +117,7 @@ namespace Coboss.Application.Services
             }
         }
 
-        public async Task CreateEmployeeHistoryAsync(EmployeeHistory employeeHistory)
+        public async Task CreateHistoryAsync(EmployeeHistory employeeHistory)
         {
             using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
             {
@@ -128,39 +135,39 @@ namespace Coboss.Application.Services
             }
         }
 
-        public async Task UpdateEmployeeAsync(UpdateEmployeeCommand updateEmployeeCommand)
+        public async Task UpdateAsync(UpdateEmployeeCommand command)
         {
-            Employee employee = await _applicationDbContext.Employees.FirstOrDefaultAsync(x => x.Id == updateEmployeeCommand.Id);
+            Employee employee = await _applicationDbContext.Employees.FirstOrDefaultAsync(x => x.Id == command.Id);
             if (employee == null)
             {
-                throw new Exception($"Employee with id = {updateEmployeeCommand.Id} not exits");
+                throw new Exception($"Employee with id = {command.Id} not exits");
             }
 
             using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
             {
                 try
                 {
-                    if (updateEmployeeCommand.Name is string name)
+                    if (command.Name is string name)
                     {
                         employee.Name = name;
                     }
 
-                    if (updateEmployeeCommand.Surname is string surname)
+                    if (command.Surname is string surname)
                     {
                         employee.Surname = surname;
                     }
 
-                    if (updateEmployeeCommand.NIP is string nip)
+                    if (command.NIP is string nip)
                     {
                         employee.NIP = nip;
                     }
 
-                    if (updateEmployeeCommand.PESEL is string pesel)
+                    if (command.PESEL is string pesel)
                     {
                         employee.PESEL = pesel;
                     }
 
-                    if(updateEmployeeCommand.DateOfBirth is DateTime dateOfBirth)
+                    if (command.DateOfBirth is DateTime dateOfBirth)
                     {
                         employee.DateOfBirth = dateOfBirth;
                     }
@@ -176,61 +183,16 @@ namespace Coboss.Application.Services
             }
         }
 
-        private async Task<EmployeeCode> GetNewEmployeeCode()
-        {
-            EmployeeCode employeeCodeLast = await _applicationDbContext.EmployeeCodes
-                .OrderByDescending(x => x.CodeNumber)
-                .FirstOrDefaultAsync();
-
-            int codeLength = await _globalSettingsService
-                .GetGlobalSettingValueIntAsync(GlobalSetting.GlobalSettingKey.EmployeeCodeLength);
-
-            EmployeeCode employeeCode;
-            if (employeeCodeLast == null)
-            {
-                employeeCode = new EmployeeCode
-                {
-                    CodeNumber = 1,
-                    CodeLength = codeLength,
-                };
-            }
-            else
-            {
-                employeeCode = new EmployeeCode
-                {
-                    CodeNumber = employeeCodeLast.CodeNumber + 1,
-                    CodeLength = codeLength,
-                };
-            }
-
-            using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    await _applicationDbContext.EmployeeCodes.AddAsync(employeeCode);
-                    await _applicationDbContext.SaveChangesAsync();
-                    await transaction.CommitAsync();
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    throw new BadRequestException($"EmployeeCode create error\n{ex.ToMessage()}");
-                }
-            }
-            return employeeCode;
-        }
-
-        public async Task<bool> EmployeesExistsAsync()
+        public async Task<bool> ExistsAsync()
         {
             return await _applicationDbContext.Employees.AnyAsync();
         }
 
-        public async Task DeleteEmployeeAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             Employee employee = await _applicationDbContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
             if (employee == null)
             {
-
                 throw new BadRequestException($"Employee with id = {id} not exits");
             }
 
@@ -250,7 +212,7 @@ namespace Coboss.Application.Services
             }
         }
 
-        public async Task DeleteEmployeesAsync(int[] ids)
+        public async Task DeleteAsync(int[] ids)
         {
             List<Employee> employees = await _applicationDbContext.Employees
                     .Where(x => ids.Contains(x.Id))
@@ -275,6 +237,15 @@ namespace Coboss.Application.Services
                     throw new Exception($"Employee delete error\n{ex.ToMessage()}");
                 }
             }
+        }
+
+        private async Task<string> GetNewEmployeeCode()
+        {
+            int codeLength = await _globalSettingsService
+                .GetValueIntAsync(GlobalSetting.GlobalSettingKey.EmployeeCodeLength);
+
+            ObjectCode objectCode = await _objectCodesService.GetNewObjectCode<Employee>(codeLength);
+            return objectCode.Code;
         }
     }
 }

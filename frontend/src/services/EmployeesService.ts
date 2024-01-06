@@ -2,10 +2,9 @@
 import EmployeesApi from "../api/EmployeesApi"
 
 // Types
-import IResponse from "../api/types/IResponse";
 import CreateEmployeeCommand from "../types/Commands/CreateEmployeeCommand";
 import UpdateEmployeeCommand from "../types/Commands/UpdateEmployeeCommand";
-import IEmployeeDTO from "../types/DTO/IEmployeeDTO";
+import EmployeeDTO from "../types/DTO/EmployeeDTO";
 import IGetEmployeesQuery from "../types/Query/IGetEmployeesQuery";
 import BaseService from "./base/BaseService";
 
@@ -19,8 +18,8 @@ class EmployeesService extends BaseService {
     this._employeesApi = new EmployeesApi();
   }
 
-  public async getEmployeesAsync(query?: IGetEmployeesQuery): Promise<IEmployeeDTO[]>{
-    return await super.executeRequestAsync<IEmployeeDTO[]>(
+  public async getEmployeesAsync(query?: IGetEmployeesQuery): Promise<EmployeeDTO[]>{
+    return await super.executeRequestAsync<EmployeeDTO[]>(
       () => this._employeesApi.getEmployeesAsync(this._tokenService.getToken(), query)
     )
   }

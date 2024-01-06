@@ -18,7 +18,7 @@ namespace Coboss.Application.Seeds
 
         public async Task Seed()
         {
-            if(await _employeesService.EmployeesExistsAsync())
+            if(await _employeesService.ExistsAsync())
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Coboss.Application.Seeds
                 employee.EmployeeHistories = new List<EmployeeHistory> { employeeHistory };
             }
 
-            await _employeesService.CreateEmployeesAsync(employees);
+            await _employeesService.CreateAsync(employees);
         }
     }
 }

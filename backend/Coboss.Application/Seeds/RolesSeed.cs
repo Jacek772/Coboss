@@ -22,12 +22,12 @@ namespace Coboss.Application.Seeds
 
         public async Task Seed()
         {
-            foreach(Role role in  _roles)
+            foreach(Role role in _roles)
             {
-                bool roleExists = await _rolesService.ExistsRoleAsync(role.Name);
+                bool roleExists = await _rolesService.ExistsAsync(role.Name);
                 if(!roleExists)
                 {
-                    await _rolesService.CreateRoleAsync(role);
+                    await _rolesService.CreateAsync(role);
                 }
             }
         }

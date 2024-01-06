@@ -21,7 +21,7 @@ namespace Coboss.Application.Services
             _passwordHasherService = passwordHasherService;
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
             return await _applicationDbContext.Users
                 .Include(x => x.Role)
@@ -29,7 +29,7 @@ namespace Coboss.Application.Services
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<User> GetByEmailAsync(string email)
         {
             return await _applicationDbContext.Users
                 .Include(x => x.Role)
@@ -37,7 +37,7 @@ namespace Coboss.Application.Services
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task CreateUserAsync(User user)
+        public async Task CreateAsync(User user)
         {
             using (IDbContextTransaction transaction = _applicationDbContext.Database.BeginTransaction())
             {
@@ -58,7 +58,7 @@ namespace Coboss.Application.Services
             }
         }
 
-        public async Task<bool> ExistsUserAsync(string email)
+        public async Task<bool> ExistsAsync(string email)
         {
             return await _applicationDbContext.Users
                 .Where(x => x.Email == email)

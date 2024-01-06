@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Coboss.Application.Functions.Commands;
+using Coboss.Application.Functions.Commands.Employees;
 using Coboss.Core.Entities;
 using Coboss.Types.DTO;
 
@@ -12,7 +12,6 @@ namespace Coboss.Application.MappingProfiles
             CreateMap<Employee, EmployeeDTO>()
                 .ForMember(m => m.User, x => x.MapFrom(y => y.User))
                 .ForMember(m => m.EmployeeHistories, x => x.MapFrom(y => y.EmployeeHistories.ToList()));
-
             CreateMap<CreateEmployeeCommand, Employee>();
         }
     }

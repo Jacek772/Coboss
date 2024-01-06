@@ -1,0 +1,22 @@
+.pageContainer {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.girdContainer {
+  padding: 20px 50px;
+  box-sizing: border-box;
+}
+
+.filtersbarContainer {
+  width: 100%;
+  padding: 0 50px;
+  box-sizing: border-box;
+}
+
+.actionbuttonsbarContainer {
+  width: 100%;
+  padding: 0 50px;
+  box-sizing: border-box;
+}

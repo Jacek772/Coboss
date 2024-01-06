@@ -149,6 +149,9 @@ using (IServiceScope scope = app.Services.CreateScope())
 
     ISeed employeesSeed = scope.ServiceProvider.GetService<EmployeesSeed>();
     await employeesSeed.Seed();
+
+    ISeed projectsSeed = scope.ServiceProvider.GetService<ProjectsSeed>();
+    await projectsSeed.Seed();
 }
 
 app.Run();

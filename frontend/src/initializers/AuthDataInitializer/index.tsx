@@ -12,7 +12,7 @@ import { setLogged, setUnlogged, setUser } from "../../redux/slices/authSlice"
 import UsersService from "../../services/UsersService"
 
 // Types
-import IUserDTO from "../../types/DTO/IUserDTO"
+import UserDTO from "../../types/DTO/UserDTO"
 import IAuthDataInitializerProps from "./types/IMainInitializerProps"
 
 const AuthDataInitializer: React.FC<IAuthDataInitializerProps> = ({ children }: IAuthDataInitializerProps) => {
@@ -30,7 +30,7 @@ const AuthDataInitializer: React.FC<IAuthDataInitializerProps> = ({ children }: 
     const logged: boolean = await authService.checkIsLogged()
     if(logged)
     {
-      const user: IUserDTO = await usersService.getCurrentAsync()
+      const user: UserDTO = await usersService.getCurrentAsync()
       dispatch(setLogged())
       dispatch(setUser(user))
     }

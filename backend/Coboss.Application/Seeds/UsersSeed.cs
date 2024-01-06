@@ -26,7 +26,7 @@ namespace Coboss.Application.Seeds
 
         private async Task CreateDefaultAdministrator()
         {
-            bool userExists = await _usersService.ExistsUserAsync(_authenticationConfiguration.AdminEmail);
+            bool userExists = await _usersService.ExistsAsync(_authenticationConfiguration.AdminEmail);
             if (!userExists)
             {
                 User user = new User
@@ -35,7 +35,7 @@ namespace Coboss.Application.Seeds
                     Password = _authenticationConfiguration.AdminPassword,
                     Role = await _rolesService.GetByNameAsync(_authenticationConfiguration.AdminRoleName)
                 };
-                await _usersService.CreateUserAsync(user);
+                await _usersService.CreateAsync(user);
             }
         }
 

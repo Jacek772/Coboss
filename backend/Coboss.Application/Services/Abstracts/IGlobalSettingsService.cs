@@ -4,8 +4,8 @@ namespace Coboss.Application.Services.Abstracts
 {
     public interface IGlobalSettingsService
     {
-        Task SetGlobalSettingValueAsync<T>(GlobalSettingKey key, T value);
-        Task<string> GetGlobalSettingValueStringAsync(GlobalSettingKey key);
-        Task<int> GetGlobalSettingValueIntAsync(GlobalSettingKey key);
+        Task SetValueAsync<T>(GlobalSettingKey key, T value);
+        Task<string> GetValueStringAsync(GlobalSettingKey key);
+        Task<int> GetValueIntAsync(GlobalSettingKey key);
     }
 }

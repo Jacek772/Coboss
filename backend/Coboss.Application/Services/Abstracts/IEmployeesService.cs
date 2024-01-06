@@ -1,19 +1,20 @@
-﻿using Coboss.Application.Functions.Commands;
-using Coboss.Application.Functions.Query;
+﻿using Coboss.Application.Functions.Commands.Employees;
+using Coboss.Application.Functions.Query.Employees;
 using Coboss.Core.Entities;
 
 namespace Coboss.Application.Services.Abstracts
 {
     public interface IEmployeesService
     {
-        Task<bool> EmployeesExistsAsync();
-        Task<List<Employee>> GetEmployeesAsync();
-        Task<List<Employee>> GetEmployeesAsync(GetEmployeesQuery getEmployeesQuery);
-        Task CreateEmployeeAsync(Employee employee);
-        Task CreateEmployeesAsync(IEnumerable<Employee> employees);
-        Task CreateEmployeeHistoryAsync(EmployeeHistory employeeHistory);
-        Task UpdateEmployeeAsync(UpdateEmployeeCommand updateEmployeeCommand);
-        Task DeleteEmployeeAsync(int id);
-        Task DeleteEmployeesAsync(int[] ids);
+        Task<bool> ExistsAsync();
+        Task<Employee> GetAsync(int id);
+        Task<List<Employee>> GetAsync();
+        Task<List<Employee>> GetAsync(GetEmployeesQuery getEmployeesQuery);
+        Task CreateAsync(Employee employee);
+        Task CreateAsync(IEnumerable<Employee> employees);
+        Task CreateHistoryAsync(EmployeeHistory employeeHistory);
+        Task UpdateAsync(UpdateEmployeeCommand updateEmployeeCommand);
+        Task DeleteAsync(int id);
+        Task DeleteAsync(int[] ids);
     }
 }

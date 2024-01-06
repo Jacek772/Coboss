@@ -20,8 +20,8 @@ import { setGlobalModalData, setGlobalModalVisibility } from "../../redux/slices
 // Types
 import ILoginFormValues from "./types/ILoginFormValues";
 import ILoginCommand from "../../types/Commands/ILoginCommand";
-import ILoginResultDTO from "../../types/DTO/ILoginResultDTO";
-import IUserDTO from "../../types/DTO/IUserDTO";
+import LoginResultDTO from "../../types/DTO/LoginResultDTO";
+import UserDTO from "../../types/DTO/UserDTO";
 import GlobalModalTypeEnum from "../../components/GlobalModal/types/GlobalModalTypeEnum";
 import GlobalModalButtonsTypeEnum from "../../components/GlobalModal/types/GlobalModalButtonsTypeEnum";
 
@@ -64,12 +64,12 @@ const LoginPage: React.FC = () => {
 
     try
     {
-      const loginResult: ILoginResultDTO = await authService.login(loginCommand)
+      const loginResult: LoginResultDTO = await authService.login(loginCommand)
       if(loginResult.ok)
       {
         tokenService.setToken(loginResult.token)
         tokenService.setRefreshToken(loginResult.refreshToken)
-        const user: IUserDTO = await usersService.getCurrentAsync()
+        const user: UserDTO = await usersService.getCurrentAsync()
         dispatch(setLogged())
         dispatch(setUser(user))
       }

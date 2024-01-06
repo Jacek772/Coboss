@@ -24,10 +24,11 @@ namespace Coboss.Persistance
         public DbSet<Project> Projects { get; set; }
         public DbSet<BusinnessTask> BusinnessTasks { get; set; }
         public DbSet<BusinnessTaskRealisation> BusinnessTaskRealisations { get; set; }
+        public DbSet<BusinnessTaskComment> BusinnessTaskComments { get; set; }
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
         public DbSet<RefreshTokenData> RefreshTokensData { get; set; }
-        public DbSet<EmployeeCode> EmployeeCodes { get; set; }
+        public DbSet<ObjectCode> ObjectCodes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

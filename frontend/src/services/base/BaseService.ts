@@ -1,7 +1,7 @@
 import AuthApi from "../../api/AuthApi";
 import IResponse from "../../api/types/IResponse";
 import IRefreshTokenCommand from "../../types/Commands/IRefreshTokenCommand";
-import ILoginResultDTO from "../../types/DTO/ILoginResultDTO";
+import LoginResultDTO from "../../types/DTO/LoginResultDTO";
 import TokenService from "../TokenService";
 
 abstract class BaseService {
@@ -43,7 +43,7 @@ abstract class BaseService {
     const response: IResponse = await this._authApi.refreshToken(refreshTokenCommand)
     if(response.ok)
     {
-      const data = response.data as ILoginResultDTO
+      const data = response.data as LoginResultDTO
       this._tokenService.setToken(data.token)
       this._tokenService.setRefreshToken(data.refreshToken)
       return true

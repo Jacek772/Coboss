@@ -7,7 +7,8 @@ namespace Coboss.Core.Entities
         public enum GlobalSettingKey
         {
             Empty = 0,
-            EmployeeCodeLength = 1
+            EmployeeCodeLength = 1,
+            ProjectNumberLength = 2
         }
 
         public enum GlobalSettingValueType

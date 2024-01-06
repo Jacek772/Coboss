@@ -1,4 +1,4 @@
-﻿using Coboss.Application.Functions.Commands;
+﻿using Coboss.Application.Functions.Commands.Auth;
 using Coboss.Controllers.Abstracts;
 using Coboss.Types.DTO;
 using MediatR;

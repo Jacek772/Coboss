@@ -15,7 +15,8 @@ namespace Coboss.Application.Seeds
 
         public async Task Seed()
         {
-            await _globalSettingsService.SetGlobalSettingValueAsync(GlobalSettingKey.EmployeeCodeLength, 7);
+            await _globalSettingsService.SetValueAsync(GlobalSettingKey.EmployeeCodeLength, 7);
+            await _globalSettingsService.SetValueAsync(GlobalSettingKey.ProjectNumberLength, 7);
         }
     }
 }

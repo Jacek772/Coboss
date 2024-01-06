@@ -24,9 +24,11 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.Attachment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FileName")
                         .IsRequired()
@@ -42,8 +44,8 @@ namespace Coboss.Persistance.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
 
-                    b.Property<Guid>("ParentID")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ParentID")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TableName")
                         .IsRequired()
@@ -60,14 +62,16 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.BusinnessTask", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 12, 5, 21, 32, 1, 883, DateTimeKind.Utc).AddTicks(9094));
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValue(new DateTime(2024, 1, 2, 21, 43, 27, 874, DateTimeKind.Utc).AddTicks(5998));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -78,13 +82,13 @@ namespace Coboss.Persistance.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<Guid?>("ProjectId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Term")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 12, 5, 21, 32, 1, 883, DateTimeKind.Utc).AddTicks(9268));
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValue(new DateTime(2024, 1, 2, 21, 43, 27, 874, DateTimeKind.Utc).AddTicks(6215));
 
                     b.HasKey("Id");
 
@@ -95,24 +99,26 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.BusinnessTaskComment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<Guid?>("BusinnessTaskId")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BusinnessTaskId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 12, 5, 21, 32, 1, 883, DateTimeKind.Utc).AddTicks(7688));
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValue(new DateTime(2024, 1, 2, 21, 43, 27, 874, DateTimeKind.Utc).AddTicks(4731));
 
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -125,17 +131,19 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.BusinnessTaskRealisation", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<Guid?>("BusinnessTaskId")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BusinnessTaskId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 12, 5, 21, 32, 1, 884, DateTimeKind.Utc).AddTicks(2210));
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValue(new DateTime(2024, 1, 2, 21, 43, 27, 874, DateTimeKind.Utc).AddTicks(8878));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -154,9 +162,19 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.Employee", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NIP")
                         .HasColumnType("text");
@@ -176,36 +194,32 @@ namespace Coboss.Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NIP")
-                        .IsUnique();
-
-                    b.HasIndex("PESEL")
-                        .IsUnique();
-
-                    b.ToTable("Employers", "coboss");
+                    b.ToTable("Employees", "coboss");
                 });
 
             modelBuilder.Entity("Coboss.Core.Entities.EmployeeHistory", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("CostHourOfWork")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("DateFrom")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasDefaultValue(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
                     b.Property<DateTime>("DateTo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasDefaultValue(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999));
 
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -216,18 +230,18 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.GlobalSetting", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Key")
-                        .IsRequired()
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Key")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -241,18 +255,48 @@ namespace Coboss.Persistance.Migrations
                     b.ToTable("GlobalSettings", "coboss");
                 });
 
+            modelBuilder.Entity("Coboss.Core.Entities.ObjectCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CodeLength")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(10);
+
+                    b.Property<int>("CodeNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntityName", "CodeNumber")
+                        .IsUnique();
+
+                    b.ToTable("EmployeeCodes", "coboss");
+                });
+
             modelBuilder.Entity("Coboss.Core.Entities.Project", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ManagerId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -265,8 +309,8 @@ namespace Coboss.Persistance.Migrations
 
                     b.Property<DateTime>("Term")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 12, 5, 21, 32, 1, 884, DateTimeKind.Utc).AddTicks(7541));
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValue(new DateTime(2024, 1, 2, 21, 43, 27, 875, DateTimeKind.Utc).AddTicks(4856));
 
                     b.HasKey("Id");
 
@@ -280,17 +324,19 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.RefreshTokenData", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 12, 5, 21, 32, 1, 884, DateTimeKind.Utc).AddTicks(8929));
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValue(new DateTime(2024, 1, 2, 21, 43, 27, 875, DateTimeKind.Utc).AddTicks(6201));
 
                     b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("JwtId")
                         .IsRequired()
@@ -304,8 +350,8 @@ namespace Coboss.Persistance.Migrations
                     b.Property<bool>("Used")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -318,9 +364,11 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -337,25 +385,27 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<Guid?>("EmployeeId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
 
                     b.Property<byte[]>("Salt")
                         .IsRequired()
