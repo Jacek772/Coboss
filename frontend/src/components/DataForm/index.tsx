@@ -31,7 +31,7 @@ const DataForm = <T,>({ caption, data, rows, onSave, onClose }: DataFormProps<T>
   const [showGlobalModal, hideGlobalModal] = useGlobalModal()
 
   useEffect(() => {
-    const dataFormFieldsData: DataFormFieldDataState[] = rows.reduce((acc, rowData) => {
+    const dataFormFieldsData: DataFormFieldDataState[] = rows?.reduce((acc, rowData) => {
       const fieldsData = rowData.items?.map(fieldData => {
         return { 
           name: fieldData.name, 

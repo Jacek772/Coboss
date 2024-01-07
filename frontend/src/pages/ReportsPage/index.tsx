@@ -1,5 +1,7 @@
 const ReportsPage: React.FC = () => {
-  return <h1>ReportsPage</h1>
+  return <div>
+    <h1>ReportsPage</h1>
+  </div>
 }
 
 export default ReportsPage

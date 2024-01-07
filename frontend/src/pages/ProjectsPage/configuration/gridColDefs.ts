@@ -1,7 +1,8 @@
 // Types
-import IColDefProps from "../../../components/Grid/types/IColDefProps"
+import ColDefProps from "../../../components/Grid/types/ColDefProps"
+import GridColTypeEnum from "../../../components/Grid/types/enums/GridColTypeEnum"
 
-const gridColDefs: IColDefProps[] = [
+const gridColDefs: ColDefProps[] = [
   {
     caption:"Number",
     field:"number",
@@ -15,6 +16,12 @@ const gridColDefs: IColDefProps[] = [
   {
     caption:"Term",
     field:"term",
+    width: 200,
+    type: GridColTypeEnum.Date
+  },
+  {
+    caption: "Manager code",
+    field: "manager.code",
     width: 200
   }
 ]

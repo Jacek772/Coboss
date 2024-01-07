@@ -60,6 +60,21 @@ namespace Coboss.Application.Services
                 projects = projects.ApplaySort(query.OrderBy);
             }
 
+            if(query?.ManagerId is int managerId)
+            {
+                projects = projects.Where(x => x.Manager.Id == managerId);
+            }
+
+            if(query?.TermFrom is DateTime termFrom)
+            {
+                projects = projects.Where(x => x.Term >= termFrom);
+            }
+
+            if (query?.TermTo is DateTime termTo)
+            {
+                projects = projects.Where(x => x.Term <= termTo);
+            }
+
             return await projects.ToListAsync();
         }
 

@@ -1,6 +1,6 @@
-import IColDef from "./IColDefProps"
+import IColDef from "./ColDefProps"
 import IRowData from "./IRowData"
-import SortDirection from "./enums/SortDirection"
+import SortDirectionEnum from "./enums/SortDirectionEnum"
 
 interface IGridProps {
   colDefs: IColDef[],
@@ -9,7 +9,7 @@ interface IGridProps {
   onRowDoubleClick?: (index: number, rowData: any) => void
   onScrollEnd?: (lastRow: any) => void
   onSelectionChanged?: (selectedRows: IRowData[]) => void
-  onSortChanged?: (field: string, direction: SortDirection) => void
+  onSortChanged?: (field: string, direction: SortDirectionEnum) => void
 }
 
 export default IGridProps

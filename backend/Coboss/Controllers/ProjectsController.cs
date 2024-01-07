@@ -18,9 +18,8 @@ namespace Coboss.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Administrator,Manager")]
-        public async Task<ActionResult<List<ProjectDTO>>> GetProjects()
+        public async Task<ActionResult<List<ProjectDTO>>> GetProjects([FromQuery] GetProjectsQuery query)
         {
-            GetProjectsQuery query = new GetProjectsQuery();
             return await _mediator.Send(query);
         }
 

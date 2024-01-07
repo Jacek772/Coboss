@@ -7,5 +7,8 @@ namespace Coboss.Application.Functions.Query.Projects
     {
         public string? SearchText { get; set; }
         public string? OrderBy { get; set; }
+        public int? ManagerId { get; set; }
+        public DateTime? TermFrom { get; set; }
+        public DateTime? TermTo { get; set; }
     }
 }

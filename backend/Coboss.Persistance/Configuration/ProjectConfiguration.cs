@@ -41,6 +41,12 @@ namespace Coboss.Persistance.Configuration
             builder
                 .HasOne(x => x.Manager)
                 .WithMany();
+
+            builder
+                .HasMany(x => x.BusinnessTasks)
+                .WithOne(x => x.Project)
+                .HasForeignKey(x => x.ProjectId)
+                .HasPrincipalKey(x => x.Id);
         }
     }
 }

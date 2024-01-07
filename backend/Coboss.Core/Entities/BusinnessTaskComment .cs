@@ -7,5 +7,8 @@ namespace Coboss.Core.Entities
         public string Text { get; set; } = default!;
         public DateTime Date { get; set; }
         public User User { get; set; } = default!;
+
+        public int TaskId { get; set; }
+        public BusinnessTask Task { get; set; } = default!;
     }
 }

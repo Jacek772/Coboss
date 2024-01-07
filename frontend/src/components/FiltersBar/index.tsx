@@ -5,20 +5,20 @@ import { useEffect, useState } from "react"
 import FiltersBarItem from "../FiltersBarItem"
 
 // Types
-import IFiltersBarProps from "./types/IFiltersBarProps"
-import IFiltersBarState from "./types/IFiltersBarState"
-import IFiltersBarValue from "./types/IFiltersBarValue"
+import FiltersBarProps from "./types/FiltersBarProps"
+import FiltersBarState from "./types/FiltersBarState"
+import FiltersBarValue from "./types/FiltersBarValue"
 
 //Css
 import "./index.css"
 
-const FiltersBar: React.FC<IFiltersBarProps> = ({ items, onChange }) => {
-  const [state, setState] = useState<IFiltersBarState>({ values: [] })
+const FiltersBar: React.FC<FiltersBarProps> = ({ items, onChange }) => {
+  const [state, setState] = useState<FiltersBarState>({ values: [] })
 
   const handleChange = (name: string, values: string[]) => {
     const valueIndex: number = state.values.findIndex(x => x.name === name)
     if(valueIndex >= 0) {
-      const updatedValues: IFiltersBarValue[] = [...state.values]
+      const updatedValues: FiltersBarValue[] = [...state.values]
       updatedValues[valueIndex].values = values
       setState({
         ...state,
@@ -36,7 +36,7 @@ const FiltersBar: React.FC<IFiltersBarProps> = ({ items, onChange }) => {
 
   useEffect(() => {
     onChange?.([...state.values])
-  }, [onChange, state.values])
+  }, [state.values])
 
   return <div className="filtersbar-container">
     {

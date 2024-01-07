@@ -101,7 +101,7 @@ const DataFormField: React.FC<DataFormFieldProps> = ({
         </select>
       case DataFormFieldType.MultilineString:
         return <textarea 
-          className={`input dataformfield-input ${isReadonly ? "dataformfield-input-readonly" : ""}`}
+          className={`input dataformfield-input dataformfield-input-textarea ${isReadonly ? "dataformfield-input-readonly" : ""}`}
           style={style}
           readOnly={isReadonly}
           value={state.value ?? ""}

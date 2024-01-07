@@ -1,7 +1,7 @@
 // Types
-import IColDefProps from "../../../components/Grid/types/IColDefProps"
+import ColDefProps from "../../../components/Grid/types/ColDefProps"
 
-const gridColDefs: IColDefProps[] = [
+const gridColDefs: ColDefProps[] = [
   {
     caption:"Name",
     field:"name",

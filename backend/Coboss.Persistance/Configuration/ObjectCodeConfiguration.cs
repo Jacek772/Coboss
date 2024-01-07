@@ -9,7 +9,7 @@ namespace Coboss.Persistance.Configuration
         public void Configure(EntityTypeBuilder<ObjectCode> builder)
         {
             builder
-                .ToTable("EmployeeCodes", "coboss");
+                .ToTable("ObjectCodes", "coboss");
 
             builder
                 .HasKey(x => x.Id);

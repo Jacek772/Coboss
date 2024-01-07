@@ -15,18 +15,18 @@ class AuthApi extends Api {
     const headers: any = {
       "Content-Type":"application/json"
     }
-   return this.post(`${config.API_URL}/${AuthApi.baseRoute}/signin`, loginCommand, true, headers)
+   return super.post(`${config.API_URL}/${AuthApi.baseRoute}/signin`, loginCommand, true, headers)
   }
 
   public async refreshToken(refreshTokenCommand: IRefreshTokenCommand): Promise<IResponse> {
     const headers: any = {
       "Content-Type":"application/json"
     }
-    return this.post(`${config.API_URL}/${AuthApi.baseRoute}/refresh`, refreshTokenCommand, true, headers)
+    return super.post(`${config.API_URL}/${AuthApi.baseRoute}/refresh`, refreshTokenCommand, true, headers)
   }
 
   public async checkIsLogged(token: string): Promise<IResponse> {
-    return this.get(`${config.API_URL}/${AuthApi.baseRoute}/logged`, null, null, token)
+    return super.get(`${config.API_URL}/${AuthApi.baseRoute}/logged`, null, null, token)
   }
 }
 

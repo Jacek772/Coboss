@@ -1,12 +1,12 @@
-import IFiltersBarItemOption from "./IFiltersBarItemOption"
+import FiltersBarItemOption from "./FiltersBarItemOption"
 import FiltersBarItemType from "./enums/FiltersBarItemType"
 
-interface IFiltersBarItemProps {
+type FiltersBarItemProps = {
   name: string
   label: string
   type: FiltersBarItemType
-  options?: IFiltersBarItemOption[]
+  options?: FiltersBarItemOption[]
   onChange: (name: string, values: string[]) => void
 }
 
-export default IFiltersBarItemProps
+export default FiltersBarItemProps

@@ -1,7 +1,6 @@
 ﻿using Coboss.Application.Functions.Commands.BusinnessTasks;
 using Coboss.Application.Functions.Query.BusinnessTasks;
 using Coboss.Controllers.Abstracts;
-using Coboss.Core.Entities;
 using Coboss.Types.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

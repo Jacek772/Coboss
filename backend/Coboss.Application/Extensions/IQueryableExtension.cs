@@ -20,7 +20,7 @@ namespace Coboss.Application.Extensions
                 return values;
             }
 
-            PropertyInfo[] propertyInfos = typeof(Employee).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo[] propertyInfos = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             StringBuilder stringBuilder = new StringBuilder();
             foreach (string orderParam in orderParams)
             {

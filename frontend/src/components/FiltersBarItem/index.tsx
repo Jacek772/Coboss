@@ -2,16 +2,16 @@
 import { useCallback, useEffect, useState } from "react"
 
 // Types
-import IFiltersBarItemProps from "./types/IFiltersBarItemProps"
+import FiltersBarItemProps from "./types/FiltersBarItemProps"
 
 //Css
 import "./index.css"
 import FiltersBarItemType from "./types/enums/FiltersBarItemType"
-import IFiltersBarItemState from "./types/IFiltersBarItemState"
+import FiltersBarItemState from "./types/FiltersBarItemState"
 
-const FiltersBarItem: React.FC<IFiltersBarItemProps> = ({ name, label, type, onChange, options = [] }: IFiltersBarItemProps) => {
+const FiltersBarItem: React.FC<FiltersBarItemProps> = ({ name, label, type, onChange, options = [] }: FiltersBarItemProps) => {
 
-  const [state, setState] = useState<IFiltersBarItemState>({ value: "", valueFrom: "", valueTo: "" })
+  const [state, setState] = useState<FiltersBarItemState>({ value: "", valueFrom: "", valueTo: "" })
 
   useEffect(() => {
     if(type === FiltersBarItemType.DatePeriod) {

@@ -3,13 +3,16 @@ import { useCallback, useEffect, useRef, useState } from "react"
 
 // Types
 import IGridProps from "./types/IGridProps"
-import IColDefState from "./types/IColDefState"
-import SortDirection from "./types/enums/SortDirection"
+import ColDefState from "./types/ColDefState"
+import SortDirectionEnum from "./types/enums/SortDirectionEnum"
 import IGridState from "./types/IGridState"
 import IRowData from "./types/IRowData"
 
 // Css
 import "./index.css"
+import DateUtils from "../../utils/DateUtils"
+import GridColTypeEnum from "./types/enums/GridColTypeEnum"
+import ObjectUtils from "../../utils/ObjectUtils"
 
 const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onRowDoubleClick, onScrollEnd, onSelectionChanged, onSortChanged }) => {
   const [state, setState] = useState<IGridState>({
@@ -37,8 +40,8 @@ const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onRowDouble
 
   useEffect(() => {
     const initializeState = () => {
-      const colDefsState: IColDefState[] = colDefs?.map(x => {
-        return { ...x, checked: false, sortDirection: SortDirection.Asc }
+      const colDefsState: ColDefState[] = colDefs?.map(x => {
+        return { ...x, checked: false, sortDirection: SortDirectionEnum.Asc }
       }) ?? []
   
       setState(s => ({
@@ -51,17 +54,17 @@ const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onRowDouble
   }, [colDefs])
 
 
-  const handleClickSort = useCallback((index: number, colDef: IColDefState) => {
+  const handleClickSort = useCallback((index: number, colDef: ColDefState) => {
     setState(s =>{
       const colDefsState = [...s.colDefs]
-      if(colDef.sortDirection === SortDirection.Asc) {
-        colDefsState[index].sortDirection = SortDirection.Desc
-        onSortChanged?.(colDef.field, SortDirection.Desc)
+      if(colDef.sortDirection === SortDirectionEnum.Asc) {
+        colDefsState[index].sortDirection = SortDirectionEnum.Desc
+        onSortChanged?.(colDef.field, SortDirectionEnum.Desc)
       }
       else
       {
-        colDefsState[index].sortDirection = SortDirection.Asc
-        onSortChanged?.(colDef.field, SortDirection.Asc)
+        colDefsState[index].sortDirection = SortDirectionEnum.Asc
+        onSortChanged?.(colDef.field, SortDirectionEnum.Asc)
       }
 
       return {
@@ -150,6 +153,19 @@ const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onRowDouble
     onRowClick?.(index, rowData)
   }, [onRowClick])
 
+  const getFieldData = useCallback((colDef: ColDefState, rowData: IRowData) => {
+    const value: string = ObjectUtils.getValueByPath(rowData.data, colDef.field)
+    switch(colDef.type)
+    {
+      case GridColTypeEnum.Date:
+        return DateUtils.parse(value)?.toLocaleDateString()
+      case GridColTypeEnum.Number:
+      case GridColTypeEnum.String:
+      default:
+        return value
+    }
+  }, [])
+
   const handleRowDoubleClick = useCallback((event: React.MouseEvent<HTMLTableRowElement, MouseEvent>, index: number, rowData:IRowData) => {
     const input: HTMLInputElement = event.target as HTMLInputElement
     if(input?.type === "checkbox")
@@ -183,7 +199,7 @@ const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onRowDouble
                       </p>
                       <div onClick={() => handleClickSort(index, colDef)}>
                         {
-                          colDef.sortDirection === SortDirection.Asc ?
+                          colDef.sortDirection === SortDirectionEnum.Asc ?
                           <img src="gfx/svg/arrow-down-black.svg" alt="arrow-down-black" className="grid-head-th-imgarrow" />
                           :
                           <img src="gfx/svg/arrow-up-black.svg" alt="arrow-up-black" className="grid-head-th-imgarrow" />
@@ -222,7 +238,7 @@ const Grid: React.FC<IGridProps> = ({ colDefs, rowsData, onRowClick, onRowDouble
                   state.colDefs.map((colDef, b) => {
                     return <td key={b} >
                       <div style={{ width: colDef.width }}>
-                        {rowData.data[colDef.field]}
+                        {getFieldData(colDef, rowData)}
                       </div>
                     </td>
                   })  

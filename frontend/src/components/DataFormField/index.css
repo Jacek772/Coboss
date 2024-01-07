@@ -20,6 +20,10 @@
   margin-right: 10px;
 }
 
+.dataformfield-input-textarea {
+  resize: none;
+}
+
 .dataformfield-input-readonly {
   background-color: rgba(192, 192, 192, 0.506);
 }

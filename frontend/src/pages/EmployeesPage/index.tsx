@@ -1,6 +1,6 @@
 // React
-import { useCallback, useEffect, useMemo, useState } from "react"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useCallback, useMemo } from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 // Hooks
 import useGlobalModal from "../../hooks/useGlobalModal/index.hook"
@@ -11,208 +11,67 @@ import ActionButtonsBar from "../../components/ActionButtonsBar"
 import DataForm from "../../components/DataForm"
 import PageBar from "../../components/PageBar"
 
+// Hooks
+import useDataForm from "./hooks/useDataForm/index.hook"
+import useGrid from "./hooks/useGrid/index.hook"
+
 // Types
 import GlobalModalTypeEnum from "../../components/GlobalModal/types/GlobalModalTypeEnum"
 import GlobalModalButtonsTypeEnum from "../../components/GlobalModal/types/GlobalModalButtonsTypeEnum"
 import GlobalModalClickResultEnum from "../../components/GlobalModal/types/GlobalModalClickResultEnum"
-import IGetEmployeesQuery from "../../types/Query/IGetEmployeesQuery"
-import CreateEmployeeCommand from "../../types/Commands/CreateEmployeeCommand"
-import UpdateEmployeeCommand from "../../types/Commands/UpdateEmployeeCommand"
-import EmployeesPageGridQueryState from "./types/EmployeesPageGridQueryState"
-import EmployeesPageGridState from "./types/EmployeesPageGridState"
 import ActionButtonType from "../../components/ActionButtonsBar/types/enums/ActionButtonType"
 import ActionButtonDef from "../../components/ActionButtonsBar/types/ActionButtonDef"
-import IRowData from "../../components/Grid/types/IRowData"
-import SortDirection from "../../components/Grid/types/enums/SortDirection"
-import EmployeeDataFormState from "./types/EmployeeDataFormState"
+import ActionTypeEnum from "../../types/ActionTypeEnum"
 
 // Configuration
 import gridColDefs from "./configuration/gridColDefs"
-import formRows from "./configuration/formRows"
 
 // Services
 import EmployeesService from "../../services/EmployeesService"
 
 // Css
-import "./index.css"
-import ActionTypeEnum from "../../types/ActionTypeEnum"
+import styles from "./index.module.css"
 
 const EmployeesPage: React.FC = () => {
-  const [dataFormState, setDataFormState] = useState<EmployeeDataFormState>({
-    visible: false,
-    action:ActionTypeEnum.NONE,
-    employeData: {
-      code: "",
-      name: "",
-      surname: "",
-      nip: "",
-      pesel: "",
-      dateOfBirth: "",
-      user: {
-        email: ""
-      }
-    }
-  })
-
-  const [gridState, setGridState] = useState<EmployeesPageGridState>({
-    selectedRows: []
-  })
-
-  const [gridQueryState, setGridQueryState] = useState<EmployeesPageGridQueryState>({ })
-
   const queryClient = useQueryClient()
-
   const [showGlobalModal, hideGlobalModal] = useGlobalModal()
-
-  const employessQuery = useQuery({
-    queryKey: ["getEmployess", gridQueryState],
-    queryFn: async () => {
-      const query: IGetEmployeesQuery = {
-        searchText: gridQueryState.searchText,
-        orderBy: gridQueryState.orderBy
-      };
-  
-      const employees = await EmployeesService
-        .getInstance()
-        .getEmployeesAsync(query)
-      return employees
-    },
-    staleTime: 60000
-  })
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["getEmployess"] })
-  }, [queryClient, gridQueryState])
-
-
-  const handleGridRowDoubleClick = useCallback((index: number, rowData: any) => {
-    setDataFormState({
-      ...dataFormState,
-      employeData: rowData.data,
-      action: ActionTypeEnum.EDIT,
-      visible: true
-    })
-  }, [dataFormState])
-
-  // Mutations
-  const createEmployeeMutation = useMutation({
-    mutationKey: ["createEmployee"],
-    mutationFn: async (createEmployeeCommand: CreateEmployeeCommand) => {
-      const employeesService: EmployeesService = EmployeesService.getInstance()
-      await employeesService.createEmployeesAsync(createEmployeeCommand)
-    }
-  })
-
-  const updateEmployeeMutation = useMutation({
-    mutationKey: ["updateEmployee"],
-    mutationFn: async (updateEmployeeCommand: UpdateEmployeeCommand) => {
-      const employeesService: EmployeesService = EmployeesService.getInstance()
-      await employeesService.updateEmployeesAsync(updateEmployeeCommand)
-    }
-  })
+  const dataFormData = useDataForm()
+  const gridData = useGrid()
 
   const deleteEmployeeMutation = useMutation({
     mutationKey: ["deleteEmployee"],
     mutationFn: async (ids: number[]) => {
       const employeesService: EmployeesService = EmployeesService.getInstance()
-      await employeesService.deleteEmployeesAsync(ids)
+      await employeesService.deleteAsync(ids)
     }
   })
 
-  // Handles
-  const handleFormSave = useCallback(async (formData) => {
-    if(dataFormState.action === ActionTypeEnum.ADD)
-    {
-      const createEmployeeCommand: CreateEmployeeCommand = {
-        name: formData.name,
-        surname: formData.surname,
-        dateOfBirth: formData.dateOfBirth,
-        nip: formData.nip,
-        pesel: formData.pesel
-      }
-
-      createEmployeeMutation.mutate(createEmployeeCommand, {
-        onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: ["getEmployess"] })
-          setDataFormState(s => ({
-            ...s,
-            visible: false
-          }))
-        },
-        onError: (error: Error) => {
-          showGlobalModal({
-            title: "Error",
-            text: error.message,
-            modalType: GlobalModalTypeEnum.Warning,
-            buttonsType: GlobalModalButtonsTypeEnum.Ok,
-            callback: (clickResult: GlobalModalClickResultEnum) => {
-              hideGlobalModal()
-            }
-          })
-        }
-      })
-    }
-    else if(dataFormState.action === ActionTypeEnum.EDIT)
-    {
-      const updateEmployeeCommand: UpdateEmployeeCommand = {
-        id: formData.id,
-        name: formData.name,
-        surname: formData.surname,
-        pesel: formData.pesel,
-        nip: formData.nip,
-        dateOfBirth: formData.dateOfBirth
-      }
-
-      updateEmployeeMutation.mutate(updateEmployeeCommand, {
-        onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: ["getEmployess"] })
-          setDataFormState(s => ({
-            ...s,
-            visible: false
-          }))
-        },
-        onError: (error: Error) => {
-          showGlobalModal({
-            title: "Error",
-            text: error.message,
-            modalType: GlobalModalTypeEnum.Warning,
-            buttonsType: GlobalModalButtonsTypeEnum.Ok,
-            callback: (clickResult: GlobalModalClickResultEnum) => {
-              hideGlobalModal()
-            }
-          })
-        }
-      })
-    }
-  }, [dataFormState, createEmployeeMutation, updateEmployeeMutation, queryClient, showGlobalModal, hideGlobalModal])
-
-  const handleFormClose = useCallback(() => {
-    setDataFormState({
-      ...dataFormState,
-      visible: false
-    })
-  }, [dataFormState])
-
+  const handleGridRowDoubleClick = useCallback((index: number, rowData: any) => {
+    dataFormData.setDataFormState(s => ({
+      ...s,
+      employeData: rowData.data,
+      action: ActionTypeEnum.EDIT,
+      visible: true
+    }))
+  }, [dataFormData])
 
   const handleClickDelete = useCallback(() => {
-    const ids: number[] = gridState.selectedRows.map(x => x.data.id as number)
-
+    const ids: number[] = gridData.gridState.selectedRows.map(x => x.data.id as number)
     if(ids.length === 0)
     {
       return
     }
 
     showGlobalModal({
-      title: "Delete employee", 
-      text: "Are you sure that want delete selected employee?", 
-      buttonsType: GlobalModalButtonsTypeEnum.YesNo, 
+      title: "Delete employees", 
+      text: "Are you sure that want delete selected employees?",
       modalType: GlobalModalTypeEnum.Warning,
+      buttonsType: GlobalModalButtonsTypeEnum.YesNo, 
       callback: (clickResult: GlobalModalClickResultEnum) => {
-        if(clickResult === GlobalModalClickResultEnum.Yes)
-        {
+        if(clickResult === GlobalModalClickResultEnum.Yes) {
           deleteEmployeeMutation.mutate(ids, { 
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ["getEmployess"] })
+              queryClient.invalidateQueries({ queryKey: ["employess"] })
             },
             onError: () => {
 
@@ -223,10 +82,10 @@ const EmployeesPage: React.FC = () => {
       }
     })
 
-  }, [gridState.selectedRows, deleteEmployeeMutation, queryClient, showGlobalModal, hideGlobalModal])
+  }, [gridData.gridState.selectedRows, deleteEmployeeMutation, queryClient, showGlobalModal, hideGlobalModal])
 
   const handleClickAdd = useCallback(() => {
-    setDataFormState(s => ({
+    dataFormData.setDataFormState(s => ({
       ...s,
       visible: true,
       action: ActionTypeEnum.ADD,
@@ -242,15 +101,7 @@ const EmployeesPage: React.FC = () => {
         }
       }
     }))
-  },[])
-  
-  const handleGridSortChanged = useCallback((field: string, direction: SortDirection) => {
-    setGridQueryState({
-      ...gridQueryState,
-      orderBy: `${field}:${direction}`
-    })
-
-  }, [setGridQueryState, gridQueryState])
+  },[dataFormData])
 
   const actionButtonDefs: ActionButtonDef[] = useMemo<ActionButtonDef[]>(() => [
     { 
@@ -265,37 +116,41 @@ const EmployeesPage: React.FC = () => {
     }
   ], [handleClickAdd, handleClickDelete])
 
-  const handleGridSelectionChanged = useCallback((rowsData: IRowData[]) => {
-    setGridState({...gridState, selectedRows: rowsData})
-  },[gridState, setGridState])
-
-  return <div className="page-container">
+  return <div className={styles.pageContainer}>
       <PageBar 
         caption="Employees"
         onChangeInput={
-          (text: string) => setGridQueryState(s => ({ searchText: text }))
+          (text: string) => gridData.setGridState(s => (
+            { 
+              ...s, 
+              query: {
+                ...s.query,
+                searchText: text 
+              }
+            }
+          ))
         }
       />
-      <div className="employeespage-actionbuttonsbar-container">
+      <div className={styles.actionbuttonsbarContainer}>
         <ActionButtonsBar buttonsData={actionButtonDefs} />
       </div>
-      <div className="employeespage-gird-container">
+      <div className={styles.girdContainer}>
         <Grid
           colDefs={gridColDefs}
-          rowsData={employessQuery.data}
+          rowsData={gridData.data}
+          onSelectionChanged={gridData.handleSelectionChanged}
+          onSortChanged={gridData.handleSortChanged}
           onRowDoubleClick={handleGridRowDoubleClick}
-          onSelectionChanged={handleGridSelectionChanged}
-          onSortChanged={handleGridSortChanged}
         />
       </div>
       {
-        dataFormState.visible ?
+        dataFormData.dataFormState.visible ?
           <DataForm
-            caption={`${dataFormState.employeData.name} ${dataFormState.employeData.surname} (${dataFormState.employeData.code})`}
-            data={dataFormState.employeData}
-            onSave={handleFormSave}
-            onClose={handleFormClose}
-            rows={formRows}/>
+            caption={`${dataFormData.dataFormState.employeData.name} ${dataFormData.dataFormState.employeData.surname} (${dataFormData.dataFormState.employeData.code})`}
+            data={dataFormData.dataFormState.employeData}
+            onSave={dataFormData.handleSave}
+            onClose={dataFormData.handleClose}
+            rows={dataFormData.formRows}/>
             :
             null
       }

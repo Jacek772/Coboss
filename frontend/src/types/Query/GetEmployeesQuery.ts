@@ -1,8 +1,8 @@
-interface IGetEmployeesQuery {
+interface GetEmployeesQuery {
   searchText?: string
   firstId?: Number
   size?: Number
   orderBy?: string
 }
 
-export default IGetEmployeesQuery
+export default GetEmployeesQuery

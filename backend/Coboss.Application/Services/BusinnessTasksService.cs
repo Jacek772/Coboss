@@ -44,6 +44,32 @@ namespace Coboss.Application.Services
             {
                 businnessTasks = businnessTasks.ApplaySort(query.OrderBy);
             }
+
+            if(query?.DateFrom is DateTime dateFrom)
+            {
+                businnessTasks = businnessTasks.Where(x => x.Date >= dateFrom);
+            }
+
+            if (query?.DateTo is DateTime dateTo)
+            {
+                businnessTasks = businnessTasks.Where(x => x.Date <= dateTo);
+            }
+
+            if(query?.TermFrom is DateTime termFrom)
+            {
+                businnessTasks = businnessTasks.Where(x => x.Term >= termFrom);
+            }
+
+            if (query?.TermTo is DateTime termTo)
+            {
+                businnessTasks = businnessTasks.Where(x => x.Term <= termTo);
+            }
+
+            if(query?.ProjectId is int projectId)
+            {
+                businnessTasks = businnessTasks.Where(x => x.ProjectId == projectId);
+            }
+
             return await businnessTasks.ToListAsync();
         }
 

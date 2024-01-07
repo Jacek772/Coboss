@@ -4,40 +4,40 @@ import Api from "./base/Api"
 import config from "../config"
 
 // Types
-import IGetEmployeesQuery from "../types/Query/IGetEmployeesQuery"
+import GetEmployeesQuery from "../types/Query/GetEmployeesQuery"
 import CreateEmployeeCommand from "../types/Commands/CreateEmployeeCommand"
 import UpdateEmployeeCommand from "../types/Commands/UpdateEmployeeCommand"
 
 class EmployeesApi extends Api {
   static baseRoute = "employees"
 
-  public async getEmployeesAsync(token: string, query?: IGetEmployeesQuery) {
-      return await this.get(this.getBasePath(), query, null, token)
+  public async getAsync(token: string, query?: GetEmployeesQuery) {
+      return await super.get(this.getBasePath(), query, null, token)
   }
 
-  public async deleteEmployeeAsync(token: string, id: number) {
-    return await this.delete(`${this.getBasePath()}/one/${id}`, null, false, null, token)
-  }
-
-  public async deleteEmployeesAsync(token: string, ids: number[]) {
+  public async createAsync(token: string, createEmployeeCommand: CreateEmployeeCommand) {
     const headers: any = {
       "Content-Type":"application/json"
     }
-    return await this.delete(`${this.getBasePath()}/many`, { ids }, true, headers, token)
+    return await super.post(this.getBasePath(), createEmployeeCommand, true, headers, token)
   }
 
-  public async createEmployeesAsync(token: string, createEmployeeCommand: CreateEmployeeCommand) {
+  public async updateAsync(token: string, updateEmployeeCommand: UpdateEmployeeCommand) {
     const headers: any = {
       "Content-Type":"application/json"
     }
-    return await this.post(this.getBasePath(), createEmployeeCommand, true, headers, token)
+    return await super.put(this.getBasePath(), updateEmployeeCommand, true, headers, token)
+  }
+  
+  public async deleteOneAsync(token: string, id: number) {
+    return await super.delete(`${this.getBasePath()}/one/${id}`, null, false, null, token)
   }
 
-  public async updateEmployeesAsync(token: string, updateEmployeeCommand: UpdateEmployeeCommand) {
+  public async deleteAsync(token: string, ids: number[]) {
     const headers: any = {
       "Content-Type":"application/json"
     }
-    return await this.put(this.getBasePath(), updateEmployeeCommand, true, headers, token)
+    return await super.delete(`${this.getBasePath()}/many`, { ids }, true, headers, token)
   }
 
   private getBasePath(): string {

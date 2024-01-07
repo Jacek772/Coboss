@@ -1,8 +1,8 @@
-import IColDefState from "./IColDefState"
+import ColDefState from "./ColDefState"
 import IRowData from "./IRowData"
 
 interface IGridState {
-  colDefs: IColDefState[],
+  colDefs: ColDefState[],
   rowsData: IRowData[]
 }
 

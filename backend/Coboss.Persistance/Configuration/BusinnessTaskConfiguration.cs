@@ -39,11 +39,15 @@ namespace Coboss.Persistance.Configuration
             // Realtionships
             builder
                 .HasMany(x => x.TaskRealisations)
-                .WithOne();
+                .WithOne(x => x.Task)
+                .HasForeignKey(x => x.TaskId)
+                .HasPrincipalKey(x => x.Id);
 
             builder
                 .HasMany(x => x.Comments)
-                .WithOne();
+                .WithOne(x => x.Task)
+                .HasForeignKey(x => x.TaskId)
+                .HasPrincipalKey(x => x.Id);
         }
     }
 }
