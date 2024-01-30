@@ -9,6 +9,10 @@ import ProjectsService from "../../../../services/ProjectsService"
 import DataFormFieldItemOption from "../../../../components/DataFormField/types/DataFormFieldItemOption"
 import DataFormRow from "../../../../components/DataForm/types/DataFormRow"
 import DataFormFieldType from "../../../../components/DataFormField/types/enums/DataFormFieldType"
+import DataFormRowTypeEnum from "../../../../components/DataForm/types/DataFormRowTypeEnum"
+import CommentsGrid from "../../../../components/CommentsGrid/inedx"
+import TaskRealisationsGrid from "../../../../components/TaskRealisationsGrid"
+
 
 const useFormRows = () => {
   const [state, setState] = useState({
@@ -40,6 +44,7 @@ const useFormRows = () => {
 
     const formRows: DataFormRow[] = [
       {
+        type: DataFormRowTypeEnum.Fields,
         items: [
           { label:"Name", name: "name", type: DataFormFieldType.String, validationSchema: z.string().min(1, { message: "Field is required" }) },
           { label:"Date", name: "date", type: DataFormFieldType.Date, validationSchema: z
@@ -55,13 +60,31 @@ const useFormRows = () => {
         ]
       },
       {
+        type: DataFormRowTypeEnum.Fields,
         items: [
-          { label: "Project", name:"project.id", type: DataFormFieldType.Select, options: projectOptions }
+          { label: "Project", name:"projectId", type: DataFormFieldType.Select, options: projectOptions }
         ]
       },
       {
+        type: DataFormRowTypeEnum.Fields,
         items: [
           { label:"Description", name: "description", type: DataFormFieldType.MultilineString, height: 200, width: 600, validationSchema: z.string().min(1, { message: "Field is required" })  },
+        ]
+      },
+      {
+        type: DataFormRowTypeEnum.Components,
+        caption: "Comments",
+        dataField: "comments",
+        components: [
+          CommentsGrid
+        ]
+      },
+      {
+        type: DataFormRowTypeEnum.Components,
+        caption: "Task realisations",
+        dataField: "taskRealisations",
+        components: [
+          TaskRealisationsGrid
         ]
       }
     ]
@@ -79,5 +102,6 @@ const useFormRows = () => {
 
   return [state.formRows]
 }
+
 
 export default useFormRows

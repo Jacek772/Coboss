@@ -9,12 +9,15 @@ namespace Coboss.Application.Seeds
     {
         private readonly IProjectsService _projectsService;
         private readonly IEmployeesService _employeesService;
+        private readonly IUsersService _usersService;
 
         public ProjectsSeed(IProjectsService projectsService,
-            IEmployeesService employeesService)
+            IEmployeesService employeesService,
+            IUsersService usersService)
         {
             _projectsService = projectsService;
             _employeesService = employeesService;
+            _usersService = usersService;
         }
 
         public async Task Seed()
@@ -24,6 +27,7 @@ namespace Coboss.Application.Seeds
                 return;
             }
 
+            List<User> users = await _usersService.GetAsync();
             List<Employee> employees =  await _employeesService.GetAsync();
 
             Project project1 = new Project
@@ -40,6 +44,36 @@ namespace Coboss.Application.Seeds
                         Date = DateTime.Now,
                         Description = "Ut quis felis egestas, accumsan velit ut, auctor sem. Nulla facilisi.",
                         Term = DateTime.Now.AddDays(30),
+                        Comments = new BusinnessTaskComment[]
+                        {
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 1",
+                                Date = DateTime.Now.AddDays(2),
+                                User = users.FirstOrDefault()
+                            },
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 2",
+                                Date = DateTime.Now.AddDays(5),
+                                User = users.FirstOrDefault()
+                            }
+                        },
+                        TaskRealisations = new BusinnessTaskRealisation[]
+                        {
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Analiza wymagań",
+                                TimeSpan = new TimeSpan(2,30,0)
+                            },
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Tworzenie rozwiązania",
+                                TimeSpan = new TimeSpan(4,0,0)
+                            }
+                        }
                     },
                     new BusinnessTask
                     {
@@ -47,6 +81,36 @@ namespace Coboss.Application.Seeds
                         Date = DateTime.Now.AddDays(-2),
                         Description = "Vivamus sed pulvinar ex. Nullam felis sem.",
                         Term = DateTime.Now.AddDays(80),
+                        Comments = new BusinnessTaskComment[]
+                        {
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 1",
+                                Date = DateTime.Now.AddDays(2),
+                                User = users.FirstOrDefault()
+                            },
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 2",
+                                Date = DateTime.Now.AddDays(5),
+                                User = users.FirstOrDefault()
+                            }
+                        },
+                        TaskRealisations = new BusinnessTaskRealisation[]
+                        {
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Analiza wymagań",
+                                TimeSpan = new TimeSpan(2,30,0)
+                            },
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Tworzenie rozwiązania",
+                                TimeSpan = new TimeSpan(4,0,0)
+                            }
+                        }
                     },
                     new BusinnessTask
                     {
@@ -54,6 +118,36 @@ namespace Coboss.Application.Seeds
                         Date = DateTime.Now.AddDays(-10),
                         Description = "Interdum et malesuada fames ac ante ipsum primis in faucibus.",
                         Term = DateTime.Now.AddDays(10),
+                        Comments = new BusinnessTaskComment[]
+                        {
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 1",
+                                Date = DateTime.Now.AddDays(2),
+                                User = users.FirstOrDefault()
+                            },
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 2",
+                                Date = DateTime.Now.AddDays(5),
+                                User = users.FirstOrDefault()
+                            }
+                        },
+                        TaskRealisations = new BusinnessTaskRealisation[]
+                        {
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Analiza wymagań",
+                                TimeSpan = new TimeSpan(2,30,0)
+                            },
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Tworzenie rozwiązania",
+                                TimeSpan = new TimeSpan(4,0,0)
+                            }
+                        }
                     },
                 }
             };
@@ -74,6 +168,36 @@ namespace Coboss.Application.Seeds
                         Date = DateTime.Now,
                         Description = "Ut quis felis egestas, accumsan velit ut, auctor sem. Nulla facilisi.",
                         Term = DateTime.Now.AddDays(30),
+                        Comments = new BusinnessTaskComment[]
+                        {
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 1",
+                                Date = DateTime.Now.AddDays(2),
+                                User = users.FirstOrDefault()
+                            },
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 2",
+                                Date = DateTime.Now.AddDays(5),
+                                User = users.FirstOrDefault()
+                            }
+                        },
+                        TaskRealisations = new BusinnessTaskRealisation[]
+                        {
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Analiza wymagań",
+                                TimeSpan = new TimeSpan(2,30,0)
+                            },
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Tworzenie rozwiązania",
+                                TimeSpan = new TimeSpan(4,0,0)
+                            }
+                        }
                     },
                     new BusinnessTask
                     {
@@ -81,6 +205,36 @@ namespace Coboss.Application.Seeds
                         Date = DateTime.Now.AddDays(-2),
                         Description = "Vivamus sed pulvinar ex. Nullam felis sem.",
                         Term = DateTime.Now.AddDays(80),
+                        Comments = new BusinnessTaskComment[]
+                        {
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 1",
+                                Date = DateTime.Now.AddDays(2),
+                                User = users.FirstOrDefault()
+                            },
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 2",
+                                Date = DateTime.Now.AddDays(5),
+                                User = users.FirstOrDefault()
+                            }
+                        },
+                        TaskRealisations = new BusinnessTaskRealisation[]
+                        {
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Analiza wymagań",
+                                TimeSpan = new TimeSpan(2,30,0)
+                            },
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Tworzenie rozwiązania",
+                                TimeSpan = new TimeSpan(4,0,0)
+                            }
+                        }
                     },
                     new BusinnessTask
                     {
@@ -88,6 +242,36 @@ namespace Coboss.Application.Seeds
                         Date = DateTime.Now.AddDays(-10),
                         Description = "Interdum et malesuada fames ac ante ipsum primis in faucibus.",
                         Term = DateTime.Now.AddDays(10),
+                        Comments = new BusinnessTaskComment[]
+                        {
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 1",
+                                Date = DateTime.Now.AddDays(2),
+                                User = users.FirstOrDefault()
+                            },
+                            new BusinnessTaskComment
+                            {
+                                Text = "Komentarz testowy 2",
+                                Date = DateTime.Now.AddDays(5),
+                                User = users.FirstOrDefault()
+                            }
+                        },
+                        TaskRealisations = new BusinnessTaskRealisation[]
+                        {
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Analiza wymagań",
+                                TimeSpan = new TimeSpan(2,30,0)
+                            },
+                            new BusinnessTaskRealisation
+                            {
+                                Date = DateTime.Now,
+                                Description = "Tworzenie rozwiązania",
+                                TimeSpan = new TimeSpan(4,0,0)
+                            }
+                        }
                     },
                 }
             };

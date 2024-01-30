@@ -22,6 +22,10 @@ const FiltersBarItem: React.FC<FiltersBarItemProps> = ({ name, label, type, onCh
 
         onChange(name, [dateFrom.toJSON(), dateTo.toJSON()])
       }
+      else
+      {
+        onChange(name, [])
+      }
     }
     else
     {

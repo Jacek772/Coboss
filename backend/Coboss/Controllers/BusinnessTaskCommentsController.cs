@@ -10,7 +10,7 @@ namespace Coboss.Controllers
 {
     [Route("api/taskcomments")]
     [ApiController]
-    public class BusinnessTaskCommentsController : BaseApiController
+    public class BusinnessTaskCommentsController : ApiControllerBase
     {
         public BusinnessTaskCommentsController(IMediator mediator) : base(mediator)
         {

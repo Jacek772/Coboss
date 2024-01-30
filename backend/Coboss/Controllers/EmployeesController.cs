@@ -10,7 +10,7 @@ namespace Coboss.Controllers
 {
     [Route("api/employees")]
     [Authorize]
-    public class EmployeesController : BaseApiController
+    public class EmployeesController : ApiControllerBase
     {
         public EmployeesController(IMediator mediator) : base(mediator)
         {

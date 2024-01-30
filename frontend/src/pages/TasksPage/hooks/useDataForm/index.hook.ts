@@ -9,6 +9,8 @@ import GlobalModalTypeEnum from "../../../../components/GlobalModal/types/Global
 import GlobalModalButtonsTypeEnum from "../../../../components/GlobalModal/types/GlobalModalButtonsTypeEnum"
 import GlobalModalClickResultEnum from "../../../../components/GlobalModal/types/GlobalModalClickResultEnum"
 import useFormRows from "../useFormRows/index.hook"
+import CreateBusinnessTaskCommentCommand from "../../../../types/Commands/CreateBusinnessTaskCommentCommand"
+import BusinnessTasksCommentsService from "../../../../services/BusinnessTasksCommentsService"
 
 const useDataForm = () => {
   const [dataFormState, setDataFormState] = useState({
@@ -21,7 +23,9 @@ const useDataForm = () => {
       term: "",
       project: {
         id: 0
-      }
+      },
+      comments: [],
+      taskRealisations: []
     }
   })
 
@@ -45,15 +49,39 @@ const useDataForm = () => {
     }
   })
 
+  // const createCommentMutation = useMutation({
+  //   mutationKey: ["createComment"],
+  //   mutationFn: async (command: CreateBusinnessTaskCommentCommand) => {
+  //     const businnessTasksCommentsService: BusinnessTasksCommentsService = BusinnessTasksCommentsService.getInstance()
+  //     await businnessTasksCommentsService.createAsync(command)
+  //   }
+  // })
+
+  const deleteCommentsMutation = useMutation({
+    mutationKey: ["deleteComments"],
+    mutationFn: async (ids: number[]) => {
+      const businnessTasksCommentsService: BusinnessTasksCommentsService = BusinnessTasksCommentsService.getInstance()
+      await businnessTasksCommentsService.deleteAsync(ids)
+    }
+  })
+
   const handleSave = useCallback(async (formData) => {
     if(dataFormState.action === ActionTypeEnum.ADD)
     {
+      const newComments: CreateBusinnessTaskCommentCommand[] = formData.comments.filter(x => x.id < 0).map(x => ({
+        text: x.text,
+        date: x.date,
+        userId: x.user.id,
+        taskId: 0
+      }))
+
       const command: CreateBusinnessTaskCommand = {
         name: formData.name,
         description: formData.description,
         term: formData.term,
         date: formData.date,
-        projectId: formData.project.id
+        projectId: formData.projectId,
+        comments: newComments
       }
 
       await createBusinessTaskMutation.mutateAsync(command, {
@@ -83,8 +111,24 @@ const useDataForm = () => {
         id: formData.id,
         name: formData.name,
         description: formData.description,
-        term: formData.term
+        date: formData.date,
+        term: formData.term,
+        projectId: formData.projectId,
       }
+
+      // Comments
+      command.newComments = formData.comments.filter(x => x.id < 0).map(x => ({
+        text: x.text,
+        date: x.date,
+        userId: x.user.id,
+        taskId: 0
+      }))
+
+      command.updatedComments = formData.comments.filter(x => x.id > 0).map(x => ({
+        id: x.id,
+        text: x.text,
+      })) 
+
 
       await updateBusinessTaskMutation.mutateAsync(command, {
         onSuccess: async () => {
@@ -106,8 +150,38 @@ const useDataForm = () => {
           })
         }
       })
+
+      const commentsToDeleteIds: number[] = dataFormState.businessTaskData.comments
+        .filter(x => !formData.comments.some(y => y.id === x.id))
+        .map(x => x.id)
+
+      if(commentsToDeleteIds.length > 0)
+      {
+        await deleteCommentsMutation.mutateAsync(commentsToDeleteIds, {
+          onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["businnessTasks"] })
+            setDataFormState(s => ({
+              ...s,
+              visible: false
+            }))
+          },
+          onError: (error: Error) => {
+            showGlobalModal({
+              title: "Error",
+              text: error.message,
+              modalType: GlobalModalTypeEnum.Warning,
+              buttonsType: GlobalModalButtonsTypeEnum.Ok,
+              callback: (clickResult: GlobalModalClickResultEnum) => {
+                hideGlobalModal()
+              }
+            })
+          }
+        })
+      }
+
+      // Task realisations
     }
-  }, [dataFormState, createBusinessTaskMutation, updateBusinessTaskMutation, queryClient, hideGlobalModal, showGlobalModal])
+  }, [dataFormState, createBusinessTaskMutation, updateBusinessTaskMutation, queryClient, hideGlobalModal, showGlobalModal, deleteCommentsMutation])
 
   const handleClose = useCallback(() => {
     setDataFormState(s => ({

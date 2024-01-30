@@ -26,8 +26,8 @@ namespace Coboss.Application.Services
             if (!string.IsNullOrEmpty(query.SearchText))
             {
                 businnessTaskComments = businnessTaskComments
-                    .Where(x => EF.Functions.ILike(x.Text, $"%{query.SearchText}%")
-                            || EF.Functions.ILike(x.User.Email, $"%{query.SearchText}%"));
+                    .Where(x => x.Text.ToLower().Contains(query.SearchText.ToLower())
+                        || x.User.Email.ToLower().Contains(query.SearchText.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(query?.OrderBy) && !string.IsNullOrEmpty(query?.OrderBy))

@@ -10,7 +10,7 @@ namespace Coboss.Controllers
 {
     [Route("api/projects")]
     [Authorize]
-    public class ProjectsController : BaseApiController
+    public class ProjectsController : ApiControllerBase
     {
         public ProjectsController(IMediator mediator) : base(mediator)
         {

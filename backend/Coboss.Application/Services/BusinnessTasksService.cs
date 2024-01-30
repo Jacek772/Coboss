@@ -1,9 +1,11 @@
 ﻿using Coboss.Application.Extensions;
+using Coboss.Application.Functions.Commands.BusinnessTaskComments;
 using Coboss.Application.Functions.Commands.BusinnessTasks;
 using Coboss.Application.Functions.Query.BusinnessTasks;
 using Coboss.Application.Services.Abstracts;
 using Coboss.Core.Entities;
 using Coboss.Persistance;
+using Coboss.Types.DTO;
 using Coboss.Types.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -24,6 +26,8 @@ namespace Coboss.Application.Services
             return await _applicationDbContext.BusinnessTasks
                 .Include(x => x.TaskRealisations)
                 .Include(x => x.Comments)
+                .ThenInclude(x => x.User)
+                .Include(x => x.Project)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -31,13 +35,15 @@ namespace Coboss.Application.Services
         {
             IQueryable<BusinnessTask> businnessTasks = _applicationDbContext.BusinnessTasks
                 .Include(x => x.TaskRealisations)
-                .Include(x => x.Comments);
+                .Include(x => x.Comments)
+                .ThenInclude(x => x.User)
+                .Include(x => x.Project);
 
             if(!string.IsNullOrEmpty(query.SearchText))
             {
-                businnessTasks = businnessTasks
-                    .Where(x => EF.Functions.ILike(x.Name, $"%{query.SearchText}%")
-                       || EF.Functions.ILike(x.Description, $"%{query.SearchText}%"));
+                businnessTasks = businnessTasks.Where(x =>
+                    x.Name.ToLower().Contains(query.SearchText.ToLower())
+                    || x.Description.ToLower().Contains(query.SearchText.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(query?.OrderBy) && !string.IsNullOrEmpty(query?.OrderBy))
@@ -139,6 +145,44 @@ namespace Coboss.Application.Services
                     if (command.Date is DateTime date)
                     {
                         businnessTask.Date = date;
+                    }
+
+                    if(command.ProjectId is int projectId)
+                    {
+                        businnessTask.ProjectId = projectId;
+                    }
+
+                    if(command.NewComments?.Length > 0)
+                    {
+                        List<BusinnessTaskComment> businnessTaskComments = new List<BusinnessTaskComment>();
+                        foreach(CreateBusinnessTaskCommentCommand commentCommand in command.NewComments)
+                        {
+                            BusinnessTaskComment businnessTaskComment = new BusinnessTaskComment
+                            {
+                                Date = commentCommand.Date,
+                                Text = commentCommand.Text,
+                                User = await _applicationDbContext.Users.FirstOrDefaultAsync(x => x.Id == commentCommand.UserId)
+                            };
+
+                            businnessTaskComments.Add(businnessTaskComment);
+                        }
+
+                        businnessTask.Comments = businnessTaskComments;
+                    }
+
+                    if(command.UpdatedComments?.Length > 0)
+                    {
+                        foreach(UpdateBusinnessTaskCommentCommand updateBusinnessTaskCommentCommand in command.UpdatedComments)
+                        {
+                            BusinnessTaskComment businnessTaskComment = await _applicationDbContext.BusinnessTaskComments.FirstOrDefaultAsync(x => x.Id == updateBusinnessTaskCommentCommand.Id);
+                            if(updateBusinnessTaskCommentCommand.Text is string text)
+                            {
+                                businnessTaskComment.Text = text;
+                            }
+
+                            businnessTaskComment.Date = DateTime.Now;
+                            _applicationDbContext.BusinnessTaskComments.Update(businnessTaskComment);
+                        }
                     }
 
                     await _applicationDbContext.SaveChangesAsync();

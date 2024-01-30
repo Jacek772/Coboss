@@ -1,7 +1,12 @@
+import React from "react"
 import DataFormFieldData from "./DataFormFieldData"
+import DataFormRowTypeEnum from "./DataFormRowTypeEnum"
 
 type DataFormRow = {
-  items: DataFormFieldData[]
+  type: DataFormRowTypeEnum,
+  items?: DataFormFieldData[]
+  dataField?: string
+  components?: React.FC[]
   caption?: string
   height?: number
 }

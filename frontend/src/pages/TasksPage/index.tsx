@@ -12,15 +12,15 @@ import GlobalModalClickResultEnum from "../../components/GlobalModal/types/Globa
 import BusinnessTasksService from "../../services/BusinnessTasksService"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import ActionButtonsBar from "../../components/ActionButtonsBar"
-
-// Css
-import styles from "./index.module.css"
 import FiltersBar from "../../components/FiltersBar"
 import FiltersBarValue from "../../components/FiltersBar/types/FiltersBarValue"
 import useFiltersBarItems from "./hooks/useFiltersBarItems/index.hook"
 import useDataForm from "./hooks/useDataForm/index.hook"
 import DataForm from "../../components/DataForm"
 import ActionTypeEnum from "../../types/ActionTypeEnum"
+
+// Css
+import styles from "./index.module.css"
 
 const TasksPage: React.FC = () => {
   const queryClient = useQueryClient()
@@ -59,7 +59,9 @@ const TasksPage: React.FC = () => {
         term: "",
         project: {
           id: 0
-        } 
+        },
+        comments: [],
+        taskRealisations: []
       }
     }))
   },[dataFormData])
@@ -79,8 +81,24 @@ const TasksPage: React.FC = () => {
       callback: (clickResult: GlobalModalClickResultEnum) => {
         if(clickResult === GlobalModalClickResultEnum.Yes) {
           deleteBusinnessTasksMutation.mutate(ids, {
-            onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ["businnessTasks"] })
+            onSuccess: async () => {
+              await queryClient.invalidateQueries({ queryKey: ["businnessTasks"] })
+              dataFormData.setDataFormState(s => ({
+                ...s,
+                visible: true,
+                action: ActionTypeEnum.ADD,
+                businessTaskData: {
+                  name:"?",
+                  description: "",
+                  date: "",
+                  term: "",
+                  project: {
+                    id: 0
+                  },
+                  comments: [],
+                  taskRealisations: []
+                }
+              }))
             },
             onError: () => {
 
@@ -190,6 +208,7 @@ const TasksPage: React.FC = () => {
   return <div className={styles.pageContainer}>
     <PageBar
       caption="Tasks"
+      searchVisible={true}
       onChangeInput={
         (text: string) => {
           gridData.setGridState(s => ({...s, query: { ...s.query, searchText: text }}))

@@ -70,8 +70,8 @@ const EmployeesPage: React.FC = () => {
       callback: (clickResult: GlobalModalClickResultEnum) => {
         if(clickResult === GlobalModalClickResultEnum.Yes) {
           deleteEmployeeMutation.mutate(ids, { 
-            onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ["employess"] })
+            onSuccess: async () => {
+              await queryClient.invalidateQueries({ queryKey: ["employess"] })
             },
             onError: () => {
 
@@ -119,6 +119,7 @@ const EmployeesPage: React.FC = () => {
   return <div className={styles.pageContainer}>
       <PageBar 
         caption="Employees"
+        searchVisible={true}
         onChangeInput={
           (text: string) => gridData.setGridState(s => (
             { 

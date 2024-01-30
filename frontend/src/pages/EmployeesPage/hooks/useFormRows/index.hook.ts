@@ -4,6 +4,7 @@ import { z } from "zod"
 import { useCallback, useEffect, useState } from "react"
 import DataFormRow from "../../../../components/DataForm/types/DataFormRow"
 import DataFormFieldType from "../../../../components/DataFormField/types/enums/DataFormFieldType"
+import DataFormRowTypeEnum from "../../../../components/DataForm/types/DataFormRowTypeEnum"
 
 const useFormRows = () => {
   const [state, setState] = useState({
@@ -13,12 +14,14 @@ const useFormRows = () => {
   const getData = useCallback(async () => {
     const formRows: DataFormRow[] = [
       {
+        type: DataFormRowTypeEnum.Fields,
         caption:"User",
         items: [
           { label:"Email", isReadonly: true, name: "user.email", type: DataFormFieldType.String }
         ]
       },
       {
+        type: DataFormRowTypeEnum.Fields,
         caption:"Employee",
         items: [
           { label:"Code", isReadonly: true, name: "code", type: DataFormFieldType.String },
@@ -27,6 +30,7 @@ const useFormRows = () => {
         ]
       },
       {
+        type: DataFormRowTypeEnum.Fields,
         items: [
           { 
             label:"Date of birth", name: "dateOfBirth", type: DataFormFieldType.Date, validationSchema: z

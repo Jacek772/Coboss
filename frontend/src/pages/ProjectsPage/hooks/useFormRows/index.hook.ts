@@ -10,6 +10,7 @@ import EmployeesService from "../../../../services/EmployeesService"
 import DataFormRow from "../../../../components/DataForm/types/DataFormRow"
 import DataFormFieldType from "../../../../components/DataFormField/types/enums/DataFormFieldType"
 import DataFormFieldItemOption from "../../../../components/DataFormField/types/DataFormFieldItemOption"
+import DataFormRowTypeEnum from "../../../../components/DataForm/types/DataFormRowTypeEnum"
 
 const useFormRows = () => {
   const [state, setState] = useState({
@@ -39,12 +40,14 @@ const useFormRows = () => {
 
     const formRows: DataFormRow[] = [
       {
+        type: DataFormRowTypeEnum.Fields,
         items: [
           { label:"Number", isReadonly: true, name: "number", type: DataFormFieldType.String },
           { label:"Name", name: "name", type: DataFormFieldType.String, validationSchema: z.string().min(1, { message: "Field is required" }) },
         ]
       },
       {
+        type: DataFormRowTypeEnum.Fields,
         items: [
           { 
             label:"Term", name: "term", type: DataFormFieldType.Date, validationSchema: z
@@ -58,6 +61,7 @@ const useFormRows = () => {
         ]
       },
       {
+        type: DataFormRowTypeEnum.Fields,
         items: [
           { label:"Description", name: "description", type: DataFormFieldType.MultilineString, height: 200, width: 600 },
         ]

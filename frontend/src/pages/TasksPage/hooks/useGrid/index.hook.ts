@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import GetBusinnessTasksQuery from "../../../../types/Query/GetBusinnessTasksQuery"
 import TasksPageGridState from "../../types/TasksPageGridState"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import BusinnessTasksService from "../../../../services/BusinnessTasksService"
 import SortDirectionEnum from "../../../../components/Grid/types/enums/SortDirectionEnum"
 import IRowData from "../../../../components/Grid/types/IRowData"

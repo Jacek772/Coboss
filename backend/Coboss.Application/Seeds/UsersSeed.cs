@@ -38,6 +38,5 @@ namespace Coboss.Application.Seeds
                 await _usersService.CreateAsync(user);
             }
         }
-
     }
 }

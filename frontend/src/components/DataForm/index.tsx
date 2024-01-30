@@ -23,6 +23,7 @@ import DataFormField from "../DataFormField"
 
 // Css
 import "./index.css"
+import DataFormRowTypeEnum from "./types/DataFormRowTypeEnum";
 
 const DataForm = <T,>({ caption, data, rows, onSave, onClose }: DataFormProps<T>) => {
   const [dataFormFieldsDataState, setDataFormFieldsDataState] = useState<DataFormFieldDataState[]>([])
@@ -39,7 +40,7 @@ const DataForm = <T,>({ caption, data, rows, onSave, onClose }: DataFormProps<T>
           value: ObjectUtils.getValueByPath(stateData, fieldData.name), 
           validationSchema: fieldData.validationSchema 
         }
-      })
+      }) ?? []
       return [...acc, ...fieldsData]
     }, [])
 
@@ -159,20 +160,42 @@ const DataForm = <T,>({ caption, data, rows, onSave, onClose }: DataFormProps<T>
                 :
                 null
             }
-            <div key={indexRow} className="dataform-row-fields">
-              {
-                dataFormRow.items.map((fieldData: DataFormFieldData, indexItem: number) => {
-                  return <DataFormField
-                    key={indexItem}
-                    {...fieldData}
-                    value={ObjectUtils.getValueByPath(stateData, fieldData.name)}
-                    errorMessage={getErrorMessage(fieldData.name)}
-                    onChange={handleChange}
-                    onError={handleError}
-                  />
-                })
-              }
-            </div>
+            {
+              dataFormRow.type === DataFormRowTypeEnum.Fields ?
+              <div key={indexRow} className="dataform-row-fields">
+                {
+                  dataFormRow.items?.map((fieldData: DataFormFieldData, indexItem: number) => {
+                    return <DataFormField
+                      key={indexItem}
+                      {...fieldData}
+                      value={ObjectUtils.getValueByPath(stateData, fieldData.name)}
+                      errorMessage={getErrorMessage(fieldData.name)}
+                      onChange={handleChange}
+                      onError={handleError}
+                    />
+                  })
+                }
+              </div>
+              :
+              null
+            }
+            {
+              dataFormRow.type === DataFormRowTypeEnum.Components ?
+              <div>
+                {
+                  dataFormRow.components?.map((Component: React.FC<any>, indexItem: number) => {
+                    return <Component key={indexItem} data={stateData[dataFormRow.dataField]} setData={
+                      (data) => setStateData({
+                        ...stateData,
+                        [dataFormRow.dataField]: data
+                      })
+                    } />
+                  })
+                }
+              </div>
+              :
+              null
+            }
           </div>
         })
       }

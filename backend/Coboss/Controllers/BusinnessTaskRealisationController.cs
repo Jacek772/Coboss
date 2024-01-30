@@ -10,7 +10,7 @@ namespace Coboss.Controllers
 {
     [Route("api/taskrealisations")]
     [ApiController]
-    public class BusinnessTaskRealisationsController : BaseApiController
+    public class BusinnessTaskRealisationsController : ApiControllerBase
     {
         public BusinnessTaskRealisationsController(IMediator mediator) : base(mediator)
         {

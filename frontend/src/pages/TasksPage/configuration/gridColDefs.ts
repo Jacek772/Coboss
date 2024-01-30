@@ -9,14 +9,14 @@ const gridColDefs: ColDefProps[] = [
     width: 200
   },
   {
-    caption: "Date",
-    field: "date",
+    caption:"Date",
+    field:"date",
     width: 200,
     type: GridColTypeEnum.Date
   },
   {
-    caption: "Term",
-    field: "term",
+    caption:"Term",
+    field:"term",
     width: 200,
     type: GridColTypeEnum.Date
   }

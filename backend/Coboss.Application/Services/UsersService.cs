@@ -21,6 +21,14 @@ namespace Coboss.Application.Services
             _passwordHasherService = passwordHasherService;
         }
 
+        public async Task<List<User>> GetAsync()
+        {
+            return await _applicationDbContext.Users
+                .Include(x => x.Role)
+                .Include(x => x.Employee)
+                .ToListAsync();
+        }
+
         public async Task<User> GetByIdAsync(int id)
         {
             return await _applicationDbContext.Users

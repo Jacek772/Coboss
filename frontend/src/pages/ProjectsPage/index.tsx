@@ -82,8 +82,8 @@ const ProjectsPage: React.FC = () => {
       callback: (clickResult: GlobalModalClickResultEnum) => {
         if(clickResult === GlobalModalClickResultEnum.Yes) {
           deleteProjectsMutation.mutate(ids, {
-            onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ["projects"] })
+            onSuccess: async () => {
+              await queryClient.invalidateQueries({ queryKey: ["projects"] })
             },
             onError: () => {
 
@@ -168,6 +168,7 @@ const ProjectsPage: React.FC = () => {
   return <div className={styles.pageContainer}>
     <PageBar
       caption="Projects"
+      searchVisible={true}
       onChangeInput={
         (text: string) => {
           gridData.setGridState(s => ({...s, query: { ...s.query, searchText: text }}))

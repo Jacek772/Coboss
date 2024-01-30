@@ -34,22 +34,6 @@ namespace Coboss.Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeCodes",
-                schema: "coboss",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EntityName = table.Column<string>(type: "text", nullable: false),
-                    CodeNumber = table.Column<int>(type: "integer", nullable: false),
-                    CodeLength = table.Column<int>(type: "integer", nullable: false, defaultValue: 10)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeeCodes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Employees",
                 schema: "coboss",
                 columns: table => new
@@ -82,6 +66,22 @@ namespace Coboss.Persistance.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GlobalSettings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ObjectCodes",
+                schema: "coboss",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EntityName = table.Column<string>(type: "text", nullable: false),
+                    CodeNumber = table.Column<int>(type: "integer", nullable: false),
+                    CodeLength = table.Column<int>(type: "integer", nullable: false, defaultValue: 10)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ObjectCodes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,7 +132,7 @@ namespace Coboss.Persistance.Migrations
                     Number = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Term = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 2, 21, 38, 44, 282, DateTimeKind.Utc).AddTicks(3516)),
+                    Term = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 7, 13, 22, 3, 973, DateTimeKind.Utc).AddTicks(4853)),
                     ManagerId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -187,9 +187,9 @@ namespace Coboss.Persistance.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 2, 21, 38, 44, 281, DateTimeKind.Utc).AddTicks(3552)),
-                    Term = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 2, 21, 38, 44, 281, DateTimeKind.Utc).AddTicks(3736)),
-                    ProjectId = table.Column<int>(type: "integer", nullable: true)
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 7, 13, 22, 3, 972, DateTimeKind.Utc).AddTicks(5293)),
+                    Term = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 7, 13, 22, 3, 972, DateTimeKind.Utc).AddTicks(5469)),
+                    ProjectId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -199,7 +199,8 @@ namespace Coboss.Persistance.Migrations
                         column: x => x.ProjectId,
                         principalSchema: "coboss",
                         principalTable: "Projects",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,7 +212,7 @@ namespace Coboss.Persistance.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Token = table.Column<string>(type: "character varying(88)", maxLength: 88, nullable: false),
                     JwtId = table.Column<string>(type: "text", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 2, 21, 38, 44, 282, DateTimeKind.Utc).AddTicks(5370)),
+                    CreationDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 7, 13, 22, 3, 973, DateTimeKind.Utc).AddTicks(7056)),
                     ExpiryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Used = table.Column<bool>(type: "boolean", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false)
@@ -236,19 +237,20 @@ namespace Coboss.Persistance.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Text = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 2, 21, 38, 44, 281, DateTimeKind.Utc).AddTicks(2194)),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 7, 13, 22, 3, 972, DateTimeKind.Utc).AddTicks(3915)),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    BusinnessTaskId = table.Column<int>(type: "integer", nullable: true)
+                    TaskId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BusinnessTaskComments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BusinnessTaskComments_BusinnessTasks_BusinnessTaskId",
-                        column: x => x.BusinnessTaskId,
+                        name: "FK_BusinnessTaskComments_BusinnessTasks_TaskId",
+                        column: x => x.TaskId,
                         principalSchema: "coboss",
                         principalTable: "BusinnessTasks",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BusinnessTaskComments_Users_UserId",
                         column: x => x.UserId,
@@ -265,20 +267,21 @@ namespace Coboss.Persistance.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 2, 21, 38, 44, 281, DateTimeKind.Utc).AddTicks(6508)),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValue: new DateTime(2024, 1, 7, 13, 22, 3, 972, DateTimeKind.Utc).AddTicks(9012)),
                     TimeSpan = table.Column<TimeSpan>(type: "interval", nullable: false, defaultValue: new TimeSpan(0, 0, 0, 0, 0)),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    BusinnessTaskId = table.Column<int>(type: "integer", nullable: true)
+                    TaskId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BusinnessTaskRealisations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BusinnessTaskRealisations_BusinnessTasks_BusinnessTaskId",
-                        column: x => x.BusinnessTaskId,
+                        name: "FK_BusinnessTaskRealisations_BusinnessTasks_TaskId",
+                        column: x => x.TaskId,
                         principalSchema: "coboss",
                         principalTable: "BusinnessTasks",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -289,10 +292,10 @@ namespace Coboss.Persistance.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BusinnessTaskComments_BusinnessTaskId",
+                name: "IX_BusinnessTaskComments_TaskId",
                 schema: "coboss",
                 table: "BusinnessTaskComments",
-                column: "BusinnessTaskId");
+                column: "TaskId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BusinnessTaskComments_UserId",
@@ -301,23 +304,16 @@ namespace Coboss.Persistance.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BusinnessTaskRealisations_BusinnessTaskId",
+                name: "IX_BusinnessTaskRealisations_TaskId",
                 schema: "coboss",
                 table: "BusinnessTaskRealisations",
-                column: "BusinnessTaskId");
+                column: "TaskId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BusinnessTasks_ProjectId",
                 schema: "coboss",
                 table: "BusinnessTasks",
                 column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmployeeCodes_CodeNumber",
-                schema: "coboss",
-                table: "EmployeeCodes",
-                column: "CodeNumber",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeHistories_EmployeeId",
@@ -330,6 +326,13 @@ namespace Coboss.Persistance.Migrations
                 schema: "coboss",
                 table: "GlobalSettings",
                 column: "Key",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ObjectCodes_EntityName_CodeNumber",
+                schema: "coboss",
+                table: "ObjectCodes",
+                columns: new[] { "EntityName", "CodeNumber" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -401,15 +404,15 @@ namespace Coboss.Persistance.Migrations
                 schema: "coboss");
 
             migrationBuilder.DropTable(
-                name: "EmployeeCodes",
-                schema: "coboss");
-
-            migrationBuilder.DropTable(
                 name: "EmployeeHistories",
                 schema: "coboss");
 
             migrationBuilder.DropTable(
                 name: "GlobalSettings",
+                schema: "coboss");
+
+            migrationBuilder.DropTable(
+                name: "ObjectCodes",
                 schema: "coboss");
 
             migrationBuilder.DropTable(

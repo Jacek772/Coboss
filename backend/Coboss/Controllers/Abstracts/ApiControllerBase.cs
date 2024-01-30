@@ -6,11 +6,11 @@ namespace Coboss.Controllers.Abstracts
 {
     [EnableCors("AllowSpecificOrigin")]
     [ApiController]
-    public abstract class BaseApiController : Controller
+    public abstract class ApiControllerBase : ControllerBase
     {
         protected readonly IMediator _mediator;
 
-        public BaseApiController(IMediator mediator)
+        public ApiControllerBase(IMediator mediator)
         {
             _mediator = mediator;
         }

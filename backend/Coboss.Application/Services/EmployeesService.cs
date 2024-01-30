@@ -41,10 +41,11 @@ namespace Coboss.Application.Services
             if (!string.IsNullOrEmpty(getEmployeesQuery?.SearchText))
             {
                 employees = employees
-                    .Where(x => EF.Functions.ILike(x.Name, $"%{getEmployeesQuery.SearchText}%")
-                       || EF.Functions.ILike(x.Surname, $"%{getEmployeesQuery.SearchText}%")
-                       || EF.Functions.ILike(x.PESEL, $"%{getEmployeesQuery.SearchText}%")
-                       || EF.Functions.ILike(x.NIP, $"%{getEmployeesQuery.SearchText}%"));
+                    .Where(x => x.Name.ToLower().Contains(getEmployeesQuery.SearchText.ToLower())
+                        || x.Surname.ToLower().Contains(getEmployeesQuery.SearchText.ToLower())
+                        || (x.NIP != null && x.NIP.ToLower().Contains(getEmployeesQuery.SearchText.ToLower()))
+                        || (x.PESEL != null && x.PESEL.ToLower().Contains(getEmployeesQuery.SearchText.ToLower()))
+                    );
             }
 
             if (getEmployeesQuery?.FirstId != null)

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Coboss.Controllers
 {
     [Route("api/auth")]
-    public class AuthController : BaseApiController
+    public class AuthController : ApiControllerBase
     {
         public AuthController(IMediator mediator) : base(mediator)
         {
