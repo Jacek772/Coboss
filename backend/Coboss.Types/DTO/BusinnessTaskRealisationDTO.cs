@@ -6,5 +6,6 @@
         public DateTime Date { get; set; }
         public TimeSpan TimeSpan { get; set; }
         public string? Description { get; set; }
+        public EmployeeDTO Employee { get; set; } = default!;
     }
 }

@@ -9,18 +9,17 @@ import DataFormFieldType from "../../../../components/DataFormField/types/enums/
 import DataFormRowTypeEnum from "../../../../components/DataForm/types/DataFormRowTypeEnum"
 import EmployeesService from "../../../../services/EmployeesService"
 
-
 const useFormRows = () => {
   const [state, setState] = useState({
     formRows: []
   })
 
   const employessQuery = useQuery({
-    queryKey: ["employessOptionsTaskRealistaionsGrid"],
+    queryKey: ["employessOptionsEmployeessGrid"],
     queryFn: async() => {
       return EmployeesService
-      .getInstance()
-      .getAllAsync()
+        .getInstance()
+        .getAllAsync()
     },
     staleTime: 60000
   })
@@ -36,20 +35,11 @@ const useFormRows = () => {
       value: x.id.toString()
     }))
 
-    employeeOptions.unshift({ text: "", value: "" })
-
     const formRows: DataFormRow[] = [
       {
         type: DataFormRowTypeEnum.Fields,
         items: [
-          { label:"Employee", name:"employee.id", type: DataFormFieldType.Select, options: employeeOptions },
-          { label:"Time span", name: "timeSpan", type: DataFormFieldType.String }
-        ]
-      },
-      {
-        type: DataFormRowTypeEnum.Fields,
-        items: [
-          { label:"Text", name: "description", type: DataFormFieldType.MultilineString, height: 200, width: 600, validationSchema: z.string().min(1, { message: "Field is required" })  },
+          { label:"Employee", name:"employeeId", type: DataFormFieldType.Select, options: employeeOptions },
         ]
       },
     ]

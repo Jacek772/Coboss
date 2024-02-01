@@ -13,5 +13,7 @@ namespace Coboss.Core.Entities
 
         public User? User { get; set; }
         public ICollection<EmployeeHistory> EmployeeHistories { get; set; } = default!;
+        public ICollection<BusinnessTaskEmployee> BusinnessTasksUsers { get; set; } = default!;
+        public ICollection<BusinnessTaskRealisation> BusinnessTaskRealisations { get; set; } = default!;
     }
 }

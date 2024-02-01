@@ -11,6 +11,7 @@ import GlobalModalClickResultEnum from "../../../../components/GlobalModal/types
 import useFormRows from "../useFormRows/index.hook"
 import CreateBusinnessTaskCommentCommand from "../../../../types/Commands/CreateBusinnessTaskCommentCommand"
 import BusinnessTasksCommentsService from "../../../../services/BusinnessTasksCommentsService"
+import BusinnessTaskRealisationsService from "../../../../services/BusinnessTaskRealisationsService"
 
 const useDataForm = () => {
   const [dataFormState, setDataFormState] = useState({
@@ -25,7 +26,8 @@ const useDataForm = () => {
         id: 0
       },
       comments: [],
-      taskRealisations: []
+      taskRealisations: [],
+      employees: []
     }
   })
 
@@ -65,6 +67,14 @@ const useDataForm = () => {
     }
   })
 
+  const deleteBusinnessTaskRealisationsMutation  = useMutation({
+    mutationKey: ["deleteBusinnessTaskRealisations"],
+    mutationFn: async (ids: number[]) => {
+      const businnessTaskRealisationsService: BusinnessTaskRealisationsService = BusinnessTaskRealisationsService.getInstance()
+      await businnessTaskRealisationsService.deleteAsync(ids)
+    }
+  })
+
   const handleSave = useCallback(async (formData) => {
     if(dataFormState.action === ActionTypeEnum.ADD)
     {
@@ -75,6 +85,7 @@ const useDataForm = () => {
         taskId: 0
       }))
 
+      // Comments
       const command: CreateBusinnessTaskCommand = {
         name: formData.name,
         description: formData.description,
@@ -121,7 +132,6 @@ const useDataForm = () => {
         text: x.text,
         date: x.date,
         userId: x.user.id,
-        taskId: 0
       }))
 
       command.updatedComments = formData.comments.filter(x => x.id > 0).map(x => ({
@@ -129,6 +139,25 @@ const useDataForm = () => {
         text: x.text,
       })) 
 
+      
+      // Task realisations
+      command.newTaskRealisations = formData.taskRealisations.filter(x => x.id < 0).map(x => ({
+        date: x.date,
+        timeSpan: x.timeSpan,
+        description: x.description,
+        employeeId: x.employee.id,
+        taskId: 0
+      }))
+
+      command.updatedTaskRealisations = formData.taskRealisations.filter(x => x.id > 0).map(x => ({
+        id: x.id,
+        date: x.date,
+        timeSpan: x.timeSpan,
+        description: x.description,
+        employeeId: x.employee.id,
+      }))
+
+      console.log(command)
 
       await updateBusinessTaskMutation.mutateAsync(command, {
         onSuccess: async () => {
@@ -179,7 +208,33 @@ const useDataForm = () => {
         })
       }
 
-      // Task realisations
+      const taskRealisationsToDeleteIds: number[] = dataFormState.businessTaskData.taskRealisations
+        .filter(x => !formData.taskRealisations.some(y => y.id === x.id))
+        .map(x => x.id)
+
+      if(taskRealisationsToDeleteIds.length > 0)
+      {
+        deleteBusinnessTaskRealisationsMutation.mutateAsync(taskRealisationsToDeleteIds, {
+          onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["businnessTasks"] })
+            setDataFormState(s => ({
+              ...s,
+              visible: false
+            }))
+          },
+          onError: (error: Error) => {
+            showGlobalModal({
+              title: "Error",
+              text: error.message,
+              modalType: GlobalModalTypeEnum.Warning,
+              buttonsType: GlobalModalButtonsTypeEnum.Ok,
+              callback: (clickResult: GlobalModalClickResultEnum) => {
+                hideGlobalModal()
+              }
+            })
+          }
+        })
+      }
     }
   }, [dataFormState, createBusinessTaskMutation, updateBusinessTaskMutation, queryClient, hideGlobalModal, showGlobalModal, deleteCommentsMutation])
 

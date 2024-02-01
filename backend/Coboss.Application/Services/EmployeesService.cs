@@ -36,7 +36,9 @@ namespace Coboss.Application.Services
         {
             IQueryable<Employee> employees = _applicationDbContext.Employees
                  .Include(x => x.User)
-                 .Include(x => x.EmployeeHistories);
+                 .Include(x => x.EmployeeHistories)
+                 .Include(x => x.BusinnessTasksUsers)
+                 .ThenInclude(x => x.BusinnessTask);
 
             if (!string.IsNullOrEmpty(getEmployeesQuery?.SearchText))
             {
@@ -216,8 +218,8 @@ namespace Coboss.Application.Services
         public async Task DeleteAsync(int[] ids)
         {
             List<Employee> employees = await _applicationDbContext.Employees
-                    .Where(x => ids.Contains(x.Id))
-                    .ToListAsync();
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync();
 
             if (employees.Count == 0)
             {

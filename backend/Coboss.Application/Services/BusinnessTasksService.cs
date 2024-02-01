@@ -1,5 +1,6 @@
 ﻿using Coboss.Application.Extensions;
 using Coboss.Application.Functions.Commands.BusinnessTaskComments;
+using Coboss.Application.Functions.Commands.BusinnessTaskRealisations;
 using Coboss.Application.Functions.Commands.BusinnessTasks;
 using Coboss.Application.Functions.Query.BusinnessTasks;
 using Coboss.Application.Services.Abstracts;
@@ -25,9 +26,12 @@ namespace Coboss.Application.Services
         {
             return await _applicationDbContext.BusinnessTasks
                 .Include(x => x.TaskRealisations)
+                .ThenInclude(x => x.Employee)
                 .Include(x => x.Comments)
                 .ThenInclude(x => x.User)
                 .Include(x => x.Project)
+                .Include(x => x.BusinnessTasksEmployees)
+                .ThenInclude(x => x.Employee)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -35,9 +39,12 @@ namespace Coboss.Application.Services
         {
             IQueryable<BusinnessTask> businnessTasks = _applicationDbContext.BusinnessTasks
                 .Include(x => x.TaskRealisations)
+                .ThenInclude(x => x.Employee)
                 .Include(x => x.Comments)
                 .ThenInclude(x => x.User)
-                .Include(x => x.Project);
+                .Include(x => x.Project)
+                .Include(x => x.BusinnessTasksEmployees)
+                .ThenInclude(x => x.Employee);
 
             if(!string.IsNullOrEmpty(query.SearchText))
             {
@@ -172,16 +179,64 @@ namespace Coboss.Application.Services
 
                     if(command.UpdatedComments?.Length > 0)
                     {
-                        foreach(UpdateBusinnessTaskCommentCommand updateBusinnessTaskCommentCommand in command.UpdatedComments)
+                        foreach(UpdateBusinnessTaskCommentCommand updateCommand in command.UpdatedComments)
                         {
-                            BusinnessTaskComment businnessTaskComment = await _applicationDbContext.BusinnessTaskComments.FirstOrDefaultAsync(x => x.Id == updateBusinnessTaskCommentCommand.Id);
-                            if(updateBusinnessTaskCommentCommand.Text is string text)
+                            BusinnessTaskComment businnessTaskComment = await _applicationDbContext.BusinnessTaskComments.FirstOrDefaultAsync(x => x.Id == updateCommand.Id);
+                            if(updateCommand.Text is string text)
                             {
                                 businnessTaskComment.Text = text;
                             }
 
                             businnessTaskComment.Date = DateTime.Now;
                             _applicationDbContext.BusinnessTaskComments.Update(businnessTaskComment);
+                        }
+                    }
+
+                    if(command.NewTaskRealisations?.Length > 0)
+                    {
+                        List<BusinnessTaskRealisation> businnessTaskRealisations = new List<BusinnessTaskRealisation>();
+                        foreach (CreateBusinnessTaskRealisationCommand createCommand in command.NewTaskRealisations)
+                        {
+                            BusinnessTaskRealisation businnessTaskRealisation = new BusinnessTaskRealisation
+                            {
+                                Date = createCommand.Date,
+                                TimeSpan = createCommand.TimeSpan,
+                                Description = createCommand.Description,
+                                Employee = await _applicationDbContext.Employees.FirstOrDefaultAsync(x => x.Id == createCommand.EmployeeId),
+                            };
+
+                            businnessTaskRealisations.Add(businnessTaskRealisation);
+                        }
+
+                        businnessTask.TaskRealisations = businnessTaskRealisations;
+                    }
+
+                    if(command.UpdatedTaskRealisations?.Length > 0)
+                    {
+                        foreach (UpdateBusinnessTaskRealisationCommand updateCommand in command.UpdatedTaskRealisations)
+                        {
+                            BusinnessTaskRealisation businnessTaskRealisation = await _applicationDbContext.BusinnessTaskRealisations.FirstOrDefaultAsync(x => x.Id == updateCommand.Id);
+                            if(updateCommand.Date is DateTime dateTime)
+                            {
+                                businnessTaskRealisation.Date = dateTime;
+                            }
+
+                            if(updateCommand.TimeSpan is TimeSpan timeSpan)
+                            {
+                                businnessTaskRealisation.TimeSpan = timeSpan;
+                            }
+                            
+                            if (updateCommand.Description is string text)
+                            {
+                                businnessTaskRealisation.Description = text;
+                            }
+
+                            if(updateCommand.EmployeeId is int employeeId)
+                            {
+                                businnessTaskRealisation.Employee = await _applicationDbContext.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
+                            }
+
+                            _applicationDbContext.BusinnessTaskRealisations.Update(businnessTaskRealisation);
                         }
                     }
 

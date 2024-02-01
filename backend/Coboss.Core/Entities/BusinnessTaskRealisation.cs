@@ -10,6 +10,9 @@ namespace Coboss.Core.Entities
 
         public int TaskId { get; set; }
         public BusinnessTask Task { get; set; } = default!;
+
+        public int EmployeeId { get; set; }
+        public Employee Employee { get; set; } = default!;
     }
 }
 

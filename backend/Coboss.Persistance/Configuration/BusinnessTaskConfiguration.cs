@@ -33,9 +33,6 @@ namespace Coboss.Persistance.Configuration
                 .HasDefaultValue(DateTime.UtcNow)
                 .IsRequired();
 
-            builder
-                .Ignore(x => x.Attachments);
-
             // Realtionships
             builder
                 .HasMany(x => x.TaskRealisations)

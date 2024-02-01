@@ -10,8 +10,9 @@ import DataFormFieldItemOption from "../../../../components/DataFormField/types/
 import DataFormRow from "../../../../components/DataForm/types/DataFormRow"
 import DataFormFieldType from "../../../../components/DataFormField/types/enums/DataFormFieldType"
 import DataFormRowTypeEnum from "../../../../components/DataForm/types/DataFormRowTypeEnum"
-import CommentsGrid from "../../../../components/CommentsGrid/inedx"
+import CommentsGrid from "../../../../components/CommentsGrid"
 import TaskRealisationsGrid from "../../../../components/TaskRealisationsGrid"
+import EmployeesGrid from "../../../../components/EmployeesGrid"
 
 
 const useFormRows = () => {
@@ -85,6 +86,14 @@ const useFormRows = () => {
         dataField: "taskRealisations",
         components: [
           TaskRealisationsGrid
+        ]
+      },
+      {
+        type: DataFormRowTypeEnum.Components,
+        caption: "Employees",
+        dataField: "employees",
+        components: [
+          EmployeesGrid
         ]
       }
     ]

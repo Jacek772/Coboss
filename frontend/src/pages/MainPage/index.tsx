@@ -7,18 +7,13 @@ import NavCard from "../../components/Navcard"
 import navRoutes from "../../configuration/navRoutes"
 import { useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
+import PageBar from "../../components/PageBar"
 
 const MainPage: React.FC = () => {
   const reduxState: RootState = useSelector<RootState, RootState>(x => x)
 
   return <div className="page-container">
-    <div className="page-caption-container">
-      <div className="page-caption-row">
-        <h1 className="page-caption">Witaj {reduxState.auth.user?.login} !</h1>
-        <input className="input page-caption-input" placeholder="Wyszukaj..."/>
-      </div>
-      <hr/>
-    </div>
+    <PageBar caption={`Witaj ${reduxState.auth.user?.login ?? ""} !`} searchVisible={false}/>
     <div className="navcards-container">
       {
         navRoutes.map((x, index) => {

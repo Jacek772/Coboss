@@ -1,62 +1,71 @@
-import { useCallback, useMemo } from "react"
+import React, { useCallback, useMemo, useState } from "react"
+import ColDefProps from "../Grid/types/ColDefProps"
+import GridColTypeEnum from "../Grid/types/enums/GridColTypeEnum"
 import ActionButtonsBar from "../ActionButtonsBar"
 import ActionButtonDef from "../ActionButtonsBar/types/ActionButtonDef"
 import ActionButtonType from "../ActionButtonsBar/types/enums/ActionButtonType"
-import Grid from "../Grid"
-import ColDefProps from "../Grid/types/ColDefProps"
-import GridColTypeEnum from "../Grid/types/enums/GridColTypeEnum"
-import useGrid from "./hooks/useGrid/index.hook"
-import useDataForm from "./hooks/useDataForm/index.hook"
-import ActionTypeEnum from "../../types/ActionTypeEnum"
 import DataForm from "../DataForm"
+import Grid from "../Grid"
+import useDataForm from "./hooks/useDataForm/index.hook"
+import useGrid from "./hooks/useGrid/index.hook"
+import ActionTypeEnum from "../../types/ActionTypeEnum"
+import UsersService from "../../services/UsersService"
+import { useQuery } from "@tanstack/react-query"
 import NumberUtils from "../../utils/NumberUtils"
-// import styles from "../index.module.css"
+
+type CommentsGridProps = {
+  data: any
+  setData: (data: any) => void
+}
 
 const gridColDefs: ColDefProps[] = [
   {
-    caption:"Date",
-    field:"date",
+    caption:"Text",
+    field:"text",
+    width: 400
+  },
+  {
+    caption: "Date",
+    field: "date",
     width: 200,
     type: GridColTypeEnum.Date
   },
   {
-    caption: "Time span",
-    field: "timeSpan",
-    width: 200,
-  },
-  {
-    caption: "Description",
-    field: "description",
-    width: 200,
-  },
-  {
-    caption: "Employee",
-    field: "employee.code",
+    caption: "User",
+    field: "user.email",
     width: 200,
   }
 ]
 
-const TaskRealisationsGrid: React.FC<any> = ({ data, setData }) => {
+const CommentsGrid: React.FC<CommentsGridProps> = ({ data, setData }) => {
   const gridData = useGrid()
   const dataFormData = useDataForm()
+
+  const currentUserQuery = useQuery({
+    queryKey: ["currentUserCommentsGrid"],
+    queryFn: async() => {
+      return UsersService
+        .getInstance()
+        .getCurrentAsync()
+    },
+    staleTime: 60000
+  })
+
 
   const handleClickAdd = useCallback(() => {
     dataFormData.setDataFormState(s => ({
       ...s,
-      taskRealisationData: {
+      commentData: {
         id: -1 * NumberUtils.getRandomInt(),
+        text: "",
         date: new Date().toISOString(),
-        timeSpan: "00:00:00",
-        description: "",
-        employee: {
-          id: 0,
-          code: ""
-        }
+        username: currentUserQuery?.data?.email,
+        userId: currentUserQuery?.data?.id
       },
       action: ActionTypeEnum.ADD,
       visible: true
     }))
-  }, [dataFormData])
+  }, [currentUserQuery.data, dataFormData])
 
   const handleClickDelete = useCallback(() => {
     const ids: number[] = gridData.gridState.selectedRows.map(x => x.data.id as number)
@@ -67,6 +76,7 @@ const TaskRealisationsGrid: React.FC<any> = ({ data, setData }) => {
 
     const updatedData = data.filter(x => !ids.includes(x.id))
     setData?.([...updatedData])
+
   }, [gridData.gridState, data, setData])
 
   const actionButtonDefs: ActionButtonDef[] = useMemo<ActionButtonDef[]>(() => [
@@ -82,15 +92,16 @@ const TaskRealisationsGrid: React.FC<any> = ({ data, setData }) => {
     }
   ], [handleClickAdd, handleClickDelete])
 
+
   const handleGridRowDoubleClick = useCallback((index: number, rowData: any) => {
     dataFormData.setDataFormState(s => ({
       ...s,
-      taskRealisationData: {
+      commentData: {
         id: rowData.data.id,
         date: rowData.data.date,
-        timeSpan: rowData.data.timeSpan,
-        description: rowData.data.description,
-        employee: rowData.data.employee
+        text: rowData.data.text,
+        username: rowData.data.user.email,
+        userId: rowData.data.user.id
       },
       action: ActionTypeEnum.EDIT,
       visible: true
@@ -101,46 +112,45 @@ const TaskRealisationsGrid: React.FC<any> = ({ data, setData }) => {
     const index = data.findIndex(x => x.id === formData.id)
     if(index >= 0)
     {
-      const updatedTaskRealisations = [...data]
-      updatedTaskRealisations[index].date = formData.date
-      updatedTaskRealisations[index].timeSpan = formData.timeSpan
-      updatedTaskRealisations[index].description = formData.description
-      updatedTaskRealisations[index].employee = formData.employee
+      const updatedComments = [...data]
 
-      setData([...updatedTaskRealisations])
+      const index = updatedComments.findIndex(x => x.id === formData.id)
+      if(index >= 0)
+      {
+        updatedComments[index].text = formData.text
+      }
+
+      setData([...updatedComments])
     }
     else
     {
-      const taskRealisation = {
+      const comment = {
         id: formData.id,
         date: formData.date,
-        timeSpan: formData.timeSpan,
-        description: formData.description,
-        employee: {
-          id: formData.employee.id,
-          code: ""
+        text: formData.text,
+        user: {
+          email: formData.username,
+          id: formData.userId
         }
       }
-
-      setData([...data, taskRealisation])
+  
+      setData([...data, comment])
     }
 
     dataFormData.setDataFormState(s => ({
       ...s,
-      taskRealisationData: {
+      commentData: {
         id: 0,
         date: "",
-        timeSpan: "00:00",
-        description: "",
-        employee: {
-          id: 0,
-          code: ""
-        }
+        text: "",
+        username: "",
+        userId: 0
       },
       action: ActionTypeEnum.NONE,
       visible: false
     }))
-  }, [data, dataFormData, setData])
+  },[data, dataFormData, setData])
+
 
   return <div style={{ marginBottom: 40 }}>
     <ActionButtonsBar buttonsData={actionButtonDefs} />
@@ -150,11 +160,11 @@ const TaskRealisationsGrid: React.FC<any> = ({ data, setData }) => {
       onSelectionChanged={gridData.handleSelectionChanged}
       onRowDoubleClick={handleGridRowDoubleClick}
     />
-  {
+    {
       dataFormData.dataFormState.visible ?
       <DataForm
-        caption="Task realisation"
-        data={dataFormData.dataFormState.taskRealisationData}
+        caption="Comment"
+        data={dataFormData.dataFormState.commentData}
         rows={dataFormData.formRows}
         onSave={handleSave}
         onClose={dataFormData.handleClose}
@@ -165,4 +175,4 @@ const TaskRealisationsGrid: React.FC<any> = ({ data, setData }) => {
   </div>
 }
 
-export default TaskRealisationsGrid
+export default CommentsGrid

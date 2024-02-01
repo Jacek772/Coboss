@@ -15,9 +15,7 @@ const Navbar: React.FC<INavbarProps> = ({ visible = false }: INavbarProps) => {
       <NavLink to="/employees" text="Employees" />
       <NavLink to="/projects" text="Projects" />
       <NavLink to="/tasks" text="Tasks" />
-      <NavLink to="/reports" text="Summaries and reports">
-        <NavLink to="/settings/test" text="test"/>
-      </NavLink>
+      <NavLink to="/reports" text="Summaries and reports"/>
       <NavLink to="/settings" text="Settings" />
     </ul>
   </nav>

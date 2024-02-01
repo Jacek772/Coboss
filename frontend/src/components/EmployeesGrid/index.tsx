@@ -1,66 +1,68 @@
-import React, { useCallback, useMemo, useState } from "react"
-import ColDefProps from "../Grid/types/ColDefProps"
-import GridColTypeEnum from "../Grid/types/enums/GridColTypeEnum"
-import ActionButtonsBar from "../ActionButtonsBar"
+import React, { useCallback, useMemo } from "react"
 import ActionButtonDef from "../ActionButtonsBar/types/ActionButtonDef"
 import ActionButtonType from "../ActionButtonsBar/types/enums/ActionButtonType"
-import DataForm from "../DataForm"
+import ActionButtonsBar from "../ActionButtonsBar"
+import ColDefProps from "../Grid/types/ColDefProps"
+import GridColTypeEnum from "../Grid/types/enums/GridColTypeEnum"
 import Grid from "../Grid"
-import useDataForm from "./hooks/useDataForm/index.hook"
+import DataForm from "../DataForm"
 import useGrid from "./hooks/useGrid/index.hook"
+import useDataForm from "./hooks/useDataForm/index.hook"
 import ActionTypeEnum from "../../types/ActionTypeEnum"
-import UsersService from "../../services/UsersService"
-import { useQuery } from "@tanstack/react-query"
 import NumberUtils from "../../utils/NumberUtils"
+import { useQuery } from "@tanstack/react-query"
 
-type CommentsGridProps = {
+type EmployeesGridProps = {
   data: any
   setData: (data: any) => void
 }
 
 const gridColDefs: ColDefProps[] = [
   {
-    caption:"Text",
-    field:"text",
-    width: 400
+    caption:"Code",
+    field:"code",
+    width: 200
   },
   {
-    caption: "Date",
-    field: "date",
+    caption: "Name",
+    field: "name",
     width: 200,
-    type: GridColTypeEnum.Date
+  },
+  {
+    caption: "Surname",
+    field: "surname",
+    width: 200,
   }
 ]
 
-const CommentsGrid: React.FC<CommentsGridProps> = ({ data, setData }) => {
+const EmployeesGrid: React.FC<EmployeesGridProps> = ({ data, setData }) => {
   const gridData = useGrid()
   const dataFormData = useDataForm()
 
-  const currentUserQuery = useQuery({
-    queryKey: ["currentUserCommentsGrid"],
+  const currentEmployeeToTaskQuery = useQuery({
+    queryKey: ["currentEmployeeToTaskEmployeesGrid"],
     queryFn: async() => {
-      return UsersService
-        .getInstance()
-        .getCurrentAsync()
+      // return UsersService
+      //   .getInstance()
+      //   .getCurrentAsync()
     },
     staleTime: 60000
   })
 
-
   const handleClickAdd = useCallback(() => {
     dataFormData.setDataFormState(s => ({
       ...s,
-      commentData: {
-        id: -1 * NumberUtils.getRandomInt(),
-        text: "",
-        date: new Date().toISOString(),
-        username: currentUserQuery?.data?.email,
-        userId: currentUserQuery?.data?.id
+      employeeData: {
+        id: "",
+        employeeId: 0,
+        code: "?",
+        name: "",
+        surname: "",
       },
       action: ActionTypeEnum.ADD,
       visible: true
     }))
-  }, [currentUserQuery.data, dataFormData])
+  }, [dataFormData])
 
   const handleClickDelete = useCallback(() => {
     const ids: number[] = gridData.gridState.selectedRows.map(x => x.data.id as number)
@@ -71,7 +73,6 @@ const CommentsGrid: React.FC<CommentsGridProps> = ({ data, setData }) => {
 
     const updatedData = data.filter(x => !ids.includes(x.id))
     setData?.([...updatedData])
-
   }, [gridData.gridState, data, setData])
 
   const actionButtonDefs: ActionButtonDef[] = useMemo<ActionButtonDef[]>(() => [
@@ -87,16 +88,16 @@ const CommentsGrid: React.FC<CommentsGridProps> = ({ data, setData }) => {
     }
   ], [handleClickAdd, handleClickDelete])
 
-
   const handleGridRowDoubleClick = useCallback((index: number, rowData: any) => {
+    console.log(rowData)
     dataFormData.setDataFormState(s => ({
       ...s,
-      commentData: {
-        id: rowData.data.id,
-        date: rowData.data.date,
-        text: rowData.data.text,
-        username: rowData.data.user.email,
-        userId: rowData.data.user.id
+      employeeData: {
+        id: `${rowData.data.id}_${rowData.data.id}`,
+        employeeId: rowData.data.id,
+        code: rowData.data.code,
+        name: rowData.data.name,
+        surname: rowData.data.surname,
       },
       action: ActionTypeEnum.EDIT,
       visible: true
@@ -104,61 +105,60 @@ const CommentsGrid: React.FC<CommentsGridProps> = ({ data, setData }) => {
   }, [dataFormData])
 
   const handleSave = useCallback(async (formData) => {
+    const index: number = data.findIndex(x => `${x.id}_${x.id}` === formData.id)
+    if(index >= 0)
+    {
+      const updatedEmployees = [...data]
 
-    if(formData.id < 0) {
-      const comment = {
-        id: formData.id,
-        date: formData.date,
-        text: formData.text,
-        user: {
-          email: formData.username,
-          id: formData.userId
-        }
+      const index = updatedEmployees.findIndex(x => x.id === formData.id)
+      if(index >= 0)
+      {
+        updatedEmployees[index].employeeId = formData.text
       }
-  
-      setData([...data, comment])
+
+      setData([...updatedEmployees])
     }
     else
     {
-      const updatedComments = [...data]
-
-      const index = updatedComments.findIndex(x => x.id === formData.id)
-      if(index >= 0)
-      {
-        updatedComments[index].text = formData.text
+      const employee = {
+        id: formData.id,
+        employeeId: formData.employeeId,
+        code: formData.code,
+        name: formData.name,
+        surname: formData.surname,
       }
-
-      setData([...updatedComments])
+        
+      setData([...data, employee])
     }
 
     dataFormData.setDataFormState(s => ({
       ...s,
-      commentData: {
-        id: 0,
-        date: "",
-        text: "",
-        username: "",
-        userId: 0
+      employeeData: {
+        id: "",
+        employeeId: 0,
+        code: "",
+        name: "",
+        surname: "",
       },
       action: ActionTypeEnum.NONE,
       visible: false
     }))
-  },[data, dataFormData, setData])
 
+  }, [data, setData])
 
   return <div style={{ marginBottom: 40 }}>
-    <ActionButtonsBar buttonsData={actionButtonDefs} />
-    <Grid
+  <ActionButtonsBar buttonsData={actionButtonDefs} />
+  <Grid
       colDefs={gridColDefs}
       rowsData={data ?? []}
       onSelectionChanged={gridData.handleSelectionChanged}
       onRowDoubleClick={handleGridRowDoubleClick}
     />
-    {
+        {
       dataFormData.dataFormState.visible ?
       <DataForm
-        caption="Comment"
-        data={dataFormData.dataFormState.commentData}
+        caption={`${dataFormData.dataFormState.employeeData.code}`}
+        data={dataFormData.dataFormState.employeeData}
         rows={dataFormData.formRows}
         onSave={handleSave}
         onClose={dataFormData.handleClose}
@@ -169,4 +169,4 @@ const CommentsGrid: React.FC<CommentsGridProps> = ({ data, setData }) => {
   </div>
 }
 
-export default CommentsGrid
+export default EmployeesGrid

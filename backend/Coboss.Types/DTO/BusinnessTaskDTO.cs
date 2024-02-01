@@ -13,5 +13,6 @@ namespace Coboss.Types.DTO
 
         public ICollection<BusinnessTaskRealisationDTO> TaskRealisations { get; set; } = new List<BusinnessTaskRealisationDTO>();
         public List<BusinnessTaskCommentDTO> Comments { get; set; } = new List<BusinnessTaskCommentDTO>();
+        public List<EmployeeDTO> Employees { get; set; } = new List<EmployeeDTO>();
     }
-} 
+}

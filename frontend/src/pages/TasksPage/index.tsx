@@ -39,6 +39,8 @@ const TasksPage: React.FC = () => {
   })
 
   const handleGridRowDoubleClick = useCallback((index: number, rowData: any) => {
+    console.log(rowData)
+
     dataFormData.setDataFormState(s => ({
       ...s,
       businessTaskData: rowData.data,
@@ -61,7 +63,8 @@ const TasksPage: React.FC = () => {
           id: 0
         },
         comments: [],
-        taskRealisations: []
+        taskRealisations: [],
+        employees: []
       }
     }))
   },[dataFormData])
@@ -96,7 +99,8 @@ const TasksPage: React.FC = () => {
                     id: 0
                   },
                   comments: [],
-                  taskRealisations: []
+                  taskRealisations: [],
+                  employees: []
                 }
               }))
             },

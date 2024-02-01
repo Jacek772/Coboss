@@ -8,5 +8,6 @@ namespace Coboss.Application.Functions.Commands.BusinnessTaskRealisations
         public DateTime? Date { get; set; }
         public TimeSpan? TimeSpan { get; set; }
         public string? Description { get; set; }
+        public int? EmployeeId { get; set; }
     }
 }

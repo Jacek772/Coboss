@@ -155,6 +155,8 @@ const ProjectsPage: React.FC = () => {
       }
     }
 
+    console.log(query)
+
     return query
   }, [])
 

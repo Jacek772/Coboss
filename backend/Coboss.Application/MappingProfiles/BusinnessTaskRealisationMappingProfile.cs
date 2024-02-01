@@ -9,7 +9,8 @@ namespace Coboss.Application.MappingProfiles
     {
         public BusinnessTaskRealisationMappingProfile()
         {
-            CreateMap<BusinnessTaskRealisation, BusinnessTaskRealisationDTO>();
+            CreateMap<BusinnessTaskRealisation, BusinnessTaskRealisationDTO>()
+                .ForMember(m => m.Employee, x => x.MapFrom(y => y.Employee));
             CreateMap<CreateBusinnessTaskRealisationCommand, BusinnessTaskRealisation>();
         }
     }

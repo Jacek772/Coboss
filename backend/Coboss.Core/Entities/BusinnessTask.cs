@@ -13,8 +13,6 @@ namespace Coboss.Core.Entities
 
         public ICollection<BusinnessTaskRealisation> TaskRealisations { get; set; } = default!;
         public ICollection<BusinnessTaskComment> Comments { get; set; } = default!;
-
-        // TODO: Zaimplementować pobieranie załączników dla zadania
-        public ICollection<Attachment> Attachments { get; }
+        public ICollection<BusinnessTaskEmployee> BusinnessTasksEmployees { get; set; } = default!;
     }
 }

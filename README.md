@@ -54,19 +54,21 @@ cd backend
 dotnet restore
 ```
 
-**3. Navigate to the client project folder and and install Dependencies:**
+**3. Configure connection to PosgreSQL database:**
+
+**4. Navigate to the client project folder and and install Dependencies:**
 ```shell
 cd client
 npm install
 ```
 
-**4. Run backend API Application**
+**5. Run backend API Application**
 ```shell
 cd backend
 dotnet run
 ```
 
-**5. Run client Application**
+**6. Run client Application**
 ```shell
 cd client
 npm start
@@ -146,6 +148,7 @@ The application has been built using modern technologies, ensuring performance, 
 The relational database management system used in the project is **PostgreSQL.**
 
 Database ERD diagram:
+![Local Image](./Coboss_diagram_ERD.png)
 
 ## Author
 Jacek Godzicki [https://github.com/Jacek772]

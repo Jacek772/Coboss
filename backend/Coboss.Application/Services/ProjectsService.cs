@@ -42,18 +42,17 @@ namespace Coboss.Application.Services
                 .ThenInclude(x => x.TaskRealisations)
                 .Include(x => x.BusinnessTasks);
 
-            if(!string.IsNullOrEmpty(query?.SearchText))
+            if (!string.IsNullOrEmpty(query?.SearchText))
             {
                 projects = projects
-                    .Where(x => EF.Functions.ILike(x.Name, $"%{query.SearchText}%")
-                       || EF.Functions.ILike(x.Description, $"%{query.SearchText}%")
-                       || EF.Functions.ILike(x.Number, $"%{query.SearchText}%")
-                       || EF.Functions.ILike(x.Manager.Code, $"%{query.SearchText}%")
-                       || EF.Functions.ILike(x.Manager.Name, $"%{query.SearchText}%")
-                       || EF.Functions.ILike(x.Manager.Surname, $"%{query.SearchText}%")
-                       || EF.Functions.ILike(x.Manager.PESEL, $"%{query.SearchText}%")
-                       || EF.Functions.ILike(x.Manager.NIP, $"%{query.SearchText}%"));
+                    .Where(x => x.Name.ToLower().Contains(query.SearchText.ToLower())
+                    || x.Description.ToLower().Contains(query.SearchText.ToLower())
+                    || x.Number.ToLower().Contains(query.SearchText.ToLower())
+                    || x.Manager.Code.ToLower().Contains(query.SearchText.ToLower())
+                    || x.Manager.Name.ToLower().Contains(query.SearchText.ToLower())
+                    || x.Manager.Surname.ToLower().Contains(query.SearchText.ToLower()));
             }
+         
 
             if (!string.IsNullOrEmpty(query?.OrderBy) && !string.IsNullOrEmpty(query?.OrderBy))
             {

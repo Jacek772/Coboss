@@ -49,6 +49,12 @@ namespace Coboss.Persistance.Configuration
                 .WithOne(x => x.Employee)
                 .HasForeignKey(x => x.EmployeeId)
                 .HasPrincipalKey(x => x.Id);
+
+            builder
+                .HasMany(x => x.BusinnessTaskRealisations)
+                .WithOne(x => x.Employee)
+                .HasForeignKey(x => x.EmployeeId)
+                .HasPrincipalKey(x => x.Id);
         }
     }
 }

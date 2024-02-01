@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Coboss.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240107132204_init")]
+    [Migration("20240201204231_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,44 +25,6 @@ namespace Coboss.Persistance.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Coboss.Core.Entities.Attachment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("FileType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("ParentID")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("TableName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TableName", "ParentID")
-                        .IsUnique();
-
-                    b.ToTable("Attachments", "coboss");
-                });
-
             modelBuilder.Entity("Coboss.Core.Entities.BusinnessTask", b =>
                 {
                     b.Property<int>("Id")
@@ -74,7 +36,7 @@ namespace Coboss.Persistance.Migrations
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 1, 7, 13, 22, 3, 972, DateTimeKind.Utc).AddTicks(5293));
+                        .HasDefaultValue(new DateTime(2024, 2, 1, 20, 42, 31, 599, DateTimeKind.Utc).AddTicks(539));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -91,7 +53,7 @@ namespace Coboss.Persistance.Migrations
                     b.Property<DateTime>("Term")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 1, 7, 13, 22, 3, 972, DateTimeKind.Utc).AddTicks(5469));
+                        .HasDefaultValue(new DateTime(2024, 2, 1, 20, 42, 31, 599, DateTimeKind.Utc).AddTicks(727));
 
                     b.HasKey("Id");
 
@@ -111,7 +73,7 @@ namespace Coboss.Persistance.Migrations
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 1, 7, 13, 22, 3, 972, DateTimeKind.Utc).AddTicks(3915));
+                        .HasDefaultValue(new DateTime(2024, 2, 1, 20, 42, 31, 598, DateTimeKind.Utc).AddTicks(9114));
 
                     b.Property<int>("TaskId")
                         .HasColumnType("integer");
@@ -132,6 +94,21 @@ namespace Coboss.Persistance.Migrations
                     b.ToTable("BusinnessTaskComments", "coboss");
                 });
 
+            modelBuilder.Entity("Coboss.Core.Entities.BusinnessTaskEmployee", b =>
+                {
+                    b.Property<int>("BusinnessTaskId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("BusinnessTaskId", "EmployeeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("BusinnessTasksUsers", "coboss");
+                });
+
             modelBuilder.Entity("Coboss.Core.Entities.BusinnessTaskRealisation", b =>
                 {
                     b.Property<int>("Id")
@@ -143,10 +120,13 @@ namespace Coboss.Persistance.Migrations
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 1, 7, 13, 22, 3, 972, DateTimeKind.Utc).AddTicks(9012));
+                        .HasDefaultValue(new DateTime(2024, 2, 1, 20, 42, 31, 599, DateTimeKind.Utc).AddTicks(3231));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TaskId")
                         .HasColumnType("integer");
@@ -157,6 +137,8 @@ namespace Coboss.Persistance.Migrations
                         .HasDefaultValue(new TimeSpan(0, 0, 0, 0, 0));
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("TaskId");
 
@@ -313,7 +295,7 @@ namespace Coboss.Persistance.Migrations
                     b.Property<DateTime>("Term")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 1, 7, 13, 22, 3, 973, DateTimeKind.Utc).AddTicks(4853));
+                        .HasDefaultValue(new DateTime(2024, 2, 1, 20, 42, 31, 600, DateTimeKind.Utc).AddTicks(3622));
 
                     b.HasKey("Id");
 
@@ -336,7 +318,7 @@ namespace Coboss.Persistance.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
-                        .HasDefaultValue(new DateTime(2024, 1, 7, 13, 22, 3, 973, DateTimeKind.Utc).AddTicks(7056));
+                        .HasDefaultValue(new DateTime(2024, 2, 1, 20, 42, 31, 600, DateTimeKind.Utc).AddTicks(5878));
 
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("timestamp without time zone");
@@ -458,13 +440,40 @@ namespace Coboss.Persistance.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Coboss.Core.Entities.BusinnessTaskEmployee", b =>
+                {
+                    b.HasOne("Coboss.Core.Entities.BusinnessTask", "BusinnessTask")
+                        .WithMany("BusinnessTasksEmployees")
+                        .HasForeignKey("BusinnessTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Coboss.Core.Entities.Employee", "Employee")
+                        .WithMany("BusinnessTasksUsers")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BusinnessTask");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("Coboss.Core.Entities.BusinnessTaskRealisation", b =>
                 {
+                    b.HasOne("Coboss.Core.Entities.Employee", "Employee")
+                        .WithMany("BusinnessTaskRealisations")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Coboss.Core.Entities.BusinnessTask", "Task")
                         .WithMany("TaskRealisations")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
 
                     b.Navigation("Task");
                 });
@@ -521,6 +530,8 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.BusinnessTask", b =>
                 {
+                    b.Navigation("BusinnessTasksEmployees");
+
                     b.Navigation("Comments");
 
                     b.Navigation("TaskRealisations");
@@ -528,6 +539,10 @@ namespace Coboss.Persistance.Migrations
 
             modelBuilder.Entity("Coboss.Core.Entities.Employee", b =>
                 {
+                    b.Navigation("BusinnessTaskRealisations");
+
+                    b.Navigation("BusinnessTasksUsers");
+
                     b.Navigation("EmployeeHistories");
 
                     b.Navigation("User");

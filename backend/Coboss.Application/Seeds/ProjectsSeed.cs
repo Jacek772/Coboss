@@ -65,13 +65,15 @@ namespace Coboss.Application.Seeds
                             {
                                 Date = DateTime.Now,
                                 Description = "Analiza wymagań",
-                                TimeSpan = new TimeSpan(2,30,0)
+                                TimeSpan = new TimeSpan(2,30,0),
+                                Employee = employees.FirstOrDefault()
                             },
                             new BusinnessTaskRealisation
                             {
                                 Date = DateTime.Now,
                                 Description = "Tworzenie rozwiązania",
-                                TimeSpan = new TimeSpan(4,0,0)
+                                TimeSpan = new TimeSpan(4,0,0),
+                                Employee = employees.FirstOrDefault()
                             }
                         }
                     },
@@ -102,13 +104,15 @@ namespace Coboss.Application.Seeds
                             {
                                 Date = DateTime.Now,
                                 Description = "Analiza wymagań",
-                                TimeSpan = new TimeSpan(2,30,0)
+                                TimeSpan = new TimeSpan(2,30,0),
+                                Employee = employees.FirstOrDefault()
                             },
                             new BusinnessTaskRealisation
                             {
                                 Date = DateTime.Now,
                                 Description = "Tworzenie rozwiązania",
-                                TimeSpan = new TimeSpan(4,0,0)
+                                TimeSpan = new TimeSpan(4,0,0),
+                                Employee = employees.FirstOrDefault()
                             }
                         }
                     },
@@ -139,13 +143,15 @@ namespace Coboss.Application.Seeds
                             {
                                 Date = DateTime.Now,
                                 Description = "Analiza wymagań",
-                                TimeSpan = new TimeSpan(2,30,0)
+                                TimeSpan = new TimeSpan(2,30,0),
+                                Employee = employees.FirstOrDefault()
                             },
                             new BusinnessTaskRealisation
                             {
                                 Date = DateTime.Now,
                                 Description = "Tworzenie rozwiązania",
-                                TimeSpan = new TimeSpan(4,0,0)
+                                TimeSpan = new TimeSpan(4,0,0),
+                                Employee = employees.FirstOrDefault()
                             }
                         }
                     },
@@ -189,13 +195,15 @@ namespace Coboss.Application.Seeds
                             {
                                 Date = DateTime.Now,
                                 Description = "Analiza wymagań",
-                                TimeSpan = new TimeSpan(2,30,0)
+                                TimeSpan = new TimeSpan(2,30,0),
+                                Employee = employees.FirstOrDefault()
                             },
                             new BusinnessTaskRealisation
                             {
                                 Date = DateTime.Now,
                                 Description = "Tworzenie rozwiązania",
-                                TimeSpan = new TimeSpan(4,0,0)
+                                TimeSpan = new TimeSpan(4,0,0),
+                                Employee = employees.FirstOrDefault()
                             }
                         }
                     },
@@ -226,13 +234,15 @@ namespace Coboss.Application.Seeds
                             {
                                 Date = DateTime.Now,
                                 Description = "Analiza wymagań",
-                                TimeSpan = new TimeSpan(2,30,0)
+                                TimeSpan = new TimeSpan(2,30,0),
+                                Employee = employees.FirstOrDefault()
                             },
                             new BusinnessTaskRealisation
                             {
                                 Date = DateTime.Now,
                                 Description = "Tworzenie rozwiązania",
-                                TimeSpan = new TimeSpan(4,0,0)
+                                TimeSpan = new TimeSpan(4,0,0),
+                                Employee = employees.FirstOrDefault()
                             }
                         }
                     },
@@ -263,13 +273,15 @@ namespace Coboss.Application.Seeds
                             {
                                 Date = DateTime.Now,
                                 Description = "Analiza wymagań",
-                                TimeSpan = new TimeSpan(2,30,0)
+                                TimeSpan = new TimeSpan(2,30,0),
+                                Employee = employees.FirstOrDefault()
                             },
                             new BusinnessTaskRealisation
                             {
                                 Date = DateTime.Now,
                                 Description = "Tworzenie rozwiązania",
-                                TimeSpan = new TimeSpan(4,0,0)
+                                TimeSpan = new TimeSpan(4,0,0),
+                                Employee = employees.FirstOrDefault()
                             }
                         }
                     },

@@ -1,6 +1,14 @@
+import PageBar from "../../components/PageBar"
+
+// Css
+import styles from "./index.module.css"
+
 const ReportsPage: React.FC = () => {
-  return <div>
-    <h1>ReportsPage</h1>
+    return <div className={styles.pageContainer}>
+    <PageBar
+          caption="Summaries and reports"
+          searchVisible={false}
+    />
   </div>
 }
 

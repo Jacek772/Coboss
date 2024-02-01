@@ -1,4 +1,5 @@
 ﻿using Coboss.Application.Functions.Commands.BusinnessTaskComments;
+using Coboss.Application.Functions.Commands.BusinnessTaskRealisations;
 using MediatR;
 
 namespace Coboss.Application.Functions.Commands.BusinnessTasks
@@ -11,5 +12,6 @@ namespace Coboss.Application.Functions.Commands.BusinnessTasks
         public DateTime Term { get; set; }
         public int ProjectId { get; set; }
         public CreateBusinnessTaskCommentCommand[] Comments { get; set; } = default!;
+        public CreateBusinnessTaskRealisationCommand[] NewTaskRealisations { get; set; } = default!;
     }
 }
