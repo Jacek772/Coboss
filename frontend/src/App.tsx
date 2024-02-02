@@ -30,11 +30,12 @@ const App: React.FC = () => {
   const reduxState = useSelector<RootState, RootState>(x => x)
 
   const authLoader = useCallback(() => {
-    // if(!reduxState.auth.logged)
-    // {
-    //   return redirect("/")
-    // }
-    return null 
+    const tokenService: TokenService = TokenService.getInstance()
+    if(!tokenService.getToken())
+    {
+      return redirect("/")
+    }
+    return redirect("/main")
   }, [reduxState.auth])
 
 
