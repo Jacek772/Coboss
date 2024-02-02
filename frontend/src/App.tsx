@@ -35,9 +35,18 @@ const App: React.FC = () => {
     {
       return redirect("/")
     }
-    return redirect("/main")
+    return null
   }, [reduxState.auth])
 
+
+  const nonAuthLoader = useCallback(() => {
+    const tokenService: TokenService = TokenService.getInstance()
+    if(tokenService.getToken())
+    {
+      return redirect("/main")
+    }
+    return null
+  }, [reduxState.auth])
 
   const logoutLoader = useCallback(() => {
     const tokenService: TokenService = TokenService.getInstance()
@@ -49,7 +58,7 @@ const App: React.FC = () => {
   const router: any = createBrowserRouter([
     {
       path: "/",
-
+      loader: nonAuthLoader,
       Component: LoginPage
     },
     {
